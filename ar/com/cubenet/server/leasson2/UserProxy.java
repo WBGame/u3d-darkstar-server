@@ -41,22 +41,30 @@ public class UserProxy implements AppListener, Serializable {
 
 		// Data manager del sistema
 		DataManager d = AppContext.getDataManager();
+		
 		// Retorno del metodo
-		UserListener user = null;
+		UserListener user;
 		
 		// ver las excepsiones del metodo getBinding
 		try {
-			logger.info( "Intentando recuperar una instancia del Object Store para " + session.getName() );			
+			
+			logger.info( "Intentando recuperar una instancia del Object " +
+					"Store para " + session.getName() );
+			
 			// recupero del object store el objecto que necesito
 			user = (UserListener) d.getBinding( session.getName() );
+			
 		} catch (Exception e) {
-			logger.info( "No existe ninguna instancia dentro del Object Store para " + session.getName() );
-			// para este caso lo mas probable es que no exista el objeto que 
-			// buscamos
-			user = new UserListener( session );
+			logger.info( "No existe ninguna instancia dentro del Object " +
+					"Store para " + session.getName() );
+			
+			user = new UserListener();
+			
 			// registro el objeto dentro del Object Store.
 			d.setBinding( session.getName() , user );
 		}
+		
+		user.setSession( session );
 		
 		return user;
 	}
