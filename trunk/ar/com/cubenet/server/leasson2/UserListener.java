@@ -6,9 +6,11 @@ import java.nio.ByteBuffer;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
+import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
 import com.sun.sgs.app.ManagedReference;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -25,23 +27,17 @@ implements ManagedObject, Serializable, ClientSessionListener {
 	private static final long serialVersionUID = 1L;
 
 	/** The session this is listening to. */
-	private final ManagedReference<ClientSession> sessionRef;
+	private ManagedReference<ClientSession> sessionRef;
 
 	/** Creamos un logger para esta clase */
 	private static final Logger logger =
 		Logger.getLogger( UserListener.class.getName() );
 
-	/** Estoy iniciando una conexion a un usuario dentro del sistema. */
-	public UserListener( ClientSession session ) {
-		logger.info( "Iniciando UserListener para " + session.getName() );
-
-		// mantengo una referencia al cliente que establecio la conexion.
-		sessionRef = AppContext.getDataManager().createReference( session );
-	}
-
 	public void disconnected(boolean graceful) {
 		logger.info( "El usuario " + this.sessionRef.get().getName() + 
 		" se a desconectado" );
+		
+		setSession(null);
 	}
 
 	public void receivedMessage(ByteBuffer message) {
@@ -58,4 +54,24 @@ implements ManagedObject, Serializable, ClientSessionListener {
 		// se lo reenvio al cliente
 		sessionRef.get().send( message );
 	}
+	
+	public ClientSession getSession() {
+        if (sessionRef == null)
+            return null;
+		
+		return sessionRef.get();
+	}
+
+    public void setSession(ClientSession session) {
+        DataManager dataMgr = AppContext.getDataManager();
+        dataMgr.markForUpdate(this);
+
+        try {
+        	sessionRef = dataMgr.createReference(session);	
+		} catch (Exception e) {
+			sessionRef = null;
+		}
+
+        logger.log(Level.INFO, "Set session for {0} to {1}", new Object[] { this, session });
+    }
 }
