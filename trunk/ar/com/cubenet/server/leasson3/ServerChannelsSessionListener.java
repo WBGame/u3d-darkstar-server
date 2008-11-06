@@ -25,7 +25,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.unicen.u3d.common.tarea1.Serializer;
+import ar.com.cubenet.common.leasson3.Serializer;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
@@ -47,12 +47,17 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	private static final long serialVersionUID = 1L;
 
 	/** The {@link Logger} for this class. */
-	private static final Logger logger =
-		Logger.getLogger(ServerChannelsSessionListener.class.getName());
+	private static final Logger logger = Logger.getLogger(ServerChannelsSessionListener.class.getName());
 
 	/** The session this {@code ClientSessionListener} is listening to. */
 	private final ManagedReference<ClientSession> sessionRef;
-
+	/** 
+	 * Lista para almacenar los clientes que se encuentran actualmente conectados. Supongo que
+	 * debe (o debería) existir una manera mas elegante de obtener/almacenar los clientes actualmente
+	 * conectados, pero no pude encontrarla.
+	 * 
+	 * @author Sebastián Perruolo
+	 */
 	private static Vector<String> clients = new Vector();
 	/**
 	 * Creates a new {@code HelloChannelsSessionListener} for the session.
@@ -77,7 +82,8 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 		channelMgr.getChannel(ServerChannels.CHANNEL_2_NAME).join(session);;
 
 		/*
-		 * @author Sebastián
+		 * Se agrega el cliente a los dos channels que agregué.
+		 * @author Sebastián Perruolo
 		 */
 		channelMgr.getChannel(ServerChannels.CHANNEL_3_NAME).join(session);
 		
@@ -110,7 +116,18 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 			logger.log(Level.INFO, "Message {0} from {1}", new Object[] {decodedMessage, sessionName});
 		}
 		
-		if((decodedMessage!=null)&&(decodedMessage.startsWith("/"))){
+        /* 
+         * Se procesa el mensaje para determinar si es un comando o no.
+         * @author Sebastián Perruolo
+         */
+		if(!decodedMessage.startsWith("/")){
+			//si no es un comando..
+			session.send(Serializer.encodeString(decodedMessage));
+		}else{
+			/*
+			 * se procesan los comandos que son válidos para
+			 * este tipo de conexión (directa con el server).
+			 */
 			if(decodedMessage.startsWith("/whoami")){
 				session.send(Serializer.encodeString("You are '" + sessionName + "'"));
 			}else if(decodedMessage.startsWith("/who")){
@@ -124,10 +141,9 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 				AppContext.getChannelManager().getChannel(ServerChannels.CHANNEL_CLIENTS)
 						.send(session, Serializer.encodeString("User " + session.getName() + " has logged in"));
 			}else{
+				//se recibió un comando pero no se sabe interpretar!
 				session.send(Serializer.encodeString("Unknow command '" + decodedMessage + "'"));
 			}
-		}else{
-			session.send(message);
 		}
 	}
 

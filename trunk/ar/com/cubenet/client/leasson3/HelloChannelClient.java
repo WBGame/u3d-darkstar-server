@@ -43,11 +43,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.unicen.u3d.common.tarea1.Serializer;
+import ar.com.cubenet.common.leasson3.Serializer;
 
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
-import com.sun.sgs.tutorial.client.lesson1.HelloUserClient;
 
 /**
  * A simple GUI client that interacts with an SGS server-side app using

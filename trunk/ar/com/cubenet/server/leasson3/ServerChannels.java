@@ -20,7 +20,6 @@
 package ar.com.cubenet.server.leasson3;
 
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,31 +39,41 @@ import com.sun.sgs.app.ManagedReference;
  * <p>
  * Extends the {@code HelloEcho} example by joining clients to two
  * channels.
+ * 
+ **********
+ * @author Sebastián Perruolo:
+ * Este ejemplo fue modificado para hacer algunas cosas inútiles pero
+ * didácticas. 
  */
-public class ServerChannels
-    implements Serializable, AppListener, ManagedObject
-{
+public class ServerChannels implements Serializable, AppListener, ManagedObject {
+
     /** The version of the serialized form of this class. */
     private static final long serialVersionUID = 1L;
 
     /** The {@link Logger} for this class. */
-    private static final Logger logger =
-        Logger.getLogger(ServerChannels.class.getName());
+    private static final Logger logger = Logger.getLogger(ServerChannels.class.getName());
 
     /* The name of the first channel {@value #CHANNEL_1_NAME} */
     static final String CHANNEL_1_NAME = "Foo";
     /* The name of the second channel {@value #CHANNEL_2_NAME} */
     static final String CHANNEL_2_NAME = "Bar";
 
-    /* 
-     * El nombre del tercer channel {@value #CHANNEL_3_NAME} 
-     * @author Sebastián Perruolo 
+    /**
+     * El nombre del channel <i>broadcasteador</i>. Ver los links en "See Also" para 
+     * entender donde se crean los channels y donde se relacionan con el cliente.
+     *  
+     * @see ServerChannels#initialize(Properties)
+     * @see ServerChannelsSessionListener#ServerChannelsSessionListener(ClientSession, ManagedReference)
+     * @author Sebastián Perruolo  
      */
     static final String CHANNEL_3_NAME = "U3D";
-    
+
+    /** 
+     * El nombre del channel que utilizaremos para enviar información
+     * a los clientes. En un principio para avisar quien se logueó
+     * @author Sebastián Perruolo
+     */
     static final String CHANNEL_CLIENTS = "clients";
-    
-    private ManagedReference<Channel> channel3 = null;
     
     /** 
      * The first {@link Channel}.  The second channel is looked up
@@ -85,7 +94,7 @@ public class ServerChannels
         
         // Create and keep a reference to the first channel.
         Channel c1 = channelMgr.createChannel(CHANNEL_1_NAME, 
-                                              null, 
+                                              null,                              //null porque alcanza con el comportamiento común
                                               Delivery.RELIABLE);
         channel1 = AppContext.getDataManager().createReference(c1);
         
@@ -93,15 +102,19 @@ public class ServerChannels
         // looking it up by name when needed.  Also, this channel uses a
         // {@link ChannelListener} to filter messages.
         Channel c2 = channelMgr.createChannel(CHANNEL_2_NAME, 
-                                 new ServerChannelsChannelListener(), 
+                                 new ServerChannelsChannelListener(),			//comportamiento básico 
                                  Delivery.RELIABLE);
 
-        Channel c3 = channelMgr.createChannel(CHANNEL_3_NAME, 
-        		new ServerChannelsBroadcastListener(),
+        /* 
+         * Se crean los siguientes dos channels.
+         * @author Sebastián Perruolo
+         */
+        channelMgr.createChannel(CHANNEL_3_NAME, 
+        		new ServerChannelsBroadcastListener(CHANNEL_2_NAME),			//comportamiento de broadcasting
                 Delivery.RELIABLE);
         
         channelMgr.createChannel(CHANNEL_CLIENTS, 
-        		new ServerChannelsChannelListener(),
+        		new ServerChannelsNullListener(),								//deshecho los mensajes
                 Delivery.RELIABLE);
         
     }
