@@ -20,15 +20,15 @@
 package ar.com.cubenet.server.leasson3;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ar.com.cubenet.common.leasson3.Serializer;
 
 import com.sun.sgs.app.Channel;
 import com.sun.sgs.app.ChannelListener;
 import com.sun.sgs.app.ClientSession;
-import java.nio.ByteBuffer;
-
-import org.unicen.u3d.common.tarea1.Serializer;
 
 /**
  * Simple example {@link ChannelListener} for the Project Darkstar Server.
