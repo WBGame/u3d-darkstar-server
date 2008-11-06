@@ -41,7 +41,6 @@ import java.nio.ByteBuffer;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,7 +48,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.unicen.u3d.common.tarea1.Serializer;
+import ar.com.cubenet.common.leasson3.Serializer;
 
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
