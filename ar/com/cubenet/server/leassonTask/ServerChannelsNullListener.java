@@ -41,18 +41,28 @@ class ServerChannelsNullListener implements Serializable, ChannelListener {
 	private static final long serialVersionUID = 1L;
 
 	/** The {@link Logger} for this class. */
-	private static final Logger logger = Logger.getLogger(ServerChannelsNullListener.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ServerChannelsNullListener.class.getName()
+	);
 
 	/**
-	 * Deshecha los mensajes que llegan
+	 * Deshecha los mensajes que llegan.
 	 */
-	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message){
+	public void receivedMessage(
+			Channel channel, 
+			ClientSession session, 
+			ByteBuffer message
+	) {
 		String decodedMessage = Serializer.decodeString(message);
 		//no hago nada, solo logueo
-		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO,
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.log(Level.INFO,
 					"Channel message {0} from {1} on {2} disposed",
-					new Object[] { decodedMessage, session.getName(), channel.getName() }
+					new Object[] { 
+						decodedMessage, 
+						session.getName(), 
+						channel.getName() 
+					}
 			);
 		}
 	}

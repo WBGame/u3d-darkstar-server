@@ -49,20 +49,27 @@ class ServerChannelsChannelListener implements Serializable, ChannelListener {
 	 * examine the message to decide whether it should be discarded, 
 	 * modified, or sent unchanged.
 	 */
-	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message){
+	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message) {
 		String decodedMessage = Serializer.decodeString(message);
 		if (logger.isLoggable(Level.INFO)) {
 			logger.log(Level.INFO,
 					"Channel message {0} from {1} on channel {2}",
-					new Object[] { decodedMessage, session.getName(), channel.getName() }
+					new Object[] { 
+						decodedMessage, 
+						session.getName(), 
+						channel.getName() 
+					}
 			);
 		}
-		if((decodedMessage!=null)&&(decodedMessage.startsWith("/"))){
-			if(decodedMessage.startsWith("/leave")){
-				session.send(Serializer.encodeString("You request to leave " + channel.getName() + " channel"));
+		if ((decodedMessage != null) && (decodedMessage.startsWith("/"))) {
+			if (decodedMessage.startsWith("/leave")) {
+				session.send(Serializer.encodeString(
+						"You request to leave " 
+						+ channel.getName() + " channel"
+				));
 				channel.leave(session);
 			}
-		}else{
+		} else {
 			channel.send(session, Serializer.encodeString(decodedMessage));
 		}
 	}

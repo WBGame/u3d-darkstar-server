@@ -31,18 +31,18 @@ implements ManagedObject, Serializable, ClientSessionListener {
 
 	/** Creamos un logger para esta clase */
 	private static final Logger logger =
-		Logger.getLogger( UserListener.class.getName() );
+		Logger.getLogger(UserListener.class.getName());
 
 	public void disconnected(boolean graceful) {
-		logger.info( "El usuario " + this.sessionRef.get().getName() + 
-		" se a desconectado" );
+		logger.info("El usuario " + this.sessionRef.get().getName() + 
+		" se a desconectado");
 		
 		setSession(null);
 	}
 
 	public void receivedMessage(ByteBuffer message) {
 		// muestro el mensaje en la consola del servidor
-		logger.info( "Resiviendo mensaje de usuario " + 
+		logger.info("Resiviendo mensaje de usuario " + 
 				this.sessionRef.get().getName() + " - " + 
 				Transcoder.decodeString(message)
 		);
@@ -52,7 +52,7 @@ implements ManagedObject, Serializable, ClientSessionListener {
 		message.rewind();
 
 		// se lo reenvio al cliente
-		sessionRef.get().send( message );
+		sessionRef.get().send(message);
 	}
 	
 	public ClientSession getSession() {

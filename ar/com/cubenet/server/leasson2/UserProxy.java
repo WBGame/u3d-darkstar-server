@@ -23,13 +23,13 @@ public class UserProxy implements AppListener, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** Creamos un logger para esta clase */
-	private static final Logger logger = Logger.getLogger( UserProxy.class.getName() );	
+	private static final Logger logger = Logger.getLogger(UserProxy.class.getName());	
 	
 	/**
 	 * Inicialización del sistema. 
 	 */
 	public void initialize(Properties props) {
-		logger.info( "Inicialización del sistema por primera vez." );
+		logger.info("Inicialización del sistema por primera vez.");
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class UserProxy implements AppListener, Serializable {
 	 * sistema. 
 	 */
 	public ClientSessionListener loggedIn(ClientSession session) {
-		logger.info( "Login de un cliente." );
+		logger.info("Login de un cliente.");
 
 		// Data manager del sistema
 		DataManager d = AppContext.getDataManager();
@@ -48,23 +48,23 @@ public class UserProxy implements AppListener, Serializable {
 		// ver las excepsiones del metodo getBinding
 		try {
 			
-			logger.info( "Intentando recuperar una instancia del Object " +
-					"Store para " + session.getName() );
+			logger.info("Intentando recuperar una instancia del Object " 
+					+ "Store para " + session.getName());
 			
 			// recupero del object store el objecto que necesito
-			user = (UserListener) d.getBinding( session.getName() );
+			user = (UserListener) d.getBinding(session.getName());
 			
 		} catch (Exception e) {
-			logger.info( "No existe ninguna instancia dentro del Object " +
-					"Store para " + session.getName() );
+			logger.info("No existe ninguna instancia dentro del Object " 
+					+ "Store para " + session.getName());
 			
 			user = new UserListener();
 			
 			// registro el objeto dentro del Object Store.
-			d.setBinding( session.getName() , user );
+			d.setBinding(session.getName() , user);
 		}
 		
-		user.setSession( session );
+		user.setSession(session);
 		
 		return user;
 	}

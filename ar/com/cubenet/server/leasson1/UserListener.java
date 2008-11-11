@@ -23,24 +23,24 @@ public class UserListener implements Serializable, ClientSessionListener {
 
 	/** Creamos un logger para esta clase */
 	private static final Logger logger =
-		Logger.getLogger( UserListener.class.getName() );
+		Logger.getLogger(UserListener.class.getName());
 
 	/** Estoy iniciando una conexion a un usuario dentro del sistema. */
-	public UserListener( ClientSession session ) {
-		logger.info( "Iniciando UserListener para " + session.getName() );
+	public UserListener(ClientSession session) {
+		logger.info("Iniciando UserListener para " + session.getName());
 
 		// mantengo una referencia al cliente que establecio la conexion.
-		sessionRef = AppContext.getDataManager().createReference( session );
+		sessionRef = AppContext.getDataManager().createReference(session);
 	}
 
 	public void disconnected(boolean graceful) {
-		logger.info( "El usuario " + this.sessionRef.get().getName() + 
-		" se a desconectado" );
+		logger.info("El usuario " + this.sessionRef.get().getName() + 
+		" se a desconectado");
 	}
 
 	public void receivedMessage(ByteBuffer message) {
 		// muestro el mensaje en la consola del servidor
-		logger.info( "Resiviendo mensaje de usuario " + 
+		logger.info("Resiviendo mensaje de usuario " +
 				this.sessionRef.get().getName() + " - " + 
 				Transcoder.decodeString(message)
 		);
@@ -50,6 +50,6 @@ public class UserListener implements Serializable, ClientSessionListener {
 		message.rewind();
 
 		// se lo reenvio al cliente
-		sessionRef.get().send( message );
+		sessionRef.get().send(message);
 	}
 }

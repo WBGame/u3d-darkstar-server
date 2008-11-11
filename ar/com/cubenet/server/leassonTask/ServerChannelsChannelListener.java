@@ -41,7 +41,9 @@ class ServerChannelsChannelListener implements Serializable, ChannelListener {
 	private static final long serialVersionUID = 1L;
 
 	/** The {@link Logger} for this class. */
-	private static final Logger logger = Logger.getLogger(ServerChannelsChannelListener.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ServerChannelsChannelListener.class.getName()
+	);
 
 	/**
 	 * {@inheritDoc}
@@ -50,23 +52,35 @@ class ServerChannelsChannelListener implements Serializable, ChannelListener {
 	 * examine the message to decide whether it should be discarded, 
 	 * modified, or sent unchanged.
 	 */
-	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message){
+	public void receivedMessage(
+			final Channel channel, 
+			final ClientSession session,
+			final ByteBuffer message
+	) {
 		String decodedMessage = Serializer.decodeString(message);
-		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO,
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.log(Level.INFO,
 					"Channel message {0} from {1} on channel {2}",
-					new Object[] { decodedMessage, session.getName(), channel.getName() }
+					new Object[] { 
+						decodedMessage, 
+						session.getName(), 
+						channel.getName() 
+					}
 			);
 		}
-        /* 
-         * Se procesa el mensaje para determinar si es un comando o no.
-         * @author Sebastián Perruolo
-         */
-		if(!decodedMessage.startsWith("/")){
+		/* 
+		 * Se procesa el mensaje para determinar si es un comando o no.
+		 * @author Sebastián Perruolo
+		 */
+		if (!decodedMessage.startsWith("/")) {
 			//si no es un comando..
 			channel.send(session, Serializer.encodeString(decodedMessage));
-		}else{
-			CommandManager.getInstance().process(decodedMessage, session, channel.getName());
+		} else {
+			CommandManager.getInstance().process(
+					decodedMessage, 
+					session, 
+					channel.getName()
+			);
 		}
 	}
 }
