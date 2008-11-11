@@ -67,7 +67,7 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	 * @param channel1 a reference to a channel to join
 	 */
 	public ServerChannelsSessionListener(ClientSession session,	ManagedReference<Channel> channel1)	{
-		if (session == null){
+		if (session == null) {
 			throw new NullPointerException("null session");
 		}
 
@@ -87,9 +87,9 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 		 * @author Sebastián Perruolo
 		 */
 		channelMgr.getChannel(ServerChannels.CHANNEL_3_NAME).join(session);
-		
+
 		channelMgr.getChannel(ServerChannels.CHANNEL_CLIENTS).join(session);
-		
+
 		clients.add(session.getName());
 	}
 
@@ -112,27 +112,31 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 		ClientSession session = getSession();
 		String sessionName = session.getName();
 		String decodedMessage = Serializer.decodeString(message);
-		
+
 		if (logger.isLoggable(Level.INFO)) {
 			logger.log(Level.INFO, "Message {0} from {1}", new Object[] {decodedMessage, sessionName});
 		}
-		
-        /* 
-         * Se procesa el mensaje para determinar si es un comando o no.
-         * @author Sebastián Perruolo
-         */
-		if(!decodedMessage.startsWith("/")){
+
+		/* 
+		 * Se procesa el mensaje para determinar si es un comando o no.
+		 * @author Sebastián Perruolo
+		 */
+		if (!decodedMessage.startsWith("/")) {
 			//si no es un comando..
 			session.send(Serializer.encodeString(decodedMessage));
-		}else{
-			CommandManager.getInstance().process(decodedMessage, getSession(), null);
+		} else {
+			CommandManager.getInstance().process(
+					decodedMessage, 
+					getSession(),
+					null
+			);
 			/*
 			 * se procesan los comandos que son válidos para
 			 * este tipo de conexión (directa con el server).
 			 */
-			if(decodedMessage.startsWith("/who")){
+			if (decodedMessage.startsWith("/who")) {
 				StringBuffer who = new StringBuffer("|");
-				for(String client : clients){
+				for (String client : clients) {
 					who.append(client);
 					who.append("|");
 				}
@@ -149,7 +153,7 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	public void disconnected(boolean graceful) {
 		ClientSession session = getSession();
 		String grace = graceful ? "graceful" : "forced";
-		logger.log(Level.INFO, "User {0} has logged out {1}", new Object[] { session.getName(), grace } );
+		logger.log(Level.INFO, "User {0} has logged out {1}", new Object[] { session.getName(), grace });
 		clients.remove(session.getName());
 	}
 }

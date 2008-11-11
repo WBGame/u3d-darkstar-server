@@ -26,7 +26,7 @@ class ServerChannelsBroadcastListener implements Serializable, ChannelListener {
 	 * 
 	 * @param channelNameToBroadcast nombre del channel por el cual reenviar el mensaje
 	 */
-	public ServerChannelsBroadcastListener(String channelNameToBroadcast){
+	public ServerChannelsBroadcastListener(String channelNameToBroadcast) {
 		this.channelNameToBroadcast = channelNameToBroadcast;
 	}
 	/**
@@ -34,13 +34,13 @@ class ServerChannelsBroadcastListener implements Serializable, ChannelListener {
 	 * que se reenvía por el channel configurado en la creación de esta
 	 * instancia.
 	 */
-	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message){
+	public void receivedMessage(Channel channel, ClientSession session, ByteBuffer message) {
 		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO, "Channel message from {0} on channel {1}", new Object[] { session.getName(), channel.getName() }	);
+			logger.log(Level.INFO, "Channel message from {0} on channel {1}", new Object[] { session.getName(), channel.getName() });
 		}
 
 		channel.send(session, message);
-		logger.log(Level.INFO, "Broadcasting message from to channel {0}", channelNameToBroadcast	);
+		logger.log(Level.INFO, "Broadcasting message from to channel {0}", channelNameToBroadcast);
 		AppContext.getChannelManager().getChannel(channelNameToBroadcast).send(session, message);
 
 	}

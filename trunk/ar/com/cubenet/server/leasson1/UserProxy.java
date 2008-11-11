@@ -21,23 +21,25 @@ public class UserProxy implements AppListener, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** Creamos un logger para esta clase */
-	private static final Logger logger = Logger.getLogger( UserProxy.class.getName() );	
+	private static final Logger logger = Logger.getLogger(UserProxy.class.getName());	
 	
 	/**
 	 * Inicialización del sistema. 
 	 */
 	public void initialize(Properties props) {
-		logger.info( "Inicialización del sistema por primera vez." );
+		logger.info("Inicialización del sistema por primera vez.");
 	}
 
 	/**
 	 * Metodo que será llamando cuando el usuario comienze con el login en 
 	 * sistema. 
+	 * 
+	 * @param session asdasds
 	 */
 	public ClientSessionListener loggedIn(ClientSession session) {
 		// Return a valid listener
-		logger.info( "Login de un cliente." );
-		return new UserListener( session );
+		logger.info("Login de un cliente.");
+		return new UserListener(session);
 	}
 
 }

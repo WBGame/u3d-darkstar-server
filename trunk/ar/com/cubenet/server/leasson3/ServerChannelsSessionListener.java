@@ -66,7 +66,7 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	 * @param channel1 a reference to a channel to join
 	 */
 	public ServerChannelsSessionListener(ClientSession session,	ManagedReference<Channel> channel1)	{
-		if (session == null){
+		if (session == null) {
 			throw new NullPointerException("null session");
 		}
 
@@ -104,43 +104,57 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * Logs when data arrives from the client, and echoes the message back.
 	 */
-	public void receivedMessage(ByteBuffer message) {
+	public void receivedMessage(final ByteBuffer message) {
 		ClientSession session = getSession();
 		String sessionName = session.getName();
 		String decodedMessage = Serializer.decodeString(message);
 		
 		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO, "Message {0} from {1}", new Object[] {decodedMessage, sessionName});
+			logger.log(
+					Level.INFO, 
+					"Message {0} from {1}", 
+					new Object[] {decodedMessage, sessionName}
+			);
 		}
 		
         /* 
          * Se procesa el mensaje para determinar si es un comando o no.
          * @author Sebastián Perruolo
          */
-		if(!decodedMessage.startsWith("/")){
+		if (!decodedMessage.startsWith("/")) {
 			//si no es un comando..
 			session.send(Serializer.encodeString(decodedMessage));
-		}else{
+		} else {
 			/*
 			 * se procesan los comandos que son válidos para
 			 * este tipo de conexión (directa con el server).
 			 */
-			if(decodedMessage.startsWith("/whoami")){
-				session.send(Serializer.encodeString("You are '" + sessionName + "'"));
-			}else if(decodedMessage.startsWith("/who")){
+			if (decodedMessage.startsWith("/whoami")) {
+				session.send(
+						Serializer.encodeString("You are '" + sessionName + "'")
+				);
+			} else 
+				if (decodedMessage.startsWith("/who")) {
 				StringBuffer who = new StringBuffer("|");
-				for(String client : clients){
+				for (String client : clients) {
 					who.append(client);
 					who.append("|");
 				}
 				session.send(Serializer.encodeString(who.toString()));
-			}else if(decodedMessage.startsWith("/login")){
-				AppContext.getChannelManager().getChannel(ServerChannels.CHANNEL_CLIENTS)
-						.send(session, Serializer.encodeString("User " + session.getName() + " has logged in"));
-			}else{
+			} else 
+				if (decodedMessage.startsWith("/login")) {
+					AppContext.getChannelManager().getChannel(
+							ServerChannels.CHANNEL_CLIENTS
+					).send(
+							session, 
+							Serializer.encodeString(
+									"User " 
+									+ session.getName() 
+									+ " has logged in"
+							)
+					);
+			} else {
 				//se recibió un comando pero no se sabe interpretar!
 				session.send(Serializer.encodeString("Unknow command '" + decodedMessage + "'"));
 			}
@@ -155,7 +169,7 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	public void disconnected(boolean graceful) {
 		ClientSession session = getSession();
 		String grace = graceful ? "graceful" : "forced";
-		logger.log(Level.INFO, "User {0} has logged out {1}", new Object[] { session.getName(), grace } );
+		logger.log(Level.INFO, "User {0} has logged out {1}", new Object[] { session.getName(), grace });
 		clients.remove(session.getName());
 	}
 }

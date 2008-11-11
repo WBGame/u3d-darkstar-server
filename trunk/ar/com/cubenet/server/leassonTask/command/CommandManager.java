@@ -10,27 +10,42 @@ import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.Task;
 
 public class CommandManager {
+	
 	protected static CommandManager instance = null;
-	protected CommandManager(){
+	
+	protected CommandManager() {
 		
 	}
-	public static CommandManager getInstance(){
-		if(instance==null){
+	
+	public static CommandManager getInstance() {
+		if (instance == null) {
 			instance = new CommandManager();
 		}
 		return instance;
 	}
-	public void process(String msj, ClientSession session, String channelName){
+	
+	/**
+	 * FALTA DOC.
+	 * 
+	 * @param msj
+	 * @param session
+	 * @param channelName
+	 */
+	public void process(String msj, ClientSession session, String channelName) {
 		Task task = null;
-		if(msj.equals("/whoami")){
+		if (msj.equals("/whoami")) {
 			task = new WhoAmICommandTask(session);
-		}else if(msj.equals("/login")){
-			task = new BroadcastLoginCommandTask(session);
-		}else if(msj.equals("/leave")){
-			task = new LeaveChannelCommandTask(session, channelName);
-		}else{
-			task = new UnknowCommandTask(session, msj);
-		}
-		if(task!=null) AppContext.getTaskManager().scheduleTask(task);
+		} else 
+			if (msj.equals("/login")) {
+				task = new BroadcastLoginCommandTask(session);
+			} else 
+				if (msj.equals("/leave")) {
+					task = new LeaveChannelCommandTask(session, channelName);
+				} else {
+					task = new UnknowCommandTask(session, msj);
+				}
+		
+		if (task != null) 
+			AppContext.getTaskManager().scheduleTask(task);
 	}
 }

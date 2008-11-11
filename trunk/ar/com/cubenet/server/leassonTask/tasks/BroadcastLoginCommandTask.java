@@ -10,26 +10,46 @@ import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
 
-public class BroadcastLoginCommandTask implements Task, Serializable{
+/***
+ * FALTA DOC.
+ */
+public class BroadcastLoginCommandTask implements Task, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4385502356171294428L;
-	
+
+	/**
+	 * FALTA DOC.
+	 */
 	protected ManagedReference<ClientSession> sessionRef;
 	
-	public BroadcastLoginCommandTask(ClientSession session){
-		this.sessionRef=AppContext.getDataManager().createReference(session); 
+	/**
+	 * FALTA DOC.
+	 * @param session asdasd
+	 */
+	public BroadcastLoginCommandTask(ClientSession session) {
+		this.sessionRef = AppContext.getDataManager().createReference(session); 
 	}
-	@Override
-	public void run() throws Exception {
+	
+	/**
+	 * FALTA DOC.
+	 * 
+	 * @throws Exception descripción.
+	 * @see interface Task.
+	 */
+	public final void run() throws Exception {
 		ClientSession session = sessionRef.get();
 		AppContext.getChannelManager()
 				.getChannel(ServerChannels.CHANNEL_CLIENTS)
 				.send(
 					session, 
-					Serializer.encodeString("User " + session.getName() + " has logged in"));
+					Serializer.encodeString(
+							"User " 
+							+ session.getName() 
+							+ " has logged in"
+					)
+				);
 	}
-
 }

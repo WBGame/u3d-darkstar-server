@@ -138,17 +138,22 @@ public class HelloChannelClient extends HelloUserClient
         channelSelectorModel.addElement(channelName);
         return new HelloChannelListener();
     }
-    protected ClientChannel getSelectedChannel(){
+    
+    /**
+     *
+     */
+    protected ClientChannel getSelectedChannel() {
     	String channelName = (String) channelSelector.getSelectedItem();
     	ClientChannel channel = channelsByName.get(channelName);
     	return channel;
     }
+    
 	@Override
 	protected void send(String text) {
 		ClientChannel channel = getSelectedChannel();
-		if(channel==null){
+		if(channel == null) {
 			super.send(text);
-		}else{
+		} else {
             try {
                 channel.send(Serializer.encodeString(text));
             } catch (Exception e) {
@@ -162,7 +167,7 @@ public class HelloChannelClient extends HelloUserClient
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (! simpleClient.isConnected())
+        if (!simpleClient.isConnected())
             return;
 
         String text = getInputText();
