@@ -47,11 +47,15 @@ class ServerChannelsNullListener implements Serializable, ChannelListener {
 
 	/**
 	 * Deshecha los mensajes que llegan.
+	 * 
+	 * @param channel no importa, no se usa
+	 * @param session no importa, no se usa
+	 * @param message no importa, no se usa
 	 */
 	public void receivedMessage(
-			Channel channel, 
-			ClientSession session, 
-			ByteBuffer message
+			final Channel channel, 
+			final ClientSession session, 
+			final ByteBuffer message
 	) {
 		String decodedMessage = Serializer.decodeString(message);
 		//no hago nada, solo logueo

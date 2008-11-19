@@ -42,31 +42,36 @@ import com.sun.sgs.app.ManagedReference;
  * Logs each time a session receives data or logs out, and echoes
  * any data received back to the sender.
  */
-class ServerChannelsSessionListener implements Serializable, ClientSessionListener {
+class ServerChannelsSessionListener implements Serializable, 
+		ClientSessionListener {
 
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1L;
 
 	/** The {@link Logger} for this class. */
-	private static final Logger logger = Logger.getLogger(ServerChannelsSessionListener.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ServerChannelsSessionListener.class.getName()
+	);
 
 	/** The session this {@code ClientSessionListener} is listening to. */
 	private final ManagedReference<ClientSession> sessionRef;
 	/** 
-	 * Lista para almacenar los clientes que se encuentran actualmente conectados. Supongo que
-	 * debe (o debería) existir una manera mas elegante de obtener/almacenar los clientes actualmente
-	 * conectados, pero no pude encontrarla.
+	 * Lista para almacenar los clientes que se encuentran actualmente 
+	 * conectados. Supongo que debe (o debería) existir una manera mas 
+	 * elegante de obtener/almacenar los clientes actualmente conectados, 
+	 * pero no pude encontrarla.
 	 * 
 	 * @author Sebastián Perruolo
 	 */
-	private static Vector<String> clients = new Vector();
+	private static Vector<String> clients = new Vector<String>();
 	/**
 	 * Creates a new {@code HelloChannelsSessionListener} for the session.
 	 *
 	 * @param session the session this listener is associated with
 	 * @param channel1 a reference to a channel to join
 	 */
-	public ServerChannelsSessionListener(ClientSession session,	ManagedReference<Channel> channel1)	{
+	public ServerChannelsSessionListener(final ClientSession session,	
+			final ManagedReference<Channel> channel1)	{
 		if (session == null) {
 			throw new NullPointerException("null session");
 		}
@@ -80,7 +85,7 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 		// We were passed a reference to the first channel.
 		channel1.get().join(session);
 		// We look up the second channel by name.
-		channelMgr.getChannel(ServerChannels.CHANNEL_2_NAME).join(session);;
+		channelMgr.getChannel(ServerChannels.CHANNEL_2_NAME).join(session);
 
 		/*
 		 * Se agrega el cliente a los dos channels que agregué.
@@ -108,13 +113,17 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 	 * <p>
 	 * Logs when data arrives from the client, and echoes the message back.
 	 */
-	public void receivedMessage(ByteBuffer message) {
+	public void receivedMessage(final ByteBuffer message) {
 		ClientSession session = getSession();
 		String sessionName = session.getName();
 		String decodedMessage = Serializer.decodeString(message);
 
-		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO, "Message {0} from {1}", new Object[] {decodedMessage, sessionName});
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.log(
+					Level.INFO, 
+					"Message {0} from {1}", 
+					new Object[] {decodedMessage, sessionName}
+			);
 		}
 
 		/* 
@@ -147,13 +156,20 @@ class ServerChannelsSessionListener implements Serializable, ClientSessionListen
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
+	 * 
 	 * Logs when the client disconnects.
 	 */
-	public void disconnected(boolean graceful) {
+	public void disconnected(final boolean graceful) {
 		ClientSession session = getSession();
-		String grace = graceful ? "graceful" : "forced";
-		logger.log(Level.INFO, "User {0} has logged out {1}", new Object[] { session.getName(), grace });
+		String grace = "forced";
+		if (graceful) {
+			grace = "graceful";
+		}
+		LOGGER.log(
+				Level.INFO, 
+				"User {0} has logged out {1}", 
+				new Object[] { session.getName(), grace }
+		);
 		clients.remove(session.getName());
 	}
 }
