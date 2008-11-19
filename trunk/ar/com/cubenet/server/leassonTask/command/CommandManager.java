@@ -9,14 +9,30 @@ import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.Task;
 
+/**
+ * Esta clase permite manejar los comandos que llegan al
+ * servidor.
+ * 
+ * @author Sebastián Perruolo
+ */
 public class CommandManager {
 	
-	protected static CommandManager instance = null;
+	/**
+	 * Instancia de CommandManager.
+	 */
+	private static CommandManager instance = null;
 	
+	/**
+	 * Este método es protected para implementar un Singleton.
+	 */
 	protected CommandManager() {
 		
 	}
-	
+	/**
+	 * Método que permite acceder a una instancia de
+	 * esta clase.
+	 * @return una instancia única de CommandManager.
+	 */
 	public static CommandManager getInstance() {
 		if (instance == null) {
 			instance = new CommandManager();
@@ -25,13 +41,16 @@ public class CommandManager {
 	}
 	
 	/**
-	 * FALTA DOC.
+	 * Este método procesa el comando recibido. Se crea una
+	 * instancia de la tarea adecuada y se encola en el 
+	 * TaskManager.
 	 * 
-	 * @param msj
-	 * @param session
-	 * @param channelName
+	 * @param msj Comando a procesar
+	 * @param session Cliente que envió el mensaje
+	 * @param channelName Nombre del channel que recibió el mensaje
 	 */
-	public void process(String msj, ClientSession session, String channelName) {
+	public final void process(final String msj, 
+			final ClientSession session, final String channelName) {
 		Task task = null;
 		if (msj.equals("/whoami")) {
 			task = new WhoAmICommandTask(session);
@@ -45,7 +64,9 @@ public class CommandManager {
 					task = new UnknowCommandTask(session, msj);
 				}
 		
-		if (task != null) 
+		if (task != null) {
 			AppContext.getTaskManager().scheduleTask(task);
+		}
+
 	}
 }
