@@ -19,7 +19,7 @@ class ServerChannelsBroadcastListener implements Serializable, ChannelListener {
 	private static final long serialVersionUID = 1L;
 
 	/** The {@link Logger} for this class. */
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger LOGGER = Logger.getLogger(
 			ServerChannelsBroadcastListener.class.getName()
 	);
 	
@@ -29,11 +29,12 @@ class ServerChannelsBroadcastListener implements Serializable, ChannelListener {
 	private String channelNameToBroadcast = null;
 
 	/**
-	 * @param channelNameToBroadcast nombre del channel por el cual reenviar el 
+	 * @param channelName nombre del channel por el cual reenviar el 
 	 * mensaje.
 	 */
-	public ServerChannelsBroadcastListener(String channelNameToBroadcast) {
-		this.channelNameToBroadcast = channelNameToBroadcast;
+	public ServerChannelsBroadcastListener(
+			final String channelName) {
+		this.channelNameToBroadcast = channelName;
 	}
 	
 	/**
@@ -41,22 +42,32 @@ class ServerChannelsBroadcastListener implements Serializable, ChannelListener {
 	 * que se reenvía por el channel configurado en la creación de esta
 	 * instancia.
 	 * 
-	 * @param channel asdas
-	 * @param session asdas
-	 * @param message asdsa
+	 * @param channel channel que recibió el mensaje
+	 * @param session sesión del cliente que envió el mensaje
+	 * @param message mensaje que envió el cliente
 	 */
 	public void receivedMessage(
-			Channel channel, 
-			ClientSession session, 
-			ByteBuffer message
+			final Channel channel, 
+			final ClientSession session, 
+			final ByteBuffer message
 	) {
-		if (logger.isLoggable(Level.INFO)) {
-			logger.log(Level.INFO, "Channel message from {0} on channel {1}", new Object[] { session.getName(), channel.getName() });
+		if (LOGGER.isLoggable(Level.INFO)) {
+			LOGGER.log(
+					Level.INFO, 
+					"Channel message from {0} on channel {1}", 
+					new Object[] { session.getName(), channel.getName() }
+			);
 		}
 
 		channel.send(session, message);
-		logger.log(Level.INFO, "Broadcasting message from to channel {0}", channelNameToBroadcast);
-		AppContext.getChannelManager().getChannel(channelNameToBroadcast).send(session, message);
+		LOGGER.log(
+				Level.INFO, 
+				"Broadcasting message from to channel {0}", 
+				channelNameToBroadcast
+			);
+		AppContext.getChannelManager()
+				.getChannel(channelNameToBroadcast)
+				.send(session, message);
 
 	}
 

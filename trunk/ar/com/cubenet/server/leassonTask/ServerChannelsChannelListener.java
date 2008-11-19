@@ -33,7 +33,7 @@ import com.sun.sgs.app.ClientSession;
 
 /**
  * Simple example {@link ChannelListener} for the Project Darkstar Server.
- * <p>
+ * 
  * Logs when a channel receives data.
  */
 class ServerChannelsChannelListener implements Serializable, ChannelListener {
@@ -51,6 +51,7 @@ class ServerChannelsChannelListener implements Serializable, ChannelListener {
 	 * Logs when data arrives on a channel. A typical listener would 
 	 * examine the message to decide whether it should be discarded, 
 	 * modified, or sent unchanged.
+	 * 
 	 */
 	public void receivedMessage(
 			final Channel channel, 
@@ -62,10 +63,10 @@ class ServerChannelsChannelListener implements Serializable, ChannelListener {
 			LOGGER.log(Level.INFO,
 					"Channel message {0} from {1} on channel {2}",
 					new Object[] { 
-						decodedMessage, 
-						session.getName(), 
-						channel.getName() 
-					}
+					decodedMessage, 
+					session.getName(), 
+					channel.getName() 
+			}
 			);
 		}
 		/* 
