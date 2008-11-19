@@ -8,26 +8,54 @@ import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
-
-public class UnknowCommandTask implements Task, Serializable{
+/**
+ * Esta clase se creó menos por utilidad que por fines de
+ * ejemplo. Solamente le avisa al usuario que acaba de
+ * enviar un comando desconocido.
+ * 
+ * @author Sebastián Perruolo
+ */
+public class UnknowCommandTask implements Task, Serializable {
 
 	/**
-	 * 
+	 * The version of the serialized form of this class.
 	 */
 	private static final long serialVersionUID = -1231182454061582998L;
 
-	protected ManagedReference<ClientSession> sessionRef;
+	/**
+	 * Guarda la sesión del cliente que ejecutó el comando desconocido.
+	 */
+	private ManagedReference<ClientSession> sessionRef;
 	
-	protected String decodedMessage = null;
+	/**
+	 * Mensaje (en realidad: comando) que envió el cliente.
+	 */
+	private String command = null;
 	
-	public UnknowCommandTask(ClientSession session, String decodedMessage){
-		this.sessionRef=AppContext.getDataManager().createReference(session);
-		this.decodedMessage=decodedMessage;
+	/**
+	 * Creador.
+	 * 
+	 * @param session Sesión del cliente que ejecutó <s>cualquier
+	 * cosa</s> un comando desconocido.
+	 *  
+	 * @param unknowCommand Comando desconocido
+	 */
+	public UnknowCommandTask(final ClientSession session, 
+				final String unknowCommand) {
+		this.sessionRef = AppContext.getDataManager().createReference(session);
+		this.command = unknowCommand;
 	}
-	
-	@Override
-	public void run() throws Exception {
+	/**
+	 * Este método ejecuta la acción encapsulada en este objeto:
+	 * Sólo envía un texto para avisarle al cliente que ejecutó un comando
+	 * desconocido.
+	 * 
+	 * @throws Exception si la acción falla.
+	 * @see Task
+	 */
+	public final void run() throws Exception {
 		ClientSession session = sessionRef.get();
-		session.send(Serializer.encodeString("Unknow command '" + decodedMessage + "'"));
+		session.send(
+				Serializer.encodeString("Unknow command '" + command + "'"));
 	}
 }
