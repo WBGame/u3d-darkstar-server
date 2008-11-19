@@ -32,40 +32,30 @@
 
 package ar.com.cubenet.client.leasson3;
 
-import java.awt.BorderLayout;
 import java.nio.ByteBuffer;
 
-import javax.swing.JPanel;
-
-import ar.com.cubenet.client.leasson3.listener.NullClientChannelListener;
+import ar.com.cubenet.client.leasson3.listener.HelloChannelListener;
 import ar.com.cubenet.common.leasson3.Serializer;
 
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 
 /**
- * A simple GUI client that interacts with an SGS server-side app.
- * It presents a basic chat interface with an output area and input
- * field.
+ * A simple GUI client that interacts with an SGS server-side app using
+ * both direct messaging and channel broadcasts.
  * <p>
- * The client understands the following properties:
- * <ul>
- * <li><code>{@value #HOST_PROPERTY}</code> <br>
- *     <i>Default:</i> {@value #DEFAULT_HOST} <br>
- *     The hostname of the server.<p>
+ * It presents a basic chat interface with an output area and input
+ * field, and adds a channel selector to allow the user to choose which
+ * method is used for sending data.
  *
- * <li><code>{@value #PORT_PROPERTY}</code> <br>
- *     <i>Default:</i> {@value #DEFAULT_PORT} <br>
- *     The port that the server is listening on.<p>
- *
- * </ul>
+ * @see HelloUserClient for a description of the properties understood
+ *      by this client.
  */
-public class HelloUserClient extends AbstractChatClient {
+public class SimpleChannelClient extends AbstractChannelChatClient {
+	/** The version of the serialized form of this class. */
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The version of the serialized form of this class.
-	 */
-	private static final long serialVersionUID = -2757877361587901591L;
+	// Main
 
 	/**
 	 * Runs an instance of this client.
@@ -73,47 +63,62 @@ public class HelloUserClient extends AbstractChatClient {
 	 * @param args the command-line arguments (unused)
 	 */
 	public static void main(final String[] args) {
-		new HelloUserClient().login();
+		new SimpleChannelClient().login();
 	}
+
+	// HelloChannelClient methods
 
 	/**
 	 * Creates a new client UI.
 	 */
-	public HelloUserClient() {
-		super(HelloUserClient.class.getSimpleName());
+	public SimpleChannelClient() {
+		this(SimpleChannelClient.class.getSimpleName());
 	}
 
 	/**
-	 *  {@inheritDoc}
+	 * Creates a new client UI with the given window title.
+	 *
+	 * @param title the title for the client's window
+	 */
+	protected SimpleChannelClient(final String title) {
+		super(title);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Returns a listener that formats and displays received channel
+	 * messages in the output text pane.
 	 */
 	public final ClientChannelListener joinedChannel(
 			final ClientChannel channel) {
-
-		return new NullClientChannelListener();
+		String channelName = channel.getName();
+		getChannelsByName().put(channelName, channel);
+		appendOutput("Joined to channel " + channelName);
+		getChannelSelectorModel().addElement(channelName);
+		return new HelloChannelListener(this);
 	}
-	
+
 	/**
-	 * Encodes the given text and sends it to the server.
-	 * 
-	 * @param text the text to send.
+	 * Envía el texto por el channel seleccionado, si
+	 * el usuario seleccionó &lt;DIRECT> se envía
+	 * el mensaje directamente al server.
+	 * @param text Texto a enviar
 	 */
 	protected final void send(final String text) {
+		ClientChannel channel = getSelectedChannel();
+		ByteBuffer message = Serializer.encodeString(text);
+		
 		try {
-			ByteBuffer message = Serializer.encodeString(text);
-			getSimpleClient().send(message);
+			if (channel == null) {
+				getSimpleClient().send(message);
+			} else {
+				channel.send(Serializer.encodeString(text));
+			}
 		} catch (Exception e) {
+			appendError(e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * Allows subclasses to populate the input panel with
-	 * additional UI elements.  The base implementation
-	 * simply adds the input text field to the center of the panel.
-	 *
-	 * @param panel the panel to populate
-	 */
-	public final void populateInputPanel(final JPanel panel) {
-		panel.add(getInputField(), BorderLayout.CENTER);
-	}
-	
+
 }
