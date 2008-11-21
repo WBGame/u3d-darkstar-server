@@ -5,7 +5,7 @@
 Esta página describe cómo crear un archivo de configuración para poder ejecutar el server Darkstar.
 
 Un archivo de configuración es un archivo de texto plano que principalmente detalla 
-  * con qué clase instanciar _AppListener_.
+  * con qué clase instanciar _AppListener_ .
   * ubicación de la base de datos Berkeley.
 
 
