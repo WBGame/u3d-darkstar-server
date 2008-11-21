@@ -2,4 +2,4 @@
 
 = Introducción =
 
-Esta página describe cómo crear un lanzador para ejecutar algún ejemplo del juego. Se supone que ya tenemos configurado el archivo de configuración .properties del ejemplo que queremos correr.
+Esta página describe cómo crear un lanzador para ejecutar algún ejemplo del juego. Se supone que ya tenemos configurado el archivo de configuración .properties del ejemplo que queremos correr. Se puede obtener ayuda acerca de cómo crear un archivo de configuración:  ComoCrearUnArchivoDeConfiguracionParaEjecutarElServer.
