@@ -15,7 +15,7 @@ import com.sun.sgs.client.ClientChannelListener;
  * que la instanciación del servidor 
  * {@link ar.com.cubenet.server.leasson3.ServerChannels} 
  * ( o mejor aún 
- * {@link ar.com.cubenet.server.leassonTask.ServerChannels} )
+ * {@link ar.com.cubenet.server.leasson4.ServerChannels} )
  * sabrá interpretar.
  * 
  * @author Sebastián Perruolo
