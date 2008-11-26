@@ -64,6 +64,7 @@ class ServerChannelsSessionListener implements Serializable,
 	 * @author Sebastián Perruolo
 	 */
 	private static Vector<String> clients = new Vector<String>();
+
 	/**
 	 * Creates a new {@code HelloChannelsSessionListener} for the session.
 	 *
