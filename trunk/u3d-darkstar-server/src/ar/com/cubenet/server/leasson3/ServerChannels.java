@@ -45,89 +45,95 @@ import com.sun.sgs.app.ManagedReference;
  * Este ejemplo fue modificado para hacer algunas cosas inútiles pero
  * didácticas. 
  */
-public class ServerChannels implements Serializable, AppListener, ManagedObject {
+public class ServerChannels implements Serializable, AppListener, 
+		ManagedObject {
 
-    /** The version of the serialized form of this class. */
-    private static final long serialVersionUID = 1L;
+	/** The version of the serialized form of this class. */
+	private static final long serialVersionUID = 1L;
 
-    /** The {@link Logger} for this class. */
-    private static final Logger logger = Logger.getLogger(ServerChannels.class.getName());
+	/** The {@link Logger} for this class. */
+	private static final Logger LOGGER = Logger.getLogger(
+			ServerChannels.class.getName()
+	);
 
-    /* The name of the first channel {@value #CHANNEL_1_NAME} */
-    static final String CHANNEL_1_NAME = "Foo";
-    /* The name of the second channel {@value #CHANNEL_2_NAME} */
-    static final String CHANNEL_2_NAME = "Bar";
+	/** The name of the first channel {@value #CHANNEL_1_NAME}. */
+	static final String CHANNEL_1_NAME = "Foo";
+	/** The name of the second channel {@value #CHANNEL_2_NAME}. */
+	static final String CHANNEL_2_NAME = "Bar";
 
-    /**
-     * El nombre del channel <i>broadcasteador</i>. Ver los links en "See Also" para 
-     * entender donde se crean los channels y donde se relacionan con el cliente.
-     *  
-     * @see ServerChannels#initialize(Properties)
-     * @see ServerChannelsSessionListener#ServerChannelsSessionListener(ClientSession, ManagedReference)
-     * @author Sebastián Perruolo  
-     */
-    static final String CHANNEL_3_NAME = "U3D";
+	/**
+	 * El nombre del channel <i>broadcasteador</i>. Ver los links en "See Also"
+	 * para entender donde se crean los channels y donde se relacionan con el 
+	 * cliente.
+	 *  
+	 * @see ServerChannels#initialize(Properties)
+	 * @see ServerChannelsSessionListener#ServerChannelsSessionListener(
+	 * 			ClientSession, ManagedReference)
+	 * @author Sebastián Perruolo  
+	 */
+	static final String CHANNEL_3_NAME = "U3D";
 
-    /** 
-     * El nombre del channel que utilizaremos para enviar información
-     * a los clientes. En un principio para avisar quien se logueó
-     * @author Sebastián Perruolo
-     */
-    static final String CHANNEL_CLIENTS = "clients";
-    
-    /** 
-     * The first {@link Channel}.  The second channel is looked up
-     * by name.
-     */
-    private ManagedReference<Channel> channel1 = null;
-    
+	/** 
+	 * El nombre del channel que utilizaremos para enviar información
+	 * a los clientes. En un principio para avisar quien se logueó
+	 * @author Sebastián Perruolo
+	 */
+	static final String CHANNEL_CLIENTS = "clients";
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Creates the channels.  Channels persist across server restarts,
-     * so they only need to be created here in {@code initialize}.
-     */
-    public void initialize(Properties props) {
-    	
-        ChannelManager channelMgr = AppContext.getChannelManager();
-        
-        // Create and keep a reference to the first channel.
-        Channel c1 = channelMgr.createChannel(CHANNEL_1_NAME, 
-                                              null,                              //null porque alcanza con el comportamiento común
-                                              Delivery.RELIABLE);
-        channel1 = AppContext.getDataManager().createReference(c1);
-        
-        // We don't keep a reference to the second channel, to demonstrate
-        // looking it up by name when needed.  Also, this channel uses a
-        // {@link ChannelListener} to filter messages.
-        Channel c2 = channelMgr.createChannel(CHANNEL_2_NAME, 
-                                 new ServerChannelsChannelListener(),			//comportamiento básico 
-                                 Delivery.RELIABLE);
+	/** 
+	 * The first {@link Channel}.  The second channel is looked up
+	 * by name.
+	 */
+	private ManagedReference<Channel> channel1 = null;
 
-        /* 
-         * Se crean los siguientes dos channels.
-         * @author Sebastián Perruolo
-         */
-        channelMgr.createChannel(CHANNEL_3_NAME, 
-        		new ServerChannelsBroadcastListener(CHANNEL_2_NAME),			//comportamiento de broadcasting
-                Delivery.RELIABLE);
-        
-        channelMgr.createChannel(CHANNEL_CLIENTS, 
-        		new ServerChannelsNullListener(),								//deshecho los mensajes
-                Delivery.RELIABLE);
-        
-    }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Returns a {@link ServerChannelsSessionListener} for the
-     * logged-in session.
-     */
-    public ClientSessionListener loggedIn(ClientSession session) {
-        logger.log(Level.INFO, "User {0} has logged in", session.getName());
-        return new ServerChannelsSessionListener(session, channel1);
-    }
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Creates the channels.  Channels persist across server restarts,
+	 * so they only need to be created here in {@code initialize}.
+	 */
+	public final void initialize(final Properties props) {
+
+		ChannelManager channelMgr = AppContext.getChannelManager();
+
+		// Create and keep a reference to the first channel.
+		Channel c1 = channelMgr.createChannel(CHANNEL_1_NAME, 
+				null,				//null, alcanza con el comportamiento común
+				Delivery.RELIABLE);
+		channel1 = AppContext.getDataManager().createReference(c1);
+
+		// We don't keep a reference to the second channel, to demonstrate
+		// looking it up by name when needed.  Also, this channel uses a
+		// {@link ChannelListener} to filter messages.
+		channelMgr.createChannel(CHANNEL_2_NAME, 
+				new ServerChannelsChannelListener(),	//comportamiento básico
+				Delivery.RELIABLE);
+
+		/* 
+		 * Se crean los siguientes dos channels.
+		 * @author Sebastián Perruolo
+		 */
+		channelMgr.createChannel(CHANNEL_3_NAME, 
+				new ServerChannelsBroadcastListener(//broadcasting
+						CHANNEL_2_NAME),
+				Delivery.RELIABLE);
+
+		channelMgr.createChannel(CHANNEL_CLIENTS, 
+				new ServerChannelsNullListener(),		//deshecho los mensajes
+				Delivery.RELIABLE);
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Returns a {@link ServerChannelsSessionListener} for the
+	 * logged-in session.
+	 */
+	public final ClientSessionListener loggedIn(final ClientSession session) {
+		LOGGER.log(Level.INFO, "User {0} has logged in", session.getName());
+		return new ServerChannelsSessionListener(session, channel1);
+	}
 
 }
