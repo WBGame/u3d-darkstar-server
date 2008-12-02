@@ -1,0 +1,62 @@
+/**
+ * 
+ */
+package server.communication.processors;
+
+import server.serverLogic.ModelAccess;
+
+import common.datatypes.D2GameScore;
+import common.messages.IMessage;
+import common.messages.requests.MsgAdd2DGameScore;
+import common.processors.IProcessor;
+
+/**
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo
+ * agregar un puntaje a un minijuego.
+ * 
+ * @author fede
+ * @see #process(IMessage)
+ */
+public class PAdd2DGameScore extends ServerMsgProcessor {
+	
+	/**
+	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * null}.
+	 */
+	public PAdd2DGameScore() {
+		
+	}
+	
+	/**
+	 * Retorna un instancia de la clase, con sus campos internos inicializados
+	 * en {@code null}.
+	 * 
+	 * @see common.processors.IProcessor#factoryMethod()
+	 */
+	@Override
+	public IProcessor factoryMethod() {
+		return new PAdd2DGameScore();
+	}
+	
+	/**
+	 * Toma la petición de agregar un puntaje a un minijuego y la procesa. Toma
+	 * contenido en el mensaje pasado como paramentro, e invocando el metodo
+	 * {@link ModelAccess#add2DGameScore(D2GameScore)} agrega el puntaje al
+	 * modelo.
+	 * 
+	 * @param msg Contiene el Score a agregar al modelo.
+	 * @see common.processors.IProcessor#process(common.messages.IMessage)
+	 */
+	@Override
+	public void process(IMessage msg) {
+		// casteo el mensaje paraobtener el scrore.
+		MsgAdd2DGameScore msgAddScore = (MsgAdd2DGameScore) msg;
+		
+		// obtengo el score
+		D2GameScore score = msgAddScore.getScore();
+		
+		// Se agrega el score a la modelo.
+		ModelAccess.getInstance().add2DGameScore(score);
+	}
+	
+}
