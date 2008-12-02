@@ -1,176 +1,199 @@
-/**
- * 
- */
-package server.grid;
+package ar.edu.unicen.exa.server.grid;
 
-import java.io.Serializable;
-import com.sun.sgs.app.ManagedReference;
 import java.awt.Rectangle;
+import java.io.Serializable;
+
+import com.jme.math.Vector3f;
+import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
 import com.sun.sgs.app.ClientSession;
-import com.jme.math.Vector3f;
+import com.sun.sgs.app.ManagedReference;
 import common.messages.IMessage;
 
-/** 
- *  Representa una zona fisica del mundo. Esta zona esta delimitada por los bounds. Ademas, esta zona esta asociada a un unico  {@code Channel} , es decir hay una correspondencia uno a uno entre celdas y canales.
- * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * Representa una zona fisica del mundo. Esta zona esta delimitada por los
+ * bounds. Ademas, esta zona esta asociada a un unico {@code Channel} , es decir
+ * hay una correspondencia uno a uno entre celdas y canales.
+ * 
+ * @generated "De UML a Java V5.0 
+ * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
  */
 public class Cell implements Serializable {
-	/** 
-	 *  Es una referencia  {@code ManagedReference} a la  {@link IGridStructure} contenedora de la celda.
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	protected ManagedReference structure;
+	/** The version of the serialized form of this class. */
+	private static final long serialVersionUID = 1301727798124952702L;
 
-	/** 
-	 *  Es la identificacion unica de una celda. No se debe repetir para niguna celda de una misma estructura.
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Es una referencia {@code ManagedReference} a la {@link IGridStructure}
+	 * contenedora de la celda.
+	 * 
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 */
+	private ManagedReference<IGridStructure> structure;
+
+	/**
+	 * Es la identificacion unica de una celda. No se debe repetir para niguna
+	 * celda de una misma estructura.
+	 * 
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	protected Object id;
 
-	/** 
-	 *  Es una referencia  {@code ManagedReference} al  {@code Channel} asociado a la celda.
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Es una referencia {@code ManagedReference} al {@code Channel} asociado a
+	 * la celda.
+	 * 
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	protected ManagedReference channel;
+	private ManagedReference<Channel> channel;
 
-	/** 
-	 *  Determina el espacio circundado por la celda en el espacio fisico del mundo.
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	/**
+	 * Determina el espacio circundado por la celda en el espacio fisico del
+	 * mundo.
+	 * 
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	protected Rectangle bounds;
 
 	/**
-	 * @param id
-	 * @param bounds
-	 * @param parent
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Creador.
+	 * @param id identificador de la celda.
+	 * @param bounds lÃ­mites de la celda.
+	 * @param parent Estructura a la que pertenece la celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Cell(Object id, Object bounds, ManagedReference parent) {
-		// begin-user-code
-		// TODO Apéndice de constructor generado automáticamente
-		// end-user-code
+	public Cell(final Object id, final Rectangle bounds, 
+			final IGridStructure parent) {
+		this.id = id;
+		this.bounds = bounds;
+		structure = AppContext.getDataManager().createReference(parent);
 	}
 
 	/**
 	 * Retorna el identificador de la celda.
-	 * @return 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * 
+	 * @return el identificador de esta instancia de celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Object getId() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Object getId() {
+		return id;
 	}
 
 	/**
-	 * Retorna la referencia   {@code ManagedReference} del canal asociado a la celda.
-	 * @return 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Retorna la referencia {@code ManagedReference} del canal asociado a la
+	 * celda.
+	 * 
+	 * @return el Channel de esta celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public ManagedReference getChannel() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Channel getChannel() {
+		return channel.get();
 	}
 
 	/**
-	 * Asocia un canal a la celda. Dado que el canal es un objeto   {@code ManagedObject} se debe crear la referencia   {@code ManagedReference} a ese canal invocando al metodo   {@code createReference()} del   {@code DataManager} .
-	 * @param channel 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Asocia un canal a la celda. Dado que el canal es un objeto {@code
+	 * ManagedObject} se debe crear la referencia {@code ManagedReference} a ese
+	 * canal invocando al metodo {@code createReference()} del {@code
+	 * DataManager} .
+	 * 
+	 * @param channel canal que se debe asociar a la celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void setChannel(Channel channel) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setChannel(final Channel channel) {
+		this.channel = AppContext.getDataManager().createReference(channel);
 	}
 
 	/**
 	 * Retorna el espacio circundado por la celda.
-	 * @return 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * 
+	 * @return Los lÃ­mites de esta celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Rectangle getBounds() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Rectangle getBounds() {
+		return bounds;
 	}
 
 	/**
 	 * Establece el espacio circundado por la celda.
-	 * @param bounds 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * 
+	 * @param bounds LÃ­mites de esta celda.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void setBounds(Rectangle bounds) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setBounds(final Rectangle bounds) {
+		this.bounds = bounds;
 	}
 
 	/**
-	 * Retorna la referencia a la   {@link IGridStructure} contenedora de la celda.  Dado que la estructura es un objeto   {@code ManagedObject} dicha referencia debe ser de tipo   {@code ManagedReference} .
-	 * @return 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Retorna la referencia a la {@link IGridStructure} contenedora de la
+	 * celda. Dado que la estructura es un objeto {@code ManagedObject} dicha
+	 * referencia debe ser de tipo {@code ManagedReference} .
+	 * 
+	 * @return referencia a la estructura contenedora.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public ManagedReference getStructure() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final IGridStructure getStructure() {
+		return structure.get();
 	}
 
 	/**
-	 * Subscribe al jugador pasado por parametro   {@code ClientSession} al canal contenido por la celda.
-	 * @param client 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Subscribe al jugador pasado por parametro {@code ClientSession} al canal
+	 * contenido por la celda.
+	 * 
+	 * @param client jugador a subscribir.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void joinToChannel(ClientSession client) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void joinToChannel(final ClientSession client) {
+		getChannel().join(client);
 	}
 
 	/**
-	 * Desubscribe al jugador pasado por parametro   {@code ClientSession} del canal contenido por la celda.
-	 * @param client 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Desubscribe al jugador pasado por parametro {@code ClientSession} del
+	 * canal contenido por la celda.
+	 * 
+	 * @param client jugador a desuscribir.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void leaveFromChannel(ClientSession client) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void leaveFromChannel(final ClientSession client) {
+		getChannel().leave(client);
 	}
 
 	/**
-	 * Determina si la posicion dada esta dentro de la celda. Para ello utiliza la variable de instancia   {@link bounds}
-	 * @return 
-	 * @param position 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Determina si la posicion dada esta dentro de la celda. Para ello utiliza
+	 * la variable de instancia {@link bounds}
+	 * 
+	 * @return true si la posiciÃ³n dada estÃ¡ dentro de esta celda. false en otro
+	 * caso.
+	 * @param position posiciÃ³n a evaluar.
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Object isInside(Vector3f position) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final boolean isInside(final Vector3f position) {
+		//TODO verificar este metodo ya que Vector3f tiene 3 coordenadas
+		return bounds.contains(position.getX(), position.getY());
 	}
 
 	/**
-	 * Envia el mensaje   {@code IMessage} del jugador dado a todos los jugadores asociados al canal contenido por la celda.
-	 * @param msg 
-	 * @param player 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Envia el mensaje {@code IMessage} del jugador dado a todos los jugadores
+	 * asociados al canal contenido por la celda.
+	 * 
+	 * @param msg
+	 * @param player
+	 * @generated "De UML a Java V5.0 
+	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public void send(IMessage msg, ClientSession player) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+		getChannel().send(player, msg.toByteBuffer());
 	}
 }
