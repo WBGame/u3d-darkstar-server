@@ -38,7 +38,7 @@ public class Cell implements Serializable {
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	protected Object id;
+	private Object id;
 
 	/**
 	 * Es una referencia {@code ManagedReference} al {@code Channel} asociado a
@@ -56,20 +56,20 @@ public class Cell implements Serializable {
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	protected Rectangle bounds;
+	private Rectangle bounds;
 
 	/**
 	 * Creador.
-	 * @param id identificador de la celda.
-	 * @param bounds límites de la celda.
+	 * @param cellId identificador de la celda.
+	 * @param cellBunds límites de la celda.
 	 * @param parent Estructura a la que pertenece la celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Cell(final Object id, final Rectangle bounds, 
+	public Cell(final Object cellId, final Rectangle cellBunds, 
 			final IGridStructure parent) {
-		this.id = id;
-		this.bounds = bounds;
+		this.id = cellId;
+		this.bounds = cellBunds;
 		structure = AppContext.getDataManager().createReference(parent);
 	}
 
@@ -102,12 +102,12 @@ public class Cell implements Serializable {
 	 * canal invocando al metodo {@code createReference()} del {@code
 	 * DataManager} .
 	 * 
-	 * @param channel canal que se debe asociar a la celda.
+	 * @param cellChannel canal que se debe asociar a la celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public final void setChannel(final Channel channel) {
-		this.channel = AppContext.getDataManager().createReference(channel);
+	public final void setChannel(final Channel cellChannel) {
+		this.channel = AppContext.getDataManager().createReference(cellChannel);
 	}
 
 	/**
@@ -124,12 +124,12 @@ public class Cell implements Serializable {
 	/**
 	 * Establece el espacio circundado por la celda.
 	 * 
-	 * @param bounds Límites de esta celda.
+	 * @param cellBounds Límites de esta celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public final void setBounds(final Rectangle bounds) {
-		this.bounds = bounds;
+	public final void setBounds(final Rectangle cellBounds) {
+		this.bounds = cellBounds;
 	}
 
 	/**
@@ -188,12 +188,12 @@ public class Cell implements Serializable {
 	 * Envia el mensaje {@code IMessage} del jugador dado a todos los jugadores
 	 * asociados al canal contenido por la celda.
 	 * 
-	 * @param msg
-	 * @param player
+	 * @param msg mensaje a enviar.
+	 * @param player jugador que disparó el mensaje
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void send(IMessage msg, ClientSession player) {
+	public final void send(final IMessage msg, final ClientSession player) {
 		getChannel().send(player, msg.toByteBuffer());
 	}
 }
