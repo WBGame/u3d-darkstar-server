@@ -6,9 +6,9 @@ Aquí quedarán registrados los cambios que vamos haciendo al diseño detallado.
 
 = Recomendaciones =
 
-# Checkstyle propone cambios, los cuales deberán ser analizados y justificados debidamente, no es necesario hacer feliz a checkstyle, lo importante es hacer las cosas lo mejor posible.
+  # Checkstyle propone cambios, los cuales deberán ser analizados y justificados debidamente, no es necesario hacer feliz a checkstyle, lo importante es hacer las cosas lo mejor posible.
 
-# Cambios en las interfaces de las clases necesito que sean aprobados por todos lo que usan tales clases. Un ejemplo es lo que pasa entre Roberto y Sebastian que comparten un método y que el cambio que propone Roberto está aprobado por Sebastian.
+  # Cambios en las interfaces de las clases necesito que sean aprobados por todos lo que usan tales clases. Un ejemplo es lo que pasa entre Roberto y Sebastian que comparten un método y que el cambio que propone Roberto está aprobado por Sebastian.
 
 = Cambios Propuestos =
 
