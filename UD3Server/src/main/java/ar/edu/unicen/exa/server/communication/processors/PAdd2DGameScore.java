@@ -1,9 +1,9 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
-import server.serverLogic.ModelAccess;
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 
 import common.datatypes.D2GameScore;
 import common.messages.IMessage;
@@ -39,7 +39,7 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 	}
 	
 	/**
-	 * Toma la petición de agregar un puntaje a un minijuego y la procesa. Toma
+	 * Toma la peticiÃ³n de agregar un puntaje a un minijuego y la procesa. Toma
 	 * contenido en el mensaje pasado como paramentro, e invocando el metodo
 	 * {@link ModelAccess#add2DGameScore(D2GameScore)} agrega el puntaje al
 	 * modelo.

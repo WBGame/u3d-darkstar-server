@@ -1,14 +1,14 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
 import java.util.HashMap;
 
 import com.sun.sgs.app.AppContext;
 
-import server.player.Player;
-import server.serverLogic.ModelAccess;
+import ar.edu.unicen.exa.server.player.Player;
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.datatypes.IPlayerProperty;
 import common.datatypes.PlayerProperty;
 import common.exceptions.UnsopportedMessageException;

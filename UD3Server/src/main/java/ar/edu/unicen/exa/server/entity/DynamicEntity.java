@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.entity;
+package ar.edu.unicen.exa.server.entity;
 
 import com.jme.math.Vector3f;
 
@@ -31,7 +31,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public String getActualWorld() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -42,7 +42,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public Vector3f getAngle() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -53,7 +53,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public Vector3f getPosition() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -64,7 +64,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public void setActualWorld(String world) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -75,7 +75,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public void setAngle(Vector3f angle) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -86,7 +86,7 @@ public abstract class DynamicEntity extends Entity {
 	 */
 	public void setPosition(Vector3f position) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

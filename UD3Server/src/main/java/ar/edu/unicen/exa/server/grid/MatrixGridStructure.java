@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.grid;
+package ar.edu.unicen.exa.server.grid;
 
 import com.jme.math.Vector3f;
 
@@ -30,7 +30,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public void setIdWorld(String id) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -41,7 +41,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public String getIdWorld() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -53,7 +53,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public Cell getCell(Vector3f position) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -64,7 +64,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public Cell getSpawnCell() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -77,7 +77,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public Cell[] getAdjacents(Cell cell, Vector3f position) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -88,7 +88,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public void setSpawnCell(Cell spawnCell) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

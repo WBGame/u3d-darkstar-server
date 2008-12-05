@@ -1,12 +1,12 @@
 /**
  * 
  */
-package server.player;
+package ar.edu.unicen.exa.server.player;
 
 import com.sun.sgs.app.ClientSessionListener;
 import java.io.Serializable;
-import server.communication.processors.ServerMsgProcessor;
-import server.communication.tasks.TaskCommFactory;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
 import com.sun.sgs.app.ManagedReference;
 import java.nio.ByteBuffer;
 
@@ -27,7 +27,7 @@ public class UserSessionListener implements ClientSessionListener, Serializable 
 	 */
 	public ManagedReference getPlayer() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -39,7 +39,7 @@ public class UserSessionListener implements ClientSessionListener, Serializable 
 	 */
 	public void setPlayer(Player player) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -51,7 +51,7 @@ public class UserSessionListener implements ClientSessionListener, Serializable 
 	 */
 	public void receivedMessage(ByteBuffer msg) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -63,7 +63,7 @@ public class UserSessionListener implements ClientSessionListener, Serializable 
 	 */
 	public void disconnected(boolean arg0) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

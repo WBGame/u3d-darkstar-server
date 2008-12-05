@@ -3,7 +3,7 @@
  * 
  * @author lito
  */
-package server.communication.tasks;
+package ar.edu.unicen.exa.server.communication.tasks;
 
 import java.util.Hashtable;
 
@@ -13,12 +13,12 @@ import common.messages.MessageFactory;
 import common.messages.MsgTypes;
 
 /**
- * Fábrica de tareas de comunicación. Para utilizarla, primero se debe obtener
- * su única instancia a travez del método {@link #getInstance()} (ya que sigue
- * el patrón <i>singleton</i>). Esta clase permite crear e inicializar una
+ * FÃ¡brica de tareas de comunicaciÃ³n. Para utilizarla, primero se debe obtener
+ * su Ãºnica instancia a travez del mÃ©todo {@link #getInstance()} (ya que sigue
+ * el patrÃ³n <i>singleton</i>). Esta clase permite crear e inicializar una
  * instacia de la tarea apropiada para un mensaje dado. Las asociaciones entre
  * tipos de mensajes y tareas correspondientes se mantienen en un hash interno,
- * para el que se brindan métodos de manipulación.
+ * para el que se brindan mÃ©todos de manipulaciÃ³n.
  * 
  * @author Diego
  */
@@ -26,7 +26,7 @@ public class TaskCommFactory {
 	
 	/**
 	 * Contiene el mapeo de los tipos de mensajes con la tarea encargada de
-	 * realizar la acción correspondiente.
+	 * realizar la acciÃ³n correspondiente.
 	 */
 	private Hashtable<String, TaskCommunication>	comTaskForMsgType;
 	
@@ -82,7 +82,7 @@ public class TaskCommFactory {
 	
 	/**
 	 * Especifica directamente el hash completo que mapea tipos de mensaje y
-	 * tareas encargadas de tratarlos. Se perderá cualquier otra asociación
+	 * tareas encargadas de tratarlos. Se perderÃ¡ cualquier otra asociaciÃ³n
 	 * previa.
 	 * 
 	 * @param comTaskForMsgTypeHash el hash a establecer
@@ -94,7 +94,7 @@ public class TaskCommFactory {
 	}
 	
 	/**
-	 * Devuelve la única instancia de esta clase.
+	 * Devuelve la Ãºnica instancia de esta clase.
 	 * 
 	 * @return La instancia.
 	 */
@@ -103,9 +103,9 @@ public class TaskCommFactory {
 	}
 	
 	/**
-	 * Método para fabricar una instancia de la clase de tarea apropiada según
-	 * el tipo del mensaje pasado como parámetro. La tarea de comunicación en
-	 * cuestión estará inicializada con el mensaje dado.
+	 * MÃ©todo para fabricar una instancia de la clase de tarea apropiada segÃºn
+	 * el tipo del mensaje pasado como parÃ¡metro. La tarea de comunicaciÃ³n en
+	 * cuestiÃ³n estarÃ¡ inicializada con el mensaje dado.
 	 * 
 	 * @param msg el mensaje a usar
 	 * @return la nueva tarea
@@ -115,14 +115,14 @@ public class TaskCommFactory {
 	}
 	
 	/**
-	 * Añade una asociación, mapeando el tipo de mensaje de la tarea {@code
+	 * AÃ±ade una asociaciÃ³n, mapeando el tipo de mensaje de la tarea {@code
 	 * comTask} con ella misma.<BR/>
 	 * NOTA: si comTask no tiene seteado un tipo, se arrojara
 	 * {@link NullPointerException}.<BR/>
 	 * Si internamente ya existe una tarea asociada al tipo de mensaje que se
 	 * agregara, se "pisara la referencia".
 	 * 
-	 * @param comTask tarea de comunicación correspondiente asociado a su tipo
+	 * @param comTask tarea de comunicaciÃ³n correspondiente asociado a su tipo
 	 *        de mensaje interno.
 	 */
 	public final void addComTask(final TaskCommunication comTask) {
@@ -130,12 +130,12 @@ public class TaskCommFactory {
 	}
 	
 	/**
-	 * Elimina una asociación del hash para un tipo de mensaje dado. Si ese tipo
+	 * Elimina una asociaciÃ³n del hash para un tipo de mensaje dado. Si ese tipo
 	 * no se encuentra como clave del hash, no se hace nada.
 	 * 
-	 * @param msgType tipo de mensaje al que se quitará su asociación
+	 * @param msgType tipo de mensaje al que se quitarÃ¡ su asociaciÃ³n
 	 * 
-	 * @return la tarea correspondiente o <code>null</code> si no había alguna
+	 * @return la tarea correspondiente o <code>null</code> si no habÃ­a alguna
 	 *         mapeada para el tipo de mensaje dado
 	 */
 	public final TaskCommunication removeComTask(final String msgType) {
@@ -148,7 +148,7 @@ public class TaskCommFactory {
 	 * 
 	 * @param msgType tipo de mensaje
 	 * 
-	 * @return <code>true</code> si y solo si el tipo de mensaje está mapeado.
+	 * @return <code>true</code> si y solo si el tipo de mensaje estÃ¡ mapeado.
 	 */
 	public final boolean containsMsgType(final String msgType) {
 		return this.comTaskForMsgType.containsKey(msgType);

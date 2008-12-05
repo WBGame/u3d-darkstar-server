@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.grid;
+package ar.edu.unicen.exa.server.grid;
 
 import java.io.Serializable;
 import com.sun.sgs.app.ManagedObject;
@@ -33,7 +33,7 @@ public class GridManager implements Serializable, ManagedObject {
 	 */
 	public ManagedReference getStructure(Object id) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -45,7 +45,7 @@ public class GridManager implements Serializable, ManagedObject {
 	 */
 	public void addStructure(IGridStructure structure) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -57,7 +57,7 @@ public class GridManager implements Serializable, ManagedObject {
 	 */
 	public static GridManager getInstance() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -69,7 +69,7 @@ public class GridManager implements Serializable, ManagedObject {
 	 */
 	public void removeStructure(Object id) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

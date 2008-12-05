@@ -35,10 +35,10 @@ public interface IGridStructure extends Serializable, ManagedObject {
 
 	/**
 	 * Retorna la {@link Cell} que corresponde a la posicion pasada por 
-	 * parámetro.
+	 * parÃ¡metro.
 	 * 
 	 * @return la {@link Cell} que corresponde
-	 * @param position posición a evaluar
+	 * @param position posiciÃ³n a evaluar
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
@@ -59,12 +59,12 @@ public interface IGridStructure extends Serializable, ManagedObject {
 	 * pasada por parametro. Se debe proporcionar tambien la posicion del
 	 * jugador, para poder determinar la zona dentro de la celda en la que se
 	 * encuentra, ya que puede influir en la determinacion de cuales son las
-	 * celdas adyacentes. Ver documentacion del diseñoo sobre tratamiento de
+	 * celdas adyacentes. Ver documentacion del diseÃ±oo sobre tratamiento de
 	 * celdas para mas informacion.
 	 * 
 	 * @return las celdas adyacentes.
 	 * @param cell celda de la cual obtener los adyacentes.
-	 * @param position posición dentro de la celda.
+	 * @param position posiciÃ³n dentro de la celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
