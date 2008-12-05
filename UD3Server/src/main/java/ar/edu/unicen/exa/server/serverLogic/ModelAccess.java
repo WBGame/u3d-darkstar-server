@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.serverLogic;
 
 import java.util.Set;
@@ -166,16 +163,16 @@ public class ModelAccess {
 	}
 	
 	/**
+	 * Dummy implementation. Check always if login == password.  
+	 * 
 	 * @param password La contraseña.
 	 * @param idPlayer El identificador del jugador
+	 * 
 	 * @return {@code true} si la contraseña suministrada para el usuario es la
 	 *         que se tiene almancenada. {@code false} en caso contrario.
 	 */
 	public boolean checkPlayer(final String password, final String idPlayer) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return true;
-		// end-user-code
+		return password.equals( idPlayer );
 	}
 	
 	/**
