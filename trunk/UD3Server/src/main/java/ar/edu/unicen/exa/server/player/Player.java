@@ -1,9 +1,9 @@
 /**
  * 
  */
-package server.player;
+package ar.edu.unicen.exa.server.player;
 
-import server.entity.DynamicEntity;
+import ar.edu.unicen.exa.server.entity.DynamicEntity;
 
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ManagedReference;
@@ -29,7 +29,7 @@ public class Player extends DynamicEntity {
 	protected Hashtable<String, IPlayerProperty>	properties;
 	
 	/**
-	 * El estado actual deÒ jugador.
+	 * El estado actual de√± jugador.
 	 */
 	protected PlayerState							state;
 	
@@ -38,7 +38,7 @@ public class Player extends DynamicEntity {
 	 */
 	public void send(final IMessage message) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -49,7 +49,7 @@ public class Player extends DynamicEntity {
 	 */
 	public IPlayerProperty getProperty(final String property) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}

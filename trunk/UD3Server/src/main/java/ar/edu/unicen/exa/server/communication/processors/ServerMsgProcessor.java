@@ -1,10 +1,10 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
-import server.grid.Cell;
-import server.player.Player;
+import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.ManagedReference;
 

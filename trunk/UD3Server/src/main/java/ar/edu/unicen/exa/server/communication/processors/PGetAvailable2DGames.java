@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
 import common.messages.IMessage;
 import common.processors.IProcessor;

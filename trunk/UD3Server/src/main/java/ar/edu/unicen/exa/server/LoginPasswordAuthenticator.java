@@ -1,10 +1,10 @@
 /**
  * 
  */
-package server;
+package ar.edu.unicen.exa.server;
 
 import com.sun.sgs.auth.IdentityAuthenticator;
-import server.serverLogic.ModelAccess;
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import com.sun.sgs.auth.IdentityCredentials;
 import com.sun.sgs.auth.Identity;
 
@@ -18,19 +18,19 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 	 */
 	public LoginPasswordAuthenticator() {
 		// begin-user-code
-		// TODO ApÈndice de constructor generado autom·ticamente
+		// TODO Ap√©ndice de constructor generado autom√°ticamente
 		// end-user-code
 	}
 
 	/**
-	 * Este metodo es invocado cuando el usuario se desea logearse en el servidor con su nombre y contraseÒa.
+	 * Este metodo es invocado cuando el usuario se desea logearse en el servidor con su nombre y contrase√±a.
 	 * @param credentials 
 	 * @return 
 	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public Identity authenticateIdentity(IdentityCredentials credentials) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -41,7 +41,7 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 	 */
 	public String[] getSupportedCredentialTypes() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}

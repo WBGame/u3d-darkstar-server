@@ -1,9 +1,9 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
-import server.serverLogic.ModelAccess;
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 
 import common.datatypes.Ranking;
 import common.exceptions.UnsopportedMessageException;
@@ -16,7 +16,7 @@ import common.processors.IProcessor;
 
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
- * mensajes que solicitan la devolución de los datos correspondientes a un
+ * mensajes que solicitan la devoluciÃ³n de los datos correspondientes a un
  * ranking de un juego 2D.
  * 
  * @author fede

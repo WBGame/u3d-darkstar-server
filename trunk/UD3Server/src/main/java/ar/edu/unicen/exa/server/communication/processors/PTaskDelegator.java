@@ -1,12 +1,12 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
 import com.sun.sgs.app.AppContext;
 
-import server.communication.tasks.TaskCommFactory;
-import server.communication.tasks.TaskCommunication;
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
 import common.messages.IMessage;
 import common.processors.IProcessor;
 

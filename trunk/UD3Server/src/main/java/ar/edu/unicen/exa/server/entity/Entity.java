@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.entity;
+package ar.edu.unicen.exa.server.entity;
 
 import com.sun.sgs.app.ManagedObject;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public abstract class Entity implements ManagedObject, Serializable {
 	 */
 	public String getIdEntity() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -33,7 +33,7 @@ public abstract class Entity implements ManagedObject, Serializable {
 	 */
 	public void setIdEntity(String entity) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

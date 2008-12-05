@@ -61,7 +61,7 @@ public class Cell implements Serializable {
 	/**
 	 * Creador.
 	 * @param cellId identificador de la celda.
-	 * @param cellBunds límites de la celda.
+	 * @param cellBunds lÃ­mites de la celda.
 	 * @param parent Estructura a la que pertenece la celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
@@ -113,7 +113,7 @@ public class Cell implements Serializable {
 	/**
 	 * Retorna el espacio circundado por la celda.
 	 * 
-	 * @return Los límites de esta celda.
+	 * @return Los lÃ­mites de esta celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
@@ -124,7 +124,7 @@ public class Cell implements Serializable {
 	/**
 	 * Establece el espacio circundado por la celda.
 	 * 
-	 * @param cellBounds Límites de esta celda.
+	 * @param cellBounds LÃ­mites de esta celda.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
@@ -173,9 +173,9 @@ public class Cell implements Serializable {
 	 * Determina si la posicion dada esta dentro de la celda. Para ello utiliza
 	 * la variable de instancia {@link bounds}
 	 * 
-	 * @return true si la posición dada está dentro de esta celda. false en otro
+	 * @return true si la posiciÃ³n dada estÃ¡ dentro de esta celda. false en otro
 	 * caso.
-	 * @param position posición a evaluar.
+	 * @param position posiciÃ³n a evaluar.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
@@ -189,7 +189,7 @@ public class Cell implements Serializable {
 	 * asociados al canal contenido por la celda.
 	 * 
 	 * @param msg mensaje a enviar.
-	 * @param player jugador que disparó el mensaje
+	 * @param player jugador que disparÃ³ el mensaje
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */

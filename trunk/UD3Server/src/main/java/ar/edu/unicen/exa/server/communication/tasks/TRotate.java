@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.communication.tasks;
+package ar.edu.unicen.exa.server.communication.tasks;
 
 import common.messages.IMessage;
 import common.messages.notify.MsgRotate;

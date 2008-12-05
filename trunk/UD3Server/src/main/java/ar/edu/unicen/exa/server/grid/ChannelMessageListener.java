@@ -1,11 +1,11 @@
 /**
  * 
  */
-package server.grid;
+package ar.edu.unicen.exa.server.grid;
 
 import com.sun.sgs.app.ChannelListener;
-import server.communication.processors.ServerMsgProcessor;
-import server.communication.tasks.TaskCommFactory;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
 import com.sun.sgs.app.Channel;
 import com.sun.sgs.app.ClientSession;
 import java.nio.ByteBuffer;
@@ -24,7 +24,7 @@ public class ChannelMessageListener implements ChannelListener {
 	public void receivedMessage(Channel channel, ClientSession session,
 			ByteBuffer msg) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}

@@ -1,9 +1,9 @@
 /**
  * 
  */
-package server.communication.processors;
+package ar.edu.unicen.exa.server.communication.processors;
 
-import server.player.Player;
+import ar.edu.unicen.exa.server.player.Player;
 
 import common.datatypes.IPlayerProperty;
 import common.messages.IMessage;

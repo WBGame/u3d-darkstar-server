@@ -3,10 +3,10 @@
  * 
  * @author lito
  */
-package server.communication.tasks;
+package ar.edu.unicen.exa.server.communication.tasks;
 
-import server.grid.Cell;
-import server.player.Player;
+import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
@@ -49,8 +49,8 @@ public abstract class TaskCommunication implements Task {
 	protected String					msgType;
 	
 	/**
-	 * Constructor que inicializa el estado interno con el par·metro. Setea el
-	 * mensaje interno con el par·metro y el tipo de mensaje de la tarea con el
+	 * Constructor que inicializa el estado interno con el par√°metro. Setea el
+	 * mensaje interno con el par√°metro y el tipo de mensaje de la tarea con el
 	 * tipo del mensaje pasado.
 	 * 
 	 * @param msg El mensaje de la instancia
@@ -94,10 +94,10 @@ public abstract class TaskCommunication implements Task {
 	}
 	
 	/**
-	 * Sigue el patrÛn de FactoryMethod, su implementaciÛn debe crear y devolver
+	 * Sigue el patr√≥n de FactoryMethod, su implementaci√≥n debe crear y devolver
 	 * una instancia de la clase implementadora.
 	 * 
-	 * @param msg El mensaje con el que trabajar· la tarea internamente.
+	 * @param msg El mensaje con el que trabajar√° la tarea internamente.
 	 * 
 	 * @return Una instancia de la clase implementadora.
 	 */

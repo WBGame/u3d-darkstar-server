@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.serverLogic;
+package ar.edu.unicen.exa.server.serverLogic;
 
 import java.util.Set;
 
@@ -18,7 +18,7 @@ import common.datatypes.PlayerStat;
  * puntos tales como almacenamiento de Players, 2DGames, Quest, estado de
  * quests, puntuacion de stats, etc.<BR/>
  * 
- * La clase sigue el patron de diseÒo <I>Sinleton</I>.
+ * La clase sigue el patron de dise√±o <I>Sinleton</I>.
  * 
  * NOTA: No se implementaran los servicios de ABM.
  */
@@ -42,7 +42,7 @@ public class ModelAccess {
 	 */
 	private ModelAccess() {
 		// begin-user-code
-		// TODO ApÈndice de constructor generado autom·ticamente
+		// TODO Ap√©ndice de constructor generado autom√°ticamente
 		// end-user-code
 	}
 	
@@ -56,7 +56,7 @@ public class ModelAccess {
 	 */
 	public Skin getSkin(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -72,7 +72,7 @@ public class ModelAccess {
 	 */
 	public Set<String> getAvailableGames(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -86,7 +86,7 @@ public class ModelAccess {
 	 */
 	public void buy2DGame(final String id2DGame, final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		// end-user-code
 	}
 	
@@ -100,7 +100,7 @@ public class ModelAccess {
 	 */
 	public Quest getQuest(final String idQuest) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -113,7 +113,7 @@ public class ModelAccess {
 	 */
 	public Set<Quest> getAvailableQuests(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -125,7 +125,7 @@ public class ModelAccess {
 	 */
 	public Set<String> getBuyables2DGames() {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -138,7 +138,7 @@ public class ModelAccess {
 	 */
 	public int getPlayedTimes(final String id2DGame, final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return 0;
 		// end-user-code
 	}
@@ -149,7 +149,7 @@ public class ModelAccess {
 	 */
 	public int getGlobalScore(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return 0;
 		// end-user-code
 	}
@@ -160,20 +160,20 @@ public class ModelAccess {
 	 */
 	public Set<Quest> getCurrentQuests(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
 	
 	/**
-	 * @param password La contraseÒa.
+	 * @param password La contrase√±a.
 	 * @param idPlayer El identificador del jugador
-	 * @return {@code true} si la contraseÒa suministrada para el usuario es la
+	 * @return {@code true} si la contrase√±a suministrada para el usuario es la
 	 *         que se tiene almancenada. {@code false} en caso contrario.
 	 */
 	public boolean checkPlayer(final String password, final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return true;
 		// end-user-code
 	}
@@ -181,7 +181,7 @@ public class ModelAccess {
 	/**
 	 * Agrega el puntaje pasado como parametro al modelo, realizando todas las
 	 * acciones corresponidentes.<BR/>
-	 * Estas acciones consiten en actualizar los stats para el jugador dueÒo del
+	 * Estas acciones consiten en actualizar los stats para el jugador due√±o del
 	 * puntaje, asi como tmb el historial de puntajes para el minijuego asociado
 	 * y chequear si es el puntaje mas alto.
 	 * 
@@ -189,7 +189,7 @@ public class ModelAccess {
 	 */
 	public void add2DGameScore(final D2GameScore score) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -203,7 +203,7 @@ public class ModelAccess {
 	 */
 	public void setGlobalScore(final String idPlayer, final int globalScore) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -214,7 +214,7 @@ public class ModelAccess {
 	 */
 	public Ranking getRanking(final String id2DGame) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -228,7 +228,7 @@ public class ModelAccess {
 	 */
 	public void startQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -242,7 +242,7 @@ public class ModelAccess {
 	 */
 	public void finishQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -256,7 +256,7 @@ public class ModelAccess {
 	 */
 	public void abortQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -272,7 +272,7 @@ public class ModelAccess {
 	public void nextQuestState(final String idPlayer, final String idQuest,
 			final String idQuestState) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}
@@ -284,7 +284,7 @@ public class ModelAccess {
 	 */
 	public Set<PlayerStat> getPlayerStats(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
@@ -295,7 +295,7 @@ public class ModelAccess {
 	 */
 	public float getMoney(final String idPlayer) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return 0;
 		// end-user-code
 	}
@@ -308,7 +308,7 @@ public class ModelAccess {
 	 */
 	public void setMoney(final String idPlayer, final float money) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		
 		// end-user-code
 	}

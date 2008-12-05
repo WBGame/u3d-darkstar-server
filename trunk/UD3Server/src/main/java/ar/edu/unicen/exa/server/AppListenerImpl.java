@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server;
+package ar.edu.unicen.exa.server;
 
 import com.sun.sgs.app.AppListener;
 import java.io.Serializable;
@@ -21,7 +21,7 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 */
 	public void initialize(Properties arg0) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 
 		// end-user-code
 	}
@@ -33,7 +33,7 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 */
 	public ClientSessionListener loggedIn(ClientSession arg0) {
 		// begin-user-code
-		// TODO ApÈndice de mÈtodo generado autom·ticamente
+		// TODO Ap√©ndice de m√©todo generado autom√°ticamente
 		return null;
 		// end-user-code
 	}
