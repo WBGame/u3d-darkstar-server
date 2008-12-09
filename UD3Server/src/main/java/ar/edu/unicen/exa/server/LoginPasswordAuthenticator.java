@@ -1,48 +1,107 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server;
 
+import java.util.Properties;
+
+import javax.security.auth.login.LoginException;
+
+import ar.edu.unicen.exa.server.serverLogic.*;
+import ar.edu.unicen.exa.server.player.Player;
+
+import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.DataManager;
 import com.sun.sgs.auth.IdentityAuthenticator;
-import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
+
 import com.sun.sgs.auth.IdentityCredentials;
 import com.sun.sgs.auth.Identity;
+import com.sun.sgs.impl.auth.IdentityImpl;
+import com.sun.sgs.impl.auth.NamePasswordCredentials;
 
-/** 
- * @author esolis
- * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+/**
+ * Autentificador de jugadores. Para utilizarla, el cliente debe tener 
+ * implementado el metodo {@link #getPasswordAuthentication()} (ya que 
+ * es necesario conocer el nombre de usuario y su password). Esta clase 
+ * permite validar un jugador a partir de sus datos ingresados contra la 
+ * informacion correspondiente a dicho jugador por medio del metodo 
+ * {@link #checkPlayer()}.
+ * 
+ * @author Pablo Inchausti <inchausti.pablo at gmail dot com>
+ * @encoding UTF-8
+ * 
+ * @todo review String about password for security reasons.
  */
 public class LoginPasswordAuthenticator implements IdentityAuthenticator {
+
 	/**
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Constructor
+	 * @param properties propiedades del auntenticador.
 	 */
-	public LoginPasswordAuthenticator() {
-		// begin-user-code
-		// TODO Apéndice de constructor generado automáticamente
-		// end-user-code
+	public LoginPasswordAuthenticator(final Properties properties) {
 	}
 
 	/**
-	 * Este metodo es invocado cuando el usuario se desea logearse en el servidor con su nombre y contraseña.
-	 * @param credentials 
-	 * @return 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Este metodo es invocado cuando el usuario se desea logearse en el 
+	 * servidor con su nombre y contraseña. Authentica por medio de una 
+	 * credencial implementada y provista por Darkstar. Solo se hace uso 
+	 * de ella pero se pueden crear nuevas credencials si es ncesesario.
+	 * 
+	 * @param credentials para autentificacion 
+	 * @return identidad del player 
+	 * @throws LoginException rechazo del password
 	 */
-	public Identity authenticateIdentity(IdentityCredentials credentials) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Identity authenticateIdentity(
+			final IdentityCredentials credentials) throws LoginException {
+
+		if (!(credentials instanceof NamePasswordCredentials)) {
+			throw new LoginException();
+		}
+
+		NamePasswordCredentials npc = (NamePasswordCredentials) credentials;
+		//Obtengo el password y el nombre que ingresó el usuario. 
+		String name = npc.getName();
+		char[] passaux = npc.getPassword();
+		String password = new String(passaux);
+
+		//Verifico si la información del jugador es correcta con la base de 
+		//datos.
+		boolean isValid = ModelAccess.getInstance().checkPlayer(password, name);
+
+		if (!isValid) {
+			throw new LoginException();
+		}
+
+		boolean isConnected = false;
+
+		//Se chequea un jugador no pueda logearse si el mismo ya se encuentra
+		//logeado. Esto es por razones de seguridad y para que uno o mas 
+		//jugadores no esten simultaneamente logeados en el sistema. 
+		DataManager dataMgr = null;
+		try {
+			dataMgr = AppContext.getDataManager();    	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			System.out.println("Nombre de identificacion: " + name);
+			Player player = (Player) dataMgr.getBinding(name);
+			isConnected = player.getSession().isConnected();
+		} catch (Exception e) {
+			isConnected = false;
+			e.printStackTrace();
+		}
+
+		if (isConnected) {
+			throw new LoginException();
+		}
+
+		return new IdentityImpl(name);
 	}
 
 	/**
-	 * @return
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return los identificadores para los tipos de credenciales soportados
 	 */
-	public String[] getSupportedCredentialTypes() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+
+	public final String[] getSupportedCredentialTypes() {
+		return new String [] { NamePasswordCredentials.TYPE_IDENTIFIER };
 	}
 }

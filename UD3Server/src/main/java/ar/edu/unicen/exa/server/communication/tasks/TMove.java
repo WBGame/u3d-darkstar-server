@@ -73,7 +73,7 @@ public class TMove extends TaskCommunication {
 			//throw el jugador está afuera del tablero!
 			System.err.println("El jugador está afuera del tablero!");
 		}
-		ClientSession session = player.getSession().get();
+		ClientSession session = player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
 				.getAdjacents(current, msg.getPosDestino());
