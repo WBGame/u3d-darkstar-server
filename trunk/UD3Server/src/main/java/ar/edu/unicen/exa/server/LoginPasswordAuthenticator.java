@@ -1,14 +1,15 @@
 package ar.edu.unicen.exa.server;
 
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.security.auth.login.LoginException;
 
 import ar.edu.unicen.exa.server.serverLogic.*;
-import ar.edu.unicen.exa.server.player.Player;
+//import ar.edu.unicen.exa.server.player.Player;
 
-import com.sun.sgs.app.AppContext;
-import com.sun.sgs.app.DataManager;
+//import com.sun.sgs.app.AppContext;
+//import com.sun.sgs.app.DataManager;
 import com.sun.sgs.auth.IdentityAuthenticator;
 
 import com.sun.sgs.auth.IdentityCredentials;
@@ -27,16 +28,20 @@ import com.sun.sgs.impl.auth.NamePasswordCredentials;
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com>
  * @encoding UTF-8
  * 
- * @todo review String about password for security reasons.
+ * TODO review String about password for security reasons.
+ * TODO document throw new LoginException(); decision.
  */
 public class LoginPasswordAuthenticator implements IdentityAuthenticator {
+
+	/** Creamos un logger para esta clase. */
+	private static final Logger logger =
+		Logger.getLogger(LoginPasswordAuthenticator.class.getName());
 
 	/**
 	 * Constructor
 	 * @param properties propiedades del auntenticador.
 	 */
-	public LoginPasswordAuthenticator(final Properties properties) {
-	}
+	public LoginPasswordAuthenticator(final Properties properties) {}
 
 	/**
 	 * Este metodo es invocado cuando el usuario se desea logearse en el 
@@ -61,6 +66,8 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 		char[] passaux = npc.getPassword();
 		String password = new String(passaux);
 
+		logger.info( "logeando usuario: " + name + ' ' + password);
+
 		//Verifico si la información del jugador es correcta con la base de 
 		//datos.
 		boolean isValid = ModelAccess.getInstance().checkPlayer(password, name);
@@ -69,30 +76,32 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 			throw new LoginException();
 		}
 
-		boolean isConnected = false;
+//		boolean isConnected = false;
 
 		//Se chequea un jugador no pueda logearse si el mismo ya se encuentra
 		//logeado. Esto es por razones de seguridad y para que uno o mas 
 		//jugadores no esten simultaneamente logeados en el sistema. 
-		DataManager dataMgr = null;
-		try {
-			dataMgr = AppContext.getDataManager();    	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			System.out.println("Nombre de identificacion: " + name);
-			Player player = (Player) dataMgr.getBinding(name);
-			isConnected = player.getSession().isConnected();
-		} catch (Exception e) {
-			isConnected = false;
-			e.printStackTrace();
-		}
-
-		if (isConnected) {
-			throw new LoginException();
-		}
+//		DataManager dataMgr = null;
+//
+//		try {
+//			dataMgr = AppContext.getDataManager();
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			//throw new LoginException(); 
+//		}
+//
+//		try {
+//			logger.info( "Nombre de identificacion: " + name );
+//			Player player = (Player) dataMgr.getBinding(name);
+//			isConnected = player.getSession().isConnected();
+//		} catch (Exception e) {
+//			isConnected = false;
+//		}
+//
+//		if (isConnected) {
+//			throw new LoginException();
+//		}
 
 		return new IdentityImpl(name);
 	}
