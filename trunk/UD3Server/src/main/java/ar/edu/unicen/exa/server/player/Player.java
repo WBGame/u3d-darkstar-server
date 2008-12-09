@@ -5,9 +5,14 @@ package ar.edu.unicen.exa.server.player;
 
 import ar.edu.unicen.exa.server.entity.DynamicEntity;
 
+import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
+import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import common.datatypes.PlayerState;
 import common.datatypes.IPlayerProperty;
 import common.messages.IMessage;
@@ -16,6 +21,17 @@ import common.messages.IMessage;
  *  
  */
 public class Player extends DynamicEntity {
+	
+	/**
+	 * Serialization code.
+	 */
+	private static final long serialVersionUID = -3708396766647144421L;
+
+	/** 
+	 * Logger.
+	 */
+	private static final Logger logger = 
+		Logger.getLogger(Player.class.getName());
 	
 	/**
 	 * Referencia a la secion actual del player.
@@ -55,17 +71,27 @@ public class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * @return the session
+	 * Getter.
+	 * 
+	 * @return ClientSession instance 
 	 */
-	public final ManagedReference<ClientSession> getSession() {
-		return session;
+	public final ClientSession getSession() {
+		return session.get();
 	}
 	
 	/**
-	 * @param session the session to set
+	 * Setter.
+	 * 
+	 * @param session Player ClientSession instance.
 	 */
-	public final void setSession(final ManagedReference<ClientSession> session) {
-		this.session = session;
+	public final void setSession(final ClientSession session) {
+		DataManager dm = AppContext.getDataManager();
+		try {
+			this.session = dm.createReference( session );
+		} catch ( Exception e ) {
+			this.session = null;
+			logger.log( Level.SEVERE , e.toString() );
+		}
 	}
 	
 	/**
