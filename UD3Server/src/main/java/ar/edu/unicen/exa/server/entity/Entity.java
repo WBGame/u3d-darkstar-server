@@ -1,40 +1,39 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.entity;
 
+import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedObject;
 import java.io.Serializable;
 
 /** 
- * @author esolis
- * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+ * Almacena un identificador unico para cada una de las entidades.
+ * 
+ * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @encoding UTF-8
  */
-public abstract class Entity implements ManagedObject, Serializable {
-	/** 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	protected String idEntity;
+public class Entity implements ManagedObject, Serializable {
+	
+	/**  Para cumplir con la version de la clase Serializable. */
+	private static final long serialVersionUID = 1L;
+	
+	/** Identificador de la entidad. */
+	private String idEntity;
 
 	/**
-	 * @return
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Se obtiene el identificador de una entidad.
+	 * @return idEntity devuelve el id de la entidad.
+	 * 
 	 */
-	public String getIdEntity() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final String getIdEntity() {
+		return this.idEntity;
 	}
 
 	/**
-	 * @param entity
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * Se setea el id de la entidad.
+	 * @param entity el id de la entidad.
+	 * 
 	 */
-	public void setIdEntity(String entity) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setIdEntity(final String entity) {
+		AppContext.getDataManager().markForUpdate(this);
+		idEntity = entity;
 	}
 }

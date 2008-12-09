@@ -24,8 +24,8 @@ import com.sun.sgs.app.DataManager;
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com>
  * @encoding UTF-8
  * 
- * @todo method initialize doesn't have the final implementation.
- * @todo method loggedIn need more delegation to class Player.
+ * TODO method initialize doesn't have the final implementation.
+ * TODO method loggedIn need more delegation to class Player.
  */
 public class AppListenerImpl implements AppListener, Serializable {
 	/** Para cumplir con la clase serializable. */
@@ -81,7 +81,13 @@ public class AppListenerImpl implements AppListener, Serializable {
 					"Intentando recuperar una instancia del Object "
 					+ "Store para " + session.getName()
 			);
+			
 			player = (Player) d.getBinding(session.getName());
+			
+			// check login only once
+			if( player.isConnected() )
+				return null;
+			
 		} catch (Exception e) {
 
 			logger.info(

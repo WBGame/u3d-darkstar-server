@@ -24,7 +24,7 @@ public class ModelAccess {
 	/**
 	 * Instancia de la clase.
 	 */
-	private static ModelAccess	INSTANCE;
+	private static ModelAccess INSTANCE = new ModelAccess();
 	
 	/**
 	 * @return La instancia singleton de la clase.
@@ -172,7 +172,7 @@ public class ModelAccess {
 	 *         que se tiene almancenada. {@code false} en caso contrario.
 	 */
 	public boolean checkPlayer(final String password, final String idPlayer) {
-		return password.equals( idPlayer );
+		return password.equalsIgnoreCase(idPlayer);
 	}
 	
 	/**

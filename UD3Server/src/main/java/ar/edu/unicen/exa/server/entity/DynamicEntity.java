@@ -1,93 +1,92 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.entity;
 
 import com.jme.math.Vector3f;
+import com.sun.sgs.app.AppContext;
 
 /** 
- * @author esolis
- * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+ * Ofrece funcionalidad a las entidades que tienen movimiento dentro del mundo.
+ * 
+ * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @encoding UTF-8 
  */
-public abstract class DynamicEntity extends Entity {
-	/** 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	protected String actualWorld;
+public class DynamicEntity extends Entity {
+	
+	/**  Para cumplir con la version de la clase Serializable. */
+	
+	private static final long serialVersionUID = 1L;
 
 	/** 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 *  Mundo donde se encuentra el jugador o personaje.
 	 */
-	protected Vector3f angle;
+	
+	private String actualWorld;
 
 	/** 
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 *  Angulo donde se encuentra el jugador o personaje. 
 	 */
-	protected Vector3f position;
+	
+	private Vector3f angle;
+
+	/** 
+	 *  Posicion donde se encuentra el jugador o personaje.
+	 */
+	
+	private Vector3f position;
 
 	/**
-	 * @return
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return actualWorld donde se encuentra el jugador
+	 * 
 	 */
-	public String getActualWorld() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	
+	public final String getActualWorld() {
+	
+		return this.actualWorld;
+	
 	}
 
 	/**
-	 * @return
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return Vector3f donde se encuentra el jugador
+	 * 
 	 */
-	public Vector3f getAngle() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Vector3f getAngle() {
+
+		return this.angle;
 	}
 
 	/**
-	 * @return
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return Vector3f donde se encuentra el jugador. 
+	 * 
 	 */
-	public Vector3f getPosition() {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+	public final Vector3f getPosition() {
+
+		return this.position;
+	
 	}
 
 	/**
-	 * @param world
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @param world donde se encuentra el jugador
+	 * 
 	 */
-	public void setActualWorld(String world) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setActualWorld(final String world) {
+		AppContext.getDataManager().markForUpdate(this);
+		this.actualWorld = world;
 	}
 
 	/**
-	 * @param angle
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @param angle donde se encuentra el jugador
+	 * 
 	 */
-	public void setAngle(Vector3f angle) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setAngle(final Vector3f angle) {
+		AppContext.getDataManager().markForUpdate(this);
+		this.angle = angle;
 	}
 
 	/**
-	 * @param position
-	 * @generated "De UML a Java V5.0 (com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @param position donde se encuentra el jugador
+	 * 
 	 */
-	public void setPosition(Vector3f position) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-
-		// end-user-code
+	public final void setPosition(final Vector3f position) {
+		AppContext.getDataManager().markForUpdate(this);
+		this.position = position;      
 	}
 }

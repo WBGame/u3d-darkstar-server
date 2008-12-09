@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.player;
 
 import ar.edu.unicen.exa.server.entity.DynamicEntity;
@@ -18,79 +15,85 @@ import common.datatypes.IPlayerProperty;
 import common.messages.IMessage;
 
 /**
- *  
+ * Esta clase proveer informacion a cerca del jugador como por ej el
+ * estado y sus propiedades. Ademas permite enviar mensajes por medio 
+ * de la session.
+ * 
+ * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @encoding UTF-8
+ * 
+ * TODO Javadoc
  */
 public class Player extends DynamicEntity {
 	
-	/**
-	 * Serialization code.
-	 */
-	private static final long serialVersionUID = -3708396766647144421L;
+	/**  Para cumplir con la version de la clase Serializable. */
+	private static final long serialVersionUID = 1L;
 
-	/** 
-	 * Logger.
+	/** El {@link Logger} para esta clase. */
+    private static final Logger logger =
+        Logger.getLogger(Player.class.getName());
+
+    /**
+	 * Referencia a la sesion actual del player.
 	 */
-	private static final Logger logger = 
-		Logger.getLogger(Player.class.getName());
-	
-	/**
-	 * Referencia a la secion actual del player.
-	 */
-	protected ManagedReference<ClientSession>		session;
+	private ManagedReference<ClientSession>	refSession;
 	
 	/**
 	 * Conjunto de propiedades del jugador que no estan presentes en
 	 * ModelAccess.
 	 */
-	protected Hashtable<String, IPlayerProperty>	properties;
+	private Hashtable<String, IPlayerProperty>	properties;
 	
 	/**
-	 * El estado actual deñ jugador.
+	 * El estado actual del jugador.
 	 */
-	protected PlayerState							state;
+	private PlayerState	state;
 	
 	/**
+	 * @Mock
+	 * 
 	 * @param message
 	 */
-	public void send(final IMessage message) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		
-		// end-user-code
+	public final void send(final IMessage message) {
+		refSession.get().send(message.toByteBuffer());
 	}
 	
 	/**
-	 * @param property
-	 * @return
-	 */
-	public IPlayerProperty getProperty(final String property) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
-	}
-	
-	/**
-	 * Getter.
 	 * 
-	 * @return ClientSession instance 
+	 * @param property 
+	 * @return property
+	 */
+	public final IPlayerProperty getProperty(final String property) {
+		return this.properties.get(property);
+	}
+	
+	/**
+	 * @return session
 	 */
 	public final ClientSession getSession() {
-		return session.get();
+		return refSession.get();
 	}
 	
 	/**
-	 * Setter.
-	 * 
-	 * @param session Player ClientSession instance.
+	 * @param session the session to set
 	 */
 	public final void setSession(final ClientSession session) {
-		DataManager dm = AppContext.getDataManager();
-		try {
-			this.session = dm.createReference( session );
-		} catch ( Exception e ) {
-			this.session = null;
-			logger.log( Level.SEVERE , e.toString() );
+        
+    	DataManager dataMgr = AppContext.getDataManager();
+        
+    	dataMgr.markForUpdate(this);
+
+        try {
+        	this.refSession = dataMgr.createReference(session);	
+            
+        	logger.log( 
+            		Level.INFO, 
+            		"Establecer una referencia a la sesión de {0} ",
+            		session.getName()
+            );
+        	
+        } catch (Exception e) {
+			this.refSession = null;
 		}
 	}
 	
@@ -117,10 +120,20 @@ public class Player extends DynamicEntity {
 	}
 	
 	/**
+	 * 
 	 * @param state the state to set
 	 */
 	public final void setState(final PlayerState state) {
 		this.state = state;
 	}
 	
+	/**
+	 * TODO javadoc 
+	 */
+	public final boolean isConnected(){
+		if( refSession != null ) {	
+			return refSession.get().isConnected();
+		}
+		return false;
+	}
 }
