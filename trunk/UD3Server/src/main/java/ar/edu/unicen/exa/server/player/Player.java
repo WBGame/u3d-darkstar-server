@@ -7,8 +7,6 @@ import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
 import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import common.datatypes.PlayerState;
 import common.datatypes.IPlayerProperty;
@@ -30,11 +28,6 @@ public class Player extends DynamicEntity {
 	/**  Para cumplir con la version de la clase Serializable. */
 	
 	private static final long serialVersionUID = 1L;
-
-	/** El {@link Logger} para esta clase. */
-	
-    private final static Logger logger = 
-    	Logger.getLogger(Player.class.getName());
 
     /**
 	 * Referencia a la sesion actual del player.
@@ -83,43 +76,22 @@ public class Player extends DynamicEntity {
 		// Jugador
 		Player player = null;
 		
-		try {
-			logger.info( 
-					"Intentando recuperar una instancia del Object "
-					+ "Store para " + session.getName()
-			);
-			
+		try {	
 			// recupero el Player a partir del nombre de la sesión utilizando
 			// el dataManager.
 			player = (Player) d.getBinding(session.getName());
-			
 			// chequeo que uno o mas jugadores no esten simultaneamente 
 			// logeados en el sistema.
 			if (player.isConnected()) {
 				return null;
 			}
-			
 		} catch (Exception e) {
-
-			logger.info(
-					"No existe ninguna instancia dentro del Object "
-					+ "Store para " + session.getName()
-			);
-
 			// creo un nuevo jugador 
 			player = new Player();
-
 			// seteo su id de entidad
 			player.setIdEntity(session.getName());
-
-			logger.log(
-					Level.INFO, "Id Identity Player: {0}", 
-					player.getIdEntity()
-			);
-
 			// registro el Player dentro del Object Store.
 			d.setBinding(player.getIdEntity() , player);
-
 		}
 		
 		return player;
@@ -169,11 +141,6 @@ public class Player extends DynamicEntity {
 
         try {
         	this.refSession = dataMgr.createReference(session);	
-            
-        	logger.log(Level.INFO,
-        			"Establecer una referencia a la sesión de {0} ",
-        			session.getName());
-        	
         } catch (Exception e) {
 			this.refSession = null;
 		}
