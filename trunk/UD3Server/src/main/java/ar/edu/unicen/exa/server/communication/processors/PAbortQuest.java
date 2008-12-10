@@ -3,12 +3,17 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
+import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
 /**
- * @author lito
- *
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo
+ * pedir abandonar una quest.
+ * 
+ * @author Polo
+ * @see #process(IMessage)
  */
 public class PAbortQuest extends ServerMsgProcessor {
 	
@@ -26,20 +31,26 @@ public class PAbortQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PAbortQuest();
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Toma la petición de abandonar una quest y la procesa. Toma
+	 * contenido en el mensaje pasado como paramentro, e invoca el metodo
+	 * {@link ModelAccess#abortQuest(String, String)}.
 	 * 
+	 * @param msg Contiene el id de la quest que se abandona.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(IMessage msg) {
-		// TODO Auto-generated method stub
-		
+		MsgPlainText msgAbortQuestRequest = (MsgPlainText) msg;
+
+		String idPlayer = getPlayerAsociete().get().getIdEntity();
+
+		String idQuest = msgAbortQuestRequest.getMsg();
+
+		ModelAccess.getInstance().abortQuest(idPlayer, idQuest);
 	}
 	
 }

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import javax.security.auth.login.CredentialException;
 
-import server.serverLogic.ModelAccess;
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 
 import com.sun.sgs.auth.IdentityAuthenticator;
 import com.sun.sgs.auth.IdentityCredentials;

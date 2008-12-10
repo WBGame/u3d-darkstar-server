@@ -309,5 +309,10 @@ public class ModelAccess {
 		
 		// end-user-code
 	}
+
+	public float get2DGamePrice(String id2DGame) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

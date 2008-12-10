@@ -3,17 +3,22 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
+import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
 /**
- * @author lito
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
+ * finalizar una quest.
  * 
+ * @author Polo
+ * @see #process(IMessage)
  */
 public class PFinishQuest extends ServerMsgProcessor {
 	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
 	public PFinishQuest() {
@@ -26,20 +31,26 @@ public class PFinishQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PFinishQuest();
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Toma la petición de finalizar una quest y la procesa. Toma contenido en
+	 * el mensaje pasado como paramentro, e invoca el metodo
+	 * {@link ModelAccess#finishQuest(String, String)}.
 	 * 
+	 * @param msg Contiene el id de la quest que se finaliza.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(IMessage msg) {
-		// TODO Auto-generated method stub
+		MsgPlainText msgFinishQuestReq = (MsgPlainText) msg;
 		
+		String idQuest = msgFinishQuestReq.getMsg();
+		
+		String idPlayer = playerAsociete.get().getIdEntity();
+		
+		ModelAccess.getInstance().finishQuest(idPlayer, idQuest);
 	}
 	
 }
