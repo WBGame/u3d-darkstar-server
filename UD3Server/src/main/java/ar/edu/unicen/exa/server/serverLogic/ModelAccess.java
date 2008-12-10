@@ -309,7 +309,14 @@ public class ModelAccess {
 		
 		// end-user-code
 	}
-
+	
+	/**
+	 * Retorna el costo de un juego determinado.
+	 * 
+	 * @param id2DGame identificador del juego que nos interesa consultar.
+	 * 
+	 * @return valor del juego especificado.
+	 */
 	public float get2DGamePrice(String id2DGame) {
 		// TODO Auto-generated method stub
 		return 0;
