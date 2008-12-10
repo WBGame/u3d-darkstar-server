@@ -6,8 +6,6 @@ import ar.edu.unicen.exa.server.player.UserSessionListener;
 import com.sun.sgs.app.AppListener;
 import java.io.Serializable;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.ClientSession;
@@ -27,10 +25,6 @@ public class AppListenerImpl implements AppListener, Serializable {
 	/** Para cumplir con la clase serializable. */
 	private static final long serialVersionUID = 1L;
 
-	/** Creamos un logger para esta clase. */
-	private final Logger logger =
-		Logger.getLogger(AppListenerImpl.class.getName());
-
 	/**
 	 * Este metodo es invocado cuando el servidor es ejecutado por primera 
 	 * vez. No tiene código asociado solo imprime que el servidor se inicio
@@ -42,7 +36,6 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 * @param props propiedades para configurar la aplicacion
 	 */
 	public final void initialize(final Properties props) {
-		logger.info("Servidor iniciado correctamente");
 	}
 
 	/** 
@@ -60,32 +53,18 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 * @return ClientSessionListener un listener para la session del jugador.
 	 */
 	public final ClientSessionListener loggedIn(final ClientSession session) {
-
 		// Retorno del metodo
 		UserSessionListener user;
-
 		// Jugador
 		Player player = Player.create(session);
-		
 		if (player != null) {
-
 			// para capturar los eventos asociados a este jugador
 			user = new UserSessionListener();
-			
 			// asigno la nueva sesión al jugador
 			player.setSession(session);
-			
 			user.setPlayer(player);
-
-			logger.log(
-					Level.INFO, 
-					"Usuario {0} ha sido logeado en el Servidor" ,
-					session.getName()
-			);
-
 			return user;
 		}
-		
 		return null;
 	}
 }
