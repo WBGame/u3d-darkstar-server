@@ -33,7 +33,7 @@ public class Player extends DynamicEntity {
 
 	/** El {@link Logger} para esta clase. */
 	
-    private final Logger logger = 
+    private static final Logger logger = 
     	Logger.getLogger(Player.class.getName());
 
     /**
@@ -51,6 +51,79 @@ public class Player extends DynamicEntity {
 	 * El estado actual del jugador.
 	 */
 	private PlayerState	state;
+	
+	/**
+	 * Este método es invocado para crear/recuperar un {@link Player} cuando un
+	 * usuario se logea en el sistema.
+	 * 
+	 * Si el usuario entra al sistema por primera vez, se producirá una 
+	 * excepcion debido a que que no se encuentra almacenado el {@link Player} 
+	 * asociado a dicho jugador. Esta excepcion es capturada para crear al 
+	 * nuevo Player y setear su id de entidad utilizando el método 
+	 * {@link #getName()} de la clase {@link ClientSession}. Una vez 
+	 * inicializado el Player, se lo almacena con {@link #setBinding()} para 
+	 * posterior recuperación. 
+	 * Por otro lado, si ya se ha registrado en el Object Store, entonces no
+	 * se producirá la excepcion y se obtiene directamente el {@link Player} a
+	 * travéz de la clase {@link DataManager} utilizando el método 
+	 * {@link #getBinding()).
+	 * 
+	 * Además se chequea que un jugador no pueda logearse si el mismo ya se
+	 * encuentra logeado en el sistema. Esto es para evitar que uno o mas 
+     * jugadores no esten simultaneamente logeados en el sistema. 
+	 * 
+	 * @param session sesión correspondiente al juagdor.
+	 * @return Player una instancia para el jugador.
+	 */
+	public static final Player create(final ClientSession session) {
+		
+		// Data manager del sistema
+		DataManager d = AppContext.getDataManager();
+		
+		// Jugador
+		Player player = null;
+		
+		try {
+			logger.info(
+					"Intentando recuperar una instancia del Object "
+					+ "Store para " + session.getName()
+			);
+			
+			// recupero el Player a partir del nombre de la sesión utilizando
+			// el dataManager.
+			player = (Player) d.getBinding(session.getName());
+			
+			// chequeo que uno o mas jugadores no esten simultaneamente 
+			// logeados en el sistema.
+			if (player.isConnected()) {
+				return null;
+			}
+			
+		} catch (Exception e) {
+
+			logger.info(
+					"No existe ninguna instancia dentro del Object "
+					+ "Store para " + session.getName()
+			);
+
+			// creo un nuevo jugador 
+			player = new Player();
+
+			// seteo su id de entidad
+			player.setIdEntity(session.getName());
+
+			logger.log(
+					Level.INFO, "Id Identity Player: {0}", 
+					player.getIdEntity()
+			);
+
+			// registro el Player dentro del Object Store.
+			d.setBinding(player.getIdEntity() , player);
+
+		}
+		
+		return player;
+	}
 	
 	/**
 	 * @Mock
