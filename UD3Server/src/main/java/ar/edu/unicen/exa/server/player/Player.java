@@ -1,6 +1,6 @@
-package ar.edu.unicen.exa.server.player;
+package server.player;
 
-import ar.edu.unicen.exa.server.entity.DynamicEntity;
+import server.entity.DynamicEntity;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -19,19 +19,22 @@ import common.messages.IMessage;
  * estado y sus propiedades. Ademas permite enviar mensajes por medio 
  * de la session.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @author Kopp Roberto <robertokopp at hotmail dot com/>
  * @encoding UTF-8
  * 
- * TODO Javadoc
+ * TODO Implementar metodo send.
+ * 
  */
 public class Player extends DynamicEntity {
 	
 	/**  Para cumplir con la version de la clase Serializable. */
+	
 	private static final long serialVersionUID = 1L;
 
 	/** El {@link Logger} para esta clase. */
-    private static final Logger logger =
-        Logger.getLogger(Player.class.getName());
+	
+    private final Logger logger = 
+    	Logger.getLogger(Player.class.getName());
 
     /**
 	 * Referencia a la sesion actual del player.
@@ -52,7 +55,7 @@ public class Player extends DynamicEntity {
 	/**
 	 * @Mock
 	 * 
-	 * @param message
+	 * @param message mensaje que se envia al usuario.
 	 */
 	public final void send(final IMessage message) {
 		refSession.get().send(message.toByteBuffer());
@@ -60,22 +63,30 @@ public class Player extends DynamicEntity {
 	
 	/**
 	 * 
-	 * @param property 
-	 * @return property
+	 * @param playerproperty identificador de la propiedad.
+	 * @return property propiedad del jugador
 	 */
-	public final IPlayerProperty getProperty(final String property) {
-		return this.properties.get(property);
+	public final IPlayerProperty getProperty(final String playerproperty) {
+		return this.properties.get(playerproperty);
 	}
 	
 	/**
-	 * @return session
+	 * @return session el objeto sesion asociado al player. 
 	 */
 	public final ClientSession getSession() {
 		return refSession.get();
 	}
 	
 	/**
-	 * @param session the session to set
+	 * Se crea una referencia {@link ManagedReference} a la sesion del usuario
+	 * {@link ClientSession} por medio del DataManager e indicando que el 
+	 * Player se actualizara para establecer la referencia.
+	 * 
+	 * 
+	 * @param session sesion correspondiente al loggedIn del usuario. Si es el 
+	 * valor de la sesion es null se producira una excepsion la cual es 
+	 * capturada para establecer la referencia en null, lo que significa que no
+	 * se hara uso de la sesion a la cual se hace referencia.
 	 */
 	public final void setSession(final ClientSession session) {
         
@@ -86,11 +97,9 @@ public class Player extends DynamicEntity {
         try {
         	this.refSession = dataMgr.createReference(session);	
             
-        	logger.log( 
-            		Level.INFO, 
-            		"Establecer una referencia a la sesión de {0} ",
-            		session.getName()
-            );
+        	logger.log(Level.INFO,
+        			"Establecer una referencia a la sesión de {0} ",
+        			session.getName());
         	
         } catch (Exception e) {
 			this.refSession = null;
@@ -98,40 +107,54 @@ public class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * @return the properties
+	 * Retorna las propiedades del jugador que no estan presentes en
+	 * ModelAccess.
+	 * 
+	 * @return properties propiedades del jugador
 	 */
 	public final Hashtable<String, IPlayerProperty> getProperties() {
 		return properties;
 	}
 	
 	/**
-	 * @param properties the properties to set
+	 * Se setea las propiedades del jugador que no estan presentes en
+	 * ModelAccess.
+	 * 
+	 * @param pproperties propiedades del jugador
 	 */
 	public final void setProperties(
-			final Hashtable<String, IPlayerProperty> properties) {
-		this.properties = properties;
+			final Hashtable<String, IPlayerProperty> pproperties) {
+		this.properties = pproperties;
 	}
 	
 	/**
-	 * @return the state
+	 * Devuelve el estado del jugador.
+	 * 
+	 * @return state estado del jugador
 	 */
 	public final PlayerState getState() {
 		return state;
 	}
 	
 	/**
+	 * Se setea el estado del jugador.
 	 * 
-	 * @param state the state to set
+	 * @param pstate el estado del jugador
 	 */
-	public final void setState(final PlayerState state) {
-		this.state = state;
+	public final void setState(final PlayerState pstate) {
+		this.state = pstate;
 	}
 	
 	/**
-	 * TODO javadoc 
+	 * Por medio de la referencia a la secion, se obtiene el objeto 
+	 * clientSession y con este se invoca al metodo isConnected para conocer el
+	 * estado de coneccion (true/false) del jugador.
+	 * 
+	 * @return boolean si {@code true}, significa que el usuario esta conectado
+	 *  al servidor.
 	 */
-	public final boolean isConnected(){
-		if( refSession != null ) {	
+	public final boolean isConnected() {
+		if (refSession != null) {	
 			return refSession.get().isConnected();
 		}
 		return false;

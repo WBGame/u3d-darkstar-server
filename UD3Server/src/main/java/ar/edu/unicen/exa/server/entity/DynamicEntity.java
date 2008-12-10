@@ -1,4 +1,4 @@
-package ar.edu.unicen.exa.server.entity;
+package server.entity;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
@@ -6,7 +6,7 @@ import com.sun.sgs.app.AppContext;
 /** 
  * Ofrece funcionalidad a las entidades que tienen movimiento dentro del mundo.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @author Kopp Roberto <robertokopp at hotmail dot com/>
  * @encoding UTF-8 
  */
 public class DynamicEntity extends Entity {
@@ -73,20 +73,22 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * @param angle donde se encuentra el jugador
+	 * Se setea el angulo donde se encuentra el jugador.
+	 * @param jangle donde se encuentra el jugador
 	 * 
 	 */
-	public final void setAngle(final Vector3f angle) {
+	public final void setAngle(final Vector3f jangle) {
 		AppContext.getDataManager().markForUpdate(this);
-		this.angle = angle;
+		this.angle = jangle;
 	}
 
 	/**
-	 * @param position donde se encuentra el jugador
+	 * Se setea la posicion donde se encuentra el jugador.
+	 * @param jposition donde se encuentra el jugador
 	 * 
 	 */
-	public final void setPosition(final Vector3f position) {
+	public final void setPosition(final Vector3f jposition) {
 		AppContext.getDataManager().markForUpdate(this);
-		this.position = position;      
+		this.position = jposition;      
 	}
 }
