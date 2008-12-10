@@ -72,15 +72,19 @@ public class TestLogin implements SimpleClientListener {
 		ct.login();
 		
 		try {
-			
 			System.out.print("Texto a enviar al servidor: ");
 			String texto = flujo.readLine();
 			ct.send(texto); 
-		
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
+		ct.logout();
+	}
+
+	/** Logout from server */
+	private void logout() {
+		this.simpleClient.logout(false);
 	}
 
 	/**
