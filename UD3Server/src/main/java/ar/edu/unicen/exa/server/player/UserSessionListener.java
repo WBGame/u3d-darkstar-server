@@ -1,4 +1,4 @@
-package ar.edu.unicen.exa.server.player;
+package server.player;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -18,11 +18,10 @@ import java.util.logging.Logger;
  * Esta asociado uno a uno con cada jugador ( {@link Player} ) del sistema. 
  * Debe atender peticiones de desconexion y mensajes entrantes.
  * 
- * @author Pablo Inchausti <inchausti.pablo at gmail dot com> 
+ * @author Pablo Inchausti <inchausti.pablo at gmail dot com/> 
  * @encoding UTF-8 
  * 
- * TODO eliminar la session del player en el metodo disconnect porque no se debe
- *      almacenar en la base de datos.
+ * TODO implementar el método receivedMessage().
  */
 public class UserSessionListener 
 implements ClientSessionListener, Serializable {
@@ -33,35 +32,39 @@ implements ClientSessionListener, Serializable {
 	private static final long serialVersionUID = 4348700548351927735L;
 
 	/** 
-	 * Logger.
+	 * Logger para esta clase.
 	 */
-	private static final Logger logger = 
+	private final Logger logger = 
 		Logger.getLogger(UserSessionListener.class.getName());
 
-	/** 
-	 * Reference to player object.
+	/**
+	 * Es una referencia {@code ManagedReference} al {@link Player}.
+	 *
 	 */
-	protected ManagedReference<Player> playerRef;
+	private ManagedReference<Player> playerRef;
 
 	/**
-	 * Retorna el objeto ( {@link Player} ) a partir de la referencia 
+	 * Retorna un ( {@link Player} ) a partir de la referencia 
 	 * {@code ManagedReference} al jugador asociado.
-	 * @return Player jugador que refiere el {@code ManagedReference}.
+	 * 
+	 * @return Player jugador que hace referencia el {@code ManagedReference}.
 	 */
 	public final Player getPlayer() {
 		return playerRef.get();
 	}
 
 	/**
-	 * Establece el {@link Player}. Se crea la referencia 
-	 * {@code ManagedReference} al jugador invocando al método 
-	 * {@code createReference()} del {@code DataManager} .
+	 * Establece el {@link Player} para capturar los eventos de este jugador.
+	 * Se crea la referencia {@code ManagedReference} al jugador invocando al
+	 * método {@code createReference()} del {@code DataManager}.
+	 * 
 	 * @param player instancia de un jugador.
 	 */
 	public final void setPlayer(final Player player) {
-		if (player == null)
-            throw new NullPointerException("null player");
-        
+		if (player == null) {
+            throw new NullPointerException(
+            		"No existe una instancia para la clase Player");
+		}
     	DataManager dataMgr = AppContext.getDataManager();
         
         try {
@@ -78,7 +81,7 @@ implements ClientSessionListener, Serializable {
 	}
 
 	/**
-	 * @Mock
+	 * @Mock 
 	 * 
 	 * Se invoca a este metodo automaticamente cuando el cliente envia un 
 	 * mensaje directamente al servidor.
@@ -87,26 +90,32 @@ implements ClientSessionListener, Serializable {
 	 */
 	public final void receivedMessage(final ByteBuffer msg) {
 		ClientSession session = getPlayer().getSession();
-		logger.info( 
+		logger.info(
 				"AppServer: Reciviendo el mensaje del usuario "
 				+ session.getName()		
 		);
+		
 	}
 
 	/**
-	 * Desconecta al jugador de la sesion que tiene establecida con el 
-	 * servidor.
+	 * Desconecta al jugador de la sesión que tiene establecida con el 
+	 * servidor. 
+	 * 
 	 * @param graceful si {@code true}, el cliente se desconecta
 	 *        correctamente.
 	 */
 	public final void disconnected(final boolean graceful) {
 		ClientSession session = getPlayer().getSession();
-		String grace = graceful ? "correctamente" : "forzadamente";
+		String grace = graceful ? 
+				"correctamente" 
+				: "forzadamente";
 		logger.log(
 				Level.INFO,
 				"El usuario {0} se ha desconectado {1}",
 				new Object[] { session.getName(), grace } 
 		);
-		playerRef.get().setSession(null);
+		
+		// la sesión es inutilizada para un usuario desconectado. 
+		getPlayer().setSession(null);
 	}
 }

@@ -1,7 +1,7 @@
-package ar.edu.unicen.exa.server;
+package server;
 
-import ar.edu.unicen.exa.server.player.Player;
-import ar.edu.unicen.exa.server.player.UserSessionListener;
+import server.player.Player;
+import server.player.UserSessionListener;
 
 import com.sun.sgs.app.AppListener;
 import java.io.Serializable;
@@ -9,19 +9,15 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.ClientSession;
-import com.sun.sgs.app.DataManager;
 
 /**
- * Escucha los eventos de aplicación.  Esta clase es invocada cuando la 
- * aplicación se ejecuta por primera vez o los clientes se logean en el 
- * sistema.
+ * Esta clase captura los eventos correspondiente al loggedIn de un usuario.
  * Basicamente se encarga de inicializar el servidor y recuperar o crear
- * el jugardor para una sesion.
+ * el jugardor para la debida sesión.
  *
- * @author Pablo Inchausti <inchausti.pablo at gmail dot com>
+ * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
  * @encoding UTF-8
  * 
  * TODO method initialize doesn't have the final implementation.
@@ -32,94 +28,64 @@ public class AppListenerImpl implements AppListener, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** Creamos un logger para esta clase. */
-	private static final Logger logger =
+	private final Logger logger =
 		Logger.getLogger(AppListenerImpl.class.getName());
 
 	/**
 	 * Este metodo es invocado cuando el servidor es ejecutado por primera 
-	 * vez. No tiene codigo asociado solo imprime que el servidor se inicio
+	 * vez. No tiene código asociado solo imprime que el servidor se inicio
 	 * correctamente.  
-	 *
+	 * 
+	 * TODO faltaría inicializar todo lo necesaio para poder persistir
+	 * la información que maneja el servidor, ej {@link MatrixGridStructure}.  
+	 * 
 	 * @param props propiedades para configurar la aplicacion
 	 */
-	public void initialize(Properties props) {
-		logger.info("Servidor Inicializado");
+	public final void initialize(final Properties props) {
+		logger.info("Servidor iniciado correctamente");
 	}
 
 	/** 
-	 * Este metodo es invocado cuando cualquier usuario previa autenticacion,
-	 * se logea en el sistema. 
-	 * Si el usuario/jugador entra al sistema por primera vez, se producira
-	 * una excepcion debido a que se quiere recuperar la informacion 
-	 * correspondiente a un jugador que no se encuentra almacenado en el 
-	 * Object Store. Esta excepcion es capturada mediante la sentencia 
-	 * try-catch para que se cree el nuevo jugador seteando su ID de 
-	 * identidad (el nombre de la sesion) y almacenandolo {@link #setBinding()} 
-	 * con el binding ID de identidad para posterior recuperación. 
-	 * Por otro lado, si ya se ha registrado en el Object Store, entonces no
-	 * se producirá la excepcion y se obtiene el jugador por medio del 
-	 * DataManager utilizando el método {@link #getBinding()).
-	 * Finalmente, se crea un UserSessionListener asociándolo al jugador.
+	 * Este método es invocado cada vez que un usuario se logea en el sistema.
+	 *  
+	 * Por medio de la sesion se obtiene el Player. En caso de que sea null,
+	 * significa que existe un jugador con el mismo nobre de usuario conectado
+	 * en el sistema, lo que se rechazara el acceso al usuario.
+	 * Si pasa esta verificacion, se crea se crea un UserSessionListener para 
+	 * capurar los eventos asociados al jugador y se setea al Player la sesion
+	 * actual. Finalmente se retorna el UserSessionListener.
 	 * 
 	 * @see AppListener#loggedIn(ClientSession session)
 	 * @param session sesion de un player
 	 * @return ClientSessionListener un listener para la session del jugador.
 	 */
-	public ClientSessionListener loggedIn(ClientSession session) {
-
-		// Data manager del sistema
-		DataManager d = AppContext.getDataManager();
+	public final ClientSessionListener loggedIn(final ClientSession session) {
 
 		// Retorno del metodo
 		UserSessionListener user;
 
 		// Jugador
-		Player player;
+		Player player = Player.create(session);
+		
+		if (player != null) {
 
-		try {
-			logger.info(
-					"Intentando recuperar una instancia del Object "
-					+ "Store para " + session.getName()
-			);
+			// para capturar los eventos asociados a este jugador
+			user = new UserSessionListener();
 			
-			player = (Player) d.getBinding(session.getName());
+			// asigno la nueva sesión al jugador
+			player.setSession(session);
 			
-			// check login only once
-			if( player.isConnected() )
-				return null;
-			
-		} catch (Exception e) {
-
-			logger.info(
-					"No existe ninguna instancia dentro del Object "
-					+ "Store para " + session.getName()
-			);
-
-			player = new Player();
-
-			player.setIdEntity(session.getName());
+			user.setPlayer(player);
 
 			logger.log(
-					Level.INFO, "Id Identity Player: {0}", 
-					player.getIdEntity()
+					Level.INFO, 
+					"Usuario {0} ha sido logeado en el Servidor" ,
+					session.getName()
 			);
 
-			// registro el objeto dentro del Object Store.
-			d.setBinding(player.getIdEntity() , player);
-
-			logger.info( "Nombre de identificacion: " + player.getIdEntity() );
+			return user;
 		}
-
-		user = new UserSessionListener();
-		player.setSession(session);
-		user.setPlayer(player);
-
-		logger.log(
-				Level.INFO, 
-				"Usuario {0} ha sido logeado en el Servidor" ,
-				session.getName()
-		);
-
-		return user;
+		
+		return null;
 	}
 }
