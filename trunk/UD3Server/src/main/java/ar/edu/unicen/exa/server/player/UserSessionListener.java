@@ -34,7 +34,7 @@ implements ClientSessionListener, Serializable {
 	/** 
 	 * Logger para esta clase.
 	 */
-	private final Logger logger = 
+	private final static Logger logger = 
 		Logger.getLogger(UserSessionListener.class.getName());
 
 	/**
