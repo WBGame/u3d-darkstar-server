@@ -1,4 +1,4 @@
-package server;
+package ar.edu.unicen.exa.server;
 
 import server.player.Player;
 import server.player.UserSessionListener;

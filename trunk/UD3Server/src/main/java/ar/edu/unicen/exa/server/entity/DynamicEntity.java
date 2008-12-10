@@ -1,4 +1,4 @@
-package server.entity;
+package ar.edu.unicen.exa.server.entity;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;

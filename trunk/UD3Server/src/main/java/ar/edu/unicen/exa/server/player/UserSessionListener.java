@@ -1,4 +1,4 @@
-package server.player;
+package ar.edu.unicen.exa.server.player;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;

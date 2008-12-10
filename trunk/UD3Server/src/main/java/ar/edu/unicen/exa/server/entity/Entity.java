@@ -1,4 +1,4 @@
-package server.entity;
+package ar.edu.unicen.exa.server.entity;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedObject;
 import java.io.Serializable;
