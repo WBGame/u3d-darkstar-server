@@ -3,17 +3,22 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
+import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
 /**
- * @author lito
- *
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
+ * comprar un juego.
+ * 
+ * @author Polo
+ * @see #process(IMessage)
  */
 public class PBuyGame extends ServerMsgProcessor {
 	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
 	public PBuyGame() {
@@ -26,20 +31,26 @@ public class PBuyGame extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PBuyGame();
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Toma la petición de comprar un juego y la procesa. Toma contenido en el
+	 * mensaje pasado como paramentro, e invocanda el metodo
+	 * {@link ModelAccess#buy2DGame(String, String)}.
 	 * 
+	 * @param msg Contiene el id del juego 2D que se quiere comprar.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(IMessage msg) {
-		// TODO Auto-generated method stub
+		MsgPlainText msgBuyGame = (MsgPlainText) msg;
 		
+		String id2DGame = msgBuyGame.getMsg();
+		
+		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		
+		ModelAccess.getInstance().buy2DGame(id2DGame, idPlayer);
 	}
 	
 }

@@ -3,17 +3,22 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
+import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
 /**
- * @author lito
- *
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
+ * comenzar una quest.
+ * 
+ * @author Polo
+ * @see #process(IMessage)
  */
 public class PStartQuest extends ServerMsgProcessor {
 	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
 	public PStartQuest() {
@@ -26,20 +31,26 @@ public class PStartQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PStartQuest();
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Toma la petición de comenzar una quest y la procesa. Toma contenido en el
+	 * mensaje pasado como paramentro, e invoca el metodo
+	 * {@link ModelAccess#startQuest(String, String)}.
 	 * 
+	 * @param msg Contiene el id de la quest que se quiere iniciar.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(IMessage msg) {
-		// TODO Auto-generated method stub
+		MsgPlainText msgStartQuestRequest = (MsgPlainText) msg;
 		
+		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		
+		String idQuest = msgStartQuestRequest.getMsg();
+		
+		ModelAccess.getInstance().startQuest(idPlayer, idQuest);
 	}
 	
 }

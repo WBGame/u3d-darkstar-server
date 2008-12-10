@@ -3,17 +3,22 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
+import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
 /**
- * @author lito
- *
+ * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
+ * avanzar al siguiente estado en una quest.
+ * 
+ * @author Polo
+ * @see #process(IMessage)
  */
 public class PNextQuestState extends ServerMsgProcessor {
 	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
 	public PNextQuestState() {
@@ -26,20 +31,27 @@ public class PNextQuestState extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PNextQuestState();
 	}
 	
 	/**
-	 * (non-Javadoc)
+	 * Toma la petición de pasar al siguiente estado en una quest y la procesa.
+	 * Toma contenido en el mensaje pasado como paramentro, e invoca el metodo
+	 * {@link ModelAccess#nextQuestState(String, String, String)}.
 	 * 
+	 * @param msg Contiene el id de la quest en cuestión.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(IMessage msg) {
-		// TODO Auto-generated method stub
+		MsgPlainText msgNextQuestState = (MsgPlainText) msg;
 		
+		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		
+		String idQuest = msgNextQuestState.getMsg();
+		// El model access se encargara de saber cual es el siguiente estado, al
+		// pasarle null como parametro
+		ModelAccess.getInstance().nextQuestState(idPlayer, idQuest, null);
 	}
 	
 }

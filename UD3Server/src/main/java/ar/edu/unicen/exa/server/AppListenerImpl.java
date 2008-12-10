@@ -1,7 +1,7 @@
 package ar.edu.unicen.exa.server;
 
-import server.player.Player;
-import server.player.UserSessionListener;
+import ar.edu.unicen.exa.server.player.Player;
+import ar.edu.unicen.exa.server.player.UserSessionListener;
 
 import com.sun.sgs.app.AppListener;
 import java.io.Serializable;

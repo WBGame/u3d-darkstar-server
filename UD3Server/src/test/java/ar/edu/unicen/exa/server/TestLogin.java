@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 package ar.edu.unicen.exa.server;
 
 import java.io.BufferedReader;
@@ -22,17 +18,17 @@ import com.sun.sgs.client.simple.SimpleClientListener;
 /**
  * Test user login.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com/>
- * @encoding UTF-8
- * 
  * Esta clase es utilizada para testear el login. COntiene una implementacion 
  * basica de un cliente y solo tiene la funcionalidad para logearse por medio 
- * del nombre y password, y enviar mensajes.   
+ * del nombre y password, y enviar mensajes.
+ * 
+ * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @encoding UTF-8   
  */
 public class TestLogin implements SimpleClientListener {
 
 	/** Creamos un logger para esta clase. */
-	private final Logger logger =
+	private final static Logger logger =
 		Logger.getLogger(TestLogin.class.getName());
 	
 	/**  Para cumplir con la version de la clase Serializable. */
@@ -44,15 +40,11 @@ public class TestLogin implements SimpleClientListener {
 	/** Instancia {@link SimpleClient} para este cliente. */
 	private final SimpleClient simpleClient;
 	
-	/**
-	 * El nombre que ingresa el usuario. 
-	 */
-	private String name;
-	/**
-	 * El password que ingresa el usuario.
-	 */
+	/** Login del usuario */
+	private String login;
+	/** Password del usuario */
 	private String password;
-
+	
 	/**
 	 * Corre el test del login.
 	 *
@@ -60,17 +52,17 @@ public class TestLogin implements SimpleClientListener {
 	 */
 	public static void main(final String[] args) {
 		TestLogin ct = new TestLogin();
+
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader flujo = new BufferedReader(isr);		
 		
 		try {
 			
-			InputStreamReader isr = new InputStreamReader(System.in);
-			BufferedReader flujo = new BufferedReader(isr);
-		
 			System.out.print("Name: ");
-			this.name = flujo.readLine();
+			ct.setLogin( flujo.readLine() );
 			
 			System.out.print("Password: ");
-			this.password = flujo.readLine();
+			ct.setPassword( flujo.readLine() );
 			
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage());
@@ -155,7 +147,10 @@ public class TestLogin implements SimpleClientListener {
 	 * nombre de usuario name y contraseña password. 
 	 */
 	public final PasswordAuthentication getPasswordAuthentication() {
-		return new PasswordAuthentication(name, password.toCharArray());
+		return new PasswordAuthentication( 
+				getLogin(),
+				getPassword().toCharArray() 
+		);
 	}
 
 	/**
@@ -249,6 +244,22 @@ public class TestLogin implements SimpleClientListener {
 	
 	public final boolean isConnected() {
 		return simpleClient.isConnected();
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }

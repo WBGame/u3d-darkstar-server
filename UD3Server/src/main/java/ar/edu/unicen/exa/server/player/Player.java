@@ -1,6 +1,6 @@
 package ar.edu.unicen.exa.server.player;
 
-import server.entity.DynamicEntity;
+import ar.edu.unicen.exa.server.entity.DynamicEntity;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -33,7 +33,7 @@ public class Player extends DynamicEntity {
 
 	/** El {@link Logger} para esta clase. */
 	
-    private final Logger logger = 
+    private final static Logger logger = 
     	Logger.getLogger(Player.class.getName());
 
     /**
@@ -84,7 +84,7 @@ public class Player extends DynamicEntity {
 		Player player = null;
 		
 		try {
-			logger.info(
+			logger.info( 
 					"Intentando recuperar una instancia del Object "
 					+ "Store para " + session.getName()
 			);
