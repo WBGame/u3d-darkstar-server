@@ -1,4 +1,4 @@
-package server.player;
+package ar.edu.unicen.exa.server.player;
 
 import server.entity.DynamicEntity;
 
@@ -33,7 +33,7 @@ public class Player extends DynamicEntity {
 
 	/** El {@link Logger} para esta clase. */
 	
-    private static final Logger logger = 
+    private final Logger logger = 
     	Logger.getLogger(Player.class.getName());
 
     /**
