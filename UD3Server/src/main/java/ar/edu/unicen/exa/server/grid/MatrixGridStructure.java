@@ -1,5 +1,7 @@
 package ar.edu.unicen.exa.server.grid;
 
+import java.util.ArrayList;
+
 import com.jme.math.Vector3f;
 
 /** 
@@ -22,6 +24,12 @@ public class MatrixGridStructure implements IGridStructure {
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	private String idWorld;
+	
+	/**
+	 * Celda inicial, es decir la celda en la que aparece por defecto el
+	 * jugador cuando ingresa por primera vez al mundo. 
+	 */
+	private Cell spawn;
 
 	/** 
 	 *  Representacion en forma de matriz de las celdas de la estructura.
@@ -34,7 +42,7 @@ public class MatrixGridStructure implements IGridStructure {
 	
 	/**
 	 * //TODO javadoc.
-	 * @param anStructure .
+	 * @param anStructure Estructura, siendo Cell[x=width][y=height].
 	 */
 	public MatrixGridStructure(final Cell[][] anStructure) {
 		structure = anStructure;
@@ -89,7 +97,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Cell getSpawnCell() {
-		return structure[0][0];
+		return spawn;
 	}
 
 	/**
@@ -97,7 +105,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 * pasada por parametro. Se debe proporcionar tambien la posicion del
 	 * jugador, para poder determinar la zona dentro de la celda en la que se
 	 * encuentra, ya que puede influir en la determinacion de cuales son las
-	 * celdas adyacentes. Ver documentacion del diseñoo sobre tratamiento de
+	 * celdas adyacentes. Ver documentacion del diseño sobre tratamiento de
 	 * celdas para mas informacion.
 	 * 
 	 * @param cell celda de la cual obtener los adyacentes.
@@ -108,10 +116,93 @@ public class MatrixGridStructure implements IGridStructure {
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Cell[] getAdjacents(final Cell cell, final Vector3f position) {
-		Cell[] result = new Cell[0];
-		return result;
-	}
+		//Vector result = new Vector();
+		ArrayList<Cell> result = new ArrayList<Cell>();
+		int widthIterator = -1;
+		int heightIterator = -1;
+		for (int i = 0; i < structure.length; i++) {
+			for (int j = 0; j < structure[i].length; j++) {
+				if (cell.getId().equals(structure[i][j].getId())) {
+					//obtengo la ubicacion de la celda actual
+					widthIterator = i;
+					heightIterator = j;
+				}
+			}
+		}
+		int horizontal = 0;
+		int vertical = 0;
+		/**
+		 *  -----
+		 *  |0|1|
+		 *  -----
+		 *  |2|3|
+		 *  -----
+		 */
+		if (cell.getBounds().getCenterX() > position.getX()) { //left
+			if (cell.getBounds().getCenterY() > position.getY()) { //top
+				//posicion 0
+				horizontal = -1;
+				vertical = -1;
+			} else {
+				//posicion 2
+				horizontal = -1;
+				vertical = 1;
+			}
+		} else { //rigth
+			if (cell.getBounds().getCenterY() > position.getY()) {
+				//posicion 1
+				horizontal = 1;
+				vertical = -1;
+			} else {
+				//posicion 3
+				horizontal = 1;
+				vertical = 1;
+			}
+		}
 
+		if (isInside(structure, widthIterator, heightIterator + horizontal)) {
+			result.add(structure[widthIterator][heightIterator + horizontal]);
+		}
+		if (isInside(structure, widthIterator + vertical, heightIterator)) {
+			result.add(structure[widthIterator + vertical][heightIterator]);
+		}
+		if (isInside(structure, 
+				widthIterator + vertical, heightIterator + horizontal)) {
+
+			result.add(
+				structure[widthIterator + vertical][heightIterator + horizontal]
+			);
+		}
+		
+		Cell[] array = new Cell[result.size()];
+		return result.toArray(array);
+	}
+	/**
+	 * Este metodo permite saber si existe la celda indicada por
+	 * x (ancho), y (alto) en la estructura Cell[ancho][alto].
+	 * 
+	 * @param matrix estructura.
+	 * @param x coordenada.
+	 * @param y coordenada.
+	 * @return true si las coordenadas entán dentro de la estructura, false en
+	 * 		otro caso.
+	 */
+	private static boolean isInside(final Cell[][] matrix, 
+			final int x, final int y) {
+		if (x < 0) {
+			return false;
+		}
+		if (y < 0) {
+			return false;
+		}
+		if (x >= matrix.length) {
+			return false;
+		}
+		if (y >= matrix[x].length) {
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * Establece la celda inicial, es decir la celda en la que aparece por
 	 * defecto el jugador cuando ingresa por primera vez al mundo.
@@ -120,10 +211,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void setSpawnCell(final Cell spawnCell) {
-		// begin-user-code
-		// TODO Ap�ndice de m�todo generado autom�ticamente
-
-		// end-user-code
+	public final void setSpawnCell(final Cell spawnCell) {
+		spawn = spawnCell;
 	}
 }
