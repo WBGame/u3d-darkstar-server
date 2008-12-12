@@ -40,6 +40,7 @@ public class ChannelMessageListener implements ChannelListener {
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
 			TaskCommunication taskCommunication = TaskCommFactory.getInstance()
 					.createComTask(iMessage);
+			taskCommunication.setSenderCurrentSession(session);
 			AppContext.getTaskManager().scheduleTask(taskCommunication);
 		} catch (Exception e) {
 			e.printStackTrace();
