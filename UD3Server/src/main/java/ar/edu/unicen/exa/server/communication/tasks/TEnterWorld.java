@@ -57,14 +57,14 @@ public class TEnterWorld extends TaskCommunication {
 		strNewWorld = new String();
 		msgReport = new String();
 		//FIXME handle exception and common errors
-		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
+		if (!MsgTypes.MSG_ENTER_WORLD_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
 			msgReport ="Message Usseless for this taks!";
 			System.err.println(msgReport);
 		}
 
 		//if is a MsgMove
-		MsgMove msg = (MsgMove) getMessage();
+		MsgPlainText msg = (MsgPlainText) getMessage();
 
 		String userId = msg.getIdDynamicEntity();
 		Player player = null;
@@ -104,16 +104,15 @@ public class TEnterWorld extends TaskCommunication {
 		}
 		//unsubscribe client from the actual cell
 		current.leaveFromChannel(session);
-		//TODO unsuscribe from the actual world.
+		//TODO unsubscribe from the actual world.
 		//TODO obtain from the message the new world id
-		// strNewWorld = msg.????
-		//hold the new world
+		strNewWorld = msg.getMsg();
 		structure = GridManager.getInstance().getStructure(strNewWorld);
 		// Set the current Cell as the Spawn Cell from the new world
 		current = structure.getSpawnCell();
 		//And join the channel
 		current.joinToChannel(session);
-		//get the adjacents cells for the spawn cell
+		//get the adjacent cells for the spawn cell
 		adyacentes = structure.getAdjacents(current, msg.getPosOrigen());
 		//and join his channels
 		for (int i = 0; i < adyacentes.length; i++) {
