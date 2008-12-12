@@ -12,7 +12,7 @@ import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
-import common.messages.notify.MsgMove;
+import common.messages.MsgPlainText;
 
 /**
  * La tarea se ejecutara al recibir un mensaje directo desde un cliente, el cual
@@ -63,10 +63,10 @@ public class TEnterWorld extends TaskCommunication {
 			System.err.println(msgReport);
 		}
 
-		//if is a MsgMove
+		//if is a MsgPlainText
 		MsgPlainText msg = (MsgPlainText) getMessage();
 
-		String userId = msg.getIdDynamicEntity();
+		String userId = (super.getSenderCurrentSession()).getName();
 		Player player = null;
 		try {
 			player = (Player) AppContext.getDataManager().getBinding(userId);
@@ -80,7 +80,7 @@ public class TEnterWorld extends TaskCommunication {
 		.getStructure(player.getActualWorld());
 
 		//Obtain the actual player cell
-		Cell current = structure.getCell(msg.getPosOrigen());
+		Cell current =structure.getCell(player.getPosition());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
 			msgReport ="Player outside the board";
@@ -89,7 +89,7 @@ public class TEnterWorld extends TaskCommunication {
 		ClientSession session = player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
-		.getAdjacents(current, msg.getPosDestino());
+		.getAdjacents(current, player.getPosition());
 
 		//verify the adjacent
 		if (adyacentes == null) {
@@ -107,13 +107,18 @@ public class TEnterWorld extends TaskCommunication {
 		//TODO unsubscribe from the actual world.
 		//TODO obtain from the message the new world id
 		strNewWorld = msg.getMsg();
+		// set the new world for the user
+		player.setActualWorld(strNewWorld);
+		// update the structure
 		structure = GridManager.getInstance().getStructure(strNewWorld);
 		// Set the current Cell as the Spawn Cell from the new world
 		current = structure.getSpawnCell();
 		//And join the channel
 		current.joinToChannel(session);
+		//Notify to the player near the current cell
+		current.send(msg, session);
 		//get the adjacent cells for the spawn cell
-		adyacentes = structure.getAdjacents(current, msg.getPosOrigen());
+	 	adyacentes = structure.getAdjacents(current,player.getPosition());
 		//and join his channels
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);

@@ -6,10 +6,12 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.grid.ClientSession;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
+import com.sun.sgs.app.ClientSession;
 
 import common.messages.IMessage;
 
@@ -47,7 +49,9 @@ public abstract class TaskCommunication implements Task {
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
 	protected String					msgType;
-	
+	/** This is the session for the clien that are sending a message
+	 */
+	ClientSession session
 	/**
 	 * Constructor que inicializa el estado interno con el parámetro. Setea el
 	 * mensaje interno con el parámetro y el tipo de mensaje de la tarea con el
@@ -133,5 +137,19 @@ public abstract class TaskCommunication implements Task {
 	public final void setCellAsociete(final ManagedReference<Cell> cellAsociete) {
 		this.cellAsociete = cellAsociete;
 	}
-	
+	/**
+	 * This method hold the client session when is necesary
+	 * TODO add validations
+	 * @param clientSession cannot be null
+	 */
+	public final void setSenderCurrentSession(final ClientSession clientSession){
+		 this.session = clientSession
+	}
+	/**
+	 * This method allow to get the client session 
+	 * @return session, can be null if the session can't set before
+	 */
+	public final ClientSession getSenderCurrentSession(){
+		 return this.session
+	}
 }
