@@ -3,11 +3,16 @@
  */
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.ClientSession;
+
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
+import common.messages.MsgTypes;
+import common.messages.notify.MsgMove;
 
 /**
  * La tarea se ejecutara al recibir un mensaje directo desde un cliente, el cual
@@ -27,14 +32,14 @@ import common.messages.IMessage;
  * 
  */
 public class TEnterWorld extends TaskCommunication {
-	
+
 	/**
 	 * @param msg
 	 */
 	public TEnterWorld(IMessage msg) {
 		super(msg);
 	}
-	
+
 	/**
 	 * TODO hacer javaDoc
 	 * 
@@ -45,7 +50,7 @@ public class TEnterWorld extends TaskCommunication {
 	public TaskCommunication factoryMethod(IMessage msg) {
 		return new TEnterWorld(msg);
 	}
-	
+
 	public void run() {
 		String strNewWorld;
 		String msgReport;
@@ -54,18 +59,17 @@ public class TEnterWorld extends TaskCommunication {
 		//FIXME handle exception and common errors
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
-		    msgReport ="Message Usseless for this taks!";
+			msgReport ="Message Usseless for this taks!";
 			System.err.println(msgReport);
 		}
-		
+
 		//if is a MsgMove
 		MsgMove msg = (MsgMove) getMessage();
 
 		String userId = msg.getIdDynamicEntity();
-		Player player;
+		Player player = null;
 		try {
-			player = (Player) AppContext.getDataManager()
-					.getBinding(userId);
+			player = (Player) AppContext.getDataManager().getBinding(userId);
 		} catch (Exception e) {
 			//TODO Create exception if player {@link userId} cannot be found
 			msgReport ="User <" + userId + "> Cannot be found";
@@ -73,9 +77,9 @@ public class TEnterWorld extends TaskCommunication {
 		}
 		//Obtain the IIGridStructure for the player
 		IGridStructure structure = GridManager.getInstance()
-				.getStructure(player.getActualWorld());
+		.getStructure(player.getActualWorld());
 
-		//Obtain the actual palyer cell
+		//Obtain the actual player cell
 		Cell current = structure.getCell(msg.getPosOrigen());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
@@ -85,16 +89,16 @@ public class TEnterWorld extends TaskCommunication {
 		ClientSession session = player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
-							.getAdjacents(current, msg.getPosDestino());
-		
-		//verify the adjacents
+		.getAdjacents(current, msg.getPosDestino());
+
+		//verify the adjacent
 		if (adyacentes == null) {
 			return;
 		}
 		if (adyacentes.length == 0) {
 			return;
 		} 
-		//unsubscribe client from the adyacents cells
+		//unsubscribe client from the adjacent cells
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].leaveFromChannel(session);
 		}
@@ -115,8 +119,8 @@ public class TEnterWorld extends TaskCommunication {
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);
 		}
-		
+
 	}
-	
+
 
 }

@@ -2,7 +2,10 @@ package ar.edu.unicen.exa.server.player;
 
 import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
 import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
-import ar.edu.unicen.exa.server.grid.IMessage;
+import common.exceptions.MalformedMessageException;
+import common.exceptions.UnsopportedMessageException;
+import common.messages.IMessage;
+import common.messages.MessageFactory;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -10,8 +13,6 @@ import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.DataManager;
 
 import java.io.Serializable;
-// import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-// import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
 import com.sun.sgs.app.ManagedReference;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -95,7 +96,16 @@ implements ClientSessionListener, Serializable {
 	public final void receivedMessage(final ByteBuffer msg) {
 		ClientSession session = getPlayer().getSession();
 		//create a new task for the message
-		IMessage iMessage = MessageFactory.getInstance().createMessage(msg)
+		IMessage iMessage = null;
+		try {
+			iMessage = MessageFactory.getInstance().createMessage(msg);
+		} catch (MalformedMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsopportedMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		TaskCommunication taskCommunication = TaskCommFactory.getInstance()
 					.createComTask(iMessage);
 		AppContext.getTaskManager().scheduleTask(taskCommunication);
