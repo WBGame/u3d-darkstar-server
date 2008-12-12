@@ -3,11 +3,16 @@
  */
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.ClientSession;
+
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
+import common.messages.MsgTypes;
+import common.messages.notify.MsgMove;
 import common.messages.notify.MsgRotate;
 
 /**
@@ -18,14 +23,14 @@ import common.messages.notify.MsgRotate;
  * @author lito
  */
 public class TRotate extends TaskCommunication {
-	
+
 	/**
 	 * @param msg
 	 */
 	public TRotate(IMessage msg) {
 		super(msg);
 	}
-	
+
 	/**
 	 * TODO hacer javaDoc
 	 * 
@@ -36,7 +41,7 @@ public class TRotate extends TaskCommunication {
 	public TaskCommunication factoryMethod(IMessage msg) {
 		return new TRotate(msg);
 	}
-	
+
 	public void run() {
 		String strNewWorld;
 		String msgReport;
@@ -45,18 +50,18 @@ public class TRotate extends TaskCommunication {
 		//FIXME handle exception and common errors
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
-		    msgReport ="Message Usseless for this taks!";
+			msgReport ="Message Usseless for this taks!";
 			System.err.println(msgReport);
 		}
-		
+
 		//if is a MsgMove
 		MsgMove msg = (MsgMove) getMessage();
 
 		String userId = msg.getIdDynamicEntity();
-		Player player;
+		Player player = null;
 		try {
 			player = (Player) AppContext.getDataManager()
-					.getBinding(userId);
+			.getBinding(userId);
 		} catch (Exception e) {
 			//TODO Create exception if player {@link userId} cannot be found
 			msgReport ="User <" + userId + "> Cannot be found";
@@ -64,9 +69,9 @@ public class TRotate extends TaskCommunication {
 		}
 		//Obtain the IIGridStructure for the player
 		IGridStructure structure = GridManager.getInstance()
-				.getStructure(player.getActualWorld());
+		.getStructure(player.getActualWorld());
 
-		//Obtain the actual palyer cell
+		//Obtain the actual player cell
 		Cell current = structure.getCell(msg.getPosOrigen());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
@@ -76,18 +81,15 @@ public class TRotate extends TaskCommunication {
 		ClientSession session = player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
-							.getAdjacents(current, msg.getPosDestino());
-		
-		//verify the adjacents
+		.getAdjacents(current, msg.getPosDestino());
+
+		//verify the adjacent
 		if (adyacentes == null) {
 			return;
 		}
 		if (adyacentes.length == 0) {
 			return;
 		} 
-	    //TODO calculate the rotation
-		
+		//TODO calculate the rotation
 	}		
-	}
-	
 }
