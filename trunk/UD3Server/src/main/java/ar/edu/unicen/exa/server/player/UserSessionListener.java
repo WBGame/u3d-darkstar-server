@@ -94,7 +94,6 @@ implements ClientSessionListener, Serializable {
 	 * @param msg mensaje que recibe de un usuario.
 	 */
 	public final void receivedMessage(final ByteBuffer msg) {
-		ClientSession session = getPlayer().getSession();
 		//create a new task for the message
 		IMessage iMessage = null;
 		try {
@@ -109,7 +108,6 @@ implements ClientSessionListener, Serializable {
 		TaskCommunication taskCommunication = TaskCommFactory.getInstance()
 					.createComTask(iMessage);
 		AppContext.getTaskManager().scheduleTask(taskCommunication);
-
 	}
 
 	/**
