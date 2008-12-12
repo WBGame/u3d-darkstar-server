@@ -1,5 +1,9 @@
 package ar.edu.unicen.exa.server.player;
 
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
+import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
+import ar.edu.unicen.exa.server.grid.IMessage;
+
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
@@ -81,20 +85,21 @@ implements ClientSessionListener, Serializable {
 	}
 
 	/**
-	 * @Mock 
-	 * 
-	 * Se invoca a este metodo automaticamente cuando el cliente envia un 
-	 * mensaje directamente al servidor.
-	 * 
+	 *  
+	 * Create a Imessage with the data received and create a new task with
+	 * the data
+	 * TODO add verifications for correct type of data received. 
+	 * Need to implement exceptions
 	 * @param msg mensaje que recibe de un usuario.
 	 */
 	public final void receivedMessage(final ByteBuffer msg) {
 		ClientSession session = getPlayer().getSession();
-		logger.info(
-				"AppServer: Reciviendo el mensaje del usuario "
-				+ session.getName()		
-		);
-		
+		//create a new task for the message
+		IMessage iMessage = MessageFactory.getInstance().createMessage(msg)
+		TaskCommunication taskCommunication = TaskCommFactory.getInstance()
+					.createComTask(iMessage);
+		AppContext.getTaskManager().scheduleTask(taskCommunication);
+
 	}
 
 	/**
