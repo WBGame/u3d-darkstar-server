@@ -51,7 +51,10 @@ public class TEnterWorld extends TaskCommunication {
 		return new TEnterWorld(msg);
 	}
 
-	public void run() {
+	/**
+	 * TODO javadoc. 
+	 */
+	public final void run() {
 		String strNewWorld;
 		String msgReport;
 		strNewWorld = new String();
@@ -59,20 +62,21 @@ public class TEnterWorld extends TaskCommunication {
 		//FIXME handle exception and common errors
 		if (!MsgTypes.MSG_ENTER_WORLD_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
-			msgReport ="Message Usseless for this taks!";
+			msgReport = "Message Usseless for this taks!";
 			System.err.println(msgReport);
 		}
 
 		//if is a MsgPlainText
 		MsgPlainText msg = (MsgPlainText) getMessage();
 
-		String userId = getPlayerAsociete().getId().toString();
+		String userId = super.getPlayerAsociete().getIdEntity();
+
 		Player player = null;
 		try {
 			player = (Player) AppContext.getDataManager().getBinding(userId);
 		} catch (Exception e) {
 			//TODO Create exception if player {@link userId} cannot be found
-			msgReport ="User <" + userId + "> Cannot be found";
+			msgReport = "User <" + userId + "> Cannot be found";
 			System.err.println(msgReport);
 		}
 		//Obtain the IIGridStructure for the player
@@ -80,10 +84,10 @@ public class TEnterWorld extends TaskCommunication {
 		.getStructure(player.getActualWorld());
 
 		//Obtain the actual player cell
-		Cell current =structure.getCell(player.getPosition());
+		Cell current = structure.getCell(player.getPosition());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
-			msgReport ="Player outside the board";
+			msgReport = "Player outside the board";
 			System.err.println(msgReport);
 		}
 		ClientSession session =player.getSession();// player.getSession();
@@ -118,7 +122,7 @@ public class TEnterWorld extends TaskCommunication {
 		//Notify to the player near the current cell
 		current.send(msg, session);
 		//get the adjacent cells for the spawn cell
-	 	adyacentes = structure.getAdjacents(current,player.getPosition());
+	 	adyacentes = structure.getAdjacents(current , player.getPosition());
 		//and join his channels
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);
