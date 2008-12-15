@@ -137,19 +137,4 @@ public abstract class TaskCommunication implements Task {
 	public final void setCellAsociete(final ManagedReference<Cell> cellAsociete) {
 		this.cellAsociete = cellAsociete;
 	}
-	/**
-	 * This method hold the client session when is necesary
-	 * TODO add validations
-	 * @param clientSession cannot be null
-	 */
-	public final void setSenderCurrentSession(final ClientSession clientSession){
-		 this.session = clientSession
-	}
-	/**
-	 * This method allow to get the client session 
-	 * @return session, can be null if the session can't set before
-	 */
-	public final ClientSession getSenderCurrentSession(){
-		 return this.session
-	}
 }
