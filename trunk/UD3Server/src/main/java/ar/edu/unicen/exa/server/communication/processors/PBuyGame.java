@@ -48,7 +48,7 @@ public class PBuyGame extends ServerMsgProcessor {
 		
 		String id2DGame = msgBuyGame.getMsg();
 		
-		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		String idPlayer = getPlayerAsociete().getIdEntity();
 		
 		ModelAccess.getInstance().buy2DGame(id2DGame, idPlayer);
 	}

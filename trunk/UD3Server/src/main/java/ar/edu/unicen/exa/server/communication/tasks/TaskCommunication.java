@@ -6,12 +6,11 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import ar.edu.unicen.exa.server.grid.Cell;
-import ar.edu.unicen.exa.server.grid.ClientSession;
 import ar.edu.unicen.exa.server.player.Player;
 
+import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
-import com.sun.sgs.app.ClientSession;
 
 import common.messages.IMessage;
 
@@ -49,9 +48,7 @@ public abstract class TaskCommunication implements Task {
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
 	protected String					msgType;
-	/** This is the session for the clien that are sending a message
-	 */
-	ClientSession session
+
 	/**
 	 * Constructor que inicializa el estado interno con el parámetro. Setea el
 	 * mensaje interno con el parámetro y el tipo de mensaje de la tarea con el
@@ -68,9 +65,7 @@ public abstract class TaskCommunication implements Task {
 	 * Constructor por defecto, de usarse, luego se debe setear manualmente el
 	 * mensaje.
 	 */
-	public TaskCommunication() {
-		
-	}
+	public TaskCommunication() {}
 	
 	/**
 	 * Retorna el mensaje de esta tarea.
@@ -110,31 +105,34 @@ public abstract class TaskCommunication implements Task {
 	/**
 	 * @return Referencia al player relacionado al mensaje a procesar.
 	 */
-	public final ManagedReference<Player> getPlayerAsociete() {
-		return playerAsociete;
+	public final Player getPlayerAsociete() {
+		return playerAsociete.get();
 	}
 	
 	/**
 	 * @param playerAsociete Referencia al player relacionado al mensaje a
 	 *        procesar.
 	 */
-	public final void setPlayerAsociete(
-			final ManagedReference<Player> playerAsociete) {
-		this.playerAsociete = playerAsociete;
+	public final void setPlayerAsociete(final Player playerAsociete) {
+		this.playerAsociete = AppContext.getDataManager().createReference(
+				playerAsociete
+		);
 	}
 	
 	/**
 	 * @return Referencia a la celda relacionada al mensaje a procesar.
 	 */
-	public final ManagedReference<Cell> getCellAsociete() {
-		return cellAsociete;
+	public final Cell getCellAsociete() {
+		return cellAsociete.get();
 	}
 	
 	/**
 	 * @param cellAsociete Referencia a la celda relacionada al mensaje a
 	 *        procesar.
 	 */
-	public final void setCellAsociete(final ManagedReference<Cell> cellAsociete) {
-		this.cellAsociete = cellAsociete;
+	public final void setCellAsociete(final Cell cellAsociete) {
+		this.cellAsociete = AppContext.getDataManager().createReference(
+				cellAsociete
+		);
 	}
 }

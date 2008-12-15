@@ -58,8 +58,8 @@ public class PTaskDelegator extends ServerMsgProcessor {
 		TaskCommunication comT = TaskCommFactory.getInstance().createComTask(
 				msg);
 		
-		comT.setCellAsociete(cellAsociete);
-		comT.setPlayerAsociete(playerAsociete);
+		comT.setCellAsociete( this.getCellAsociete() );
+		comT.setPlayerAsociete( this.getPlayerAsociete() );
 		
 		AppContext.getTaskManager().scheduleTask(comT);
 	}

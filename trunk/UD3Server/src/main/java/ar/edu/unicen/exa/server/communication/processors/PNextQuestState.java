@@ -46,7 +46,7 @@ public class PNextQuestState extends ServerMsgProcessor {
 	public void process(IMessage msg) {
 		MsgPlainText msgNextQuestState = (MsgPlainText) msg;
 		
-		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		String idPlayer = getPlayerAsociete().getIdEntity();
 		
 		String idQuest = msgNextQuestState.getMsg();
 		// El model access se encargara de saber cual es el siguiente estado, al
