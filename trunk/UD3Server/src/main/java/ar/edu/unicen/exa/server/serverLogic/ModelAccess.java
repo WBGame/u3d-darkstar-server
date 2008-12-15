@@ -16,21 +16,25 @@ import common.datatypes.PlayerStat;
  * quests, puntuacion de stats, etc.<BR/>
  * 
  * La clase sigue el patron de diseño <I>Sinleton</I>.
+ *
+ * @author Cabrea Emilio Facundo &lt;cabrerafacundo at gmail dot com&gt;
+ * @encoding UTF-8
  * 
- * NOTA: No se implementaran los servicios de ABM.
+ * TODO Implementar.
+ * TODO Extraer una interface a partir de esto. Interface Name IModel.
  */
-public class ModelAccess {
+public final class ModelAccess {
 	
 	/**
 	 * Instancia de la clase.
 	 */
-	private static ModelAccess INSTANCE = new ModelAccess();
+	private static ModelAccess instance = new ModelAccess();
 	
 	/**
 	 * @return La instancia singleton de la clase.
 	 */
 	public static ModelAccess getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 	
 	/**
