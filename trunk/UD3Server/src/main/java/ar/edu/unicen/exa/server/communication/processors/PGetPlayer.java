@@ -19,6 +19,7 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGetPlayerResponse;
 import common.processors.IProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la devolucion de los datos correspondientes a un
@@ -41,6 +42,8 @@ public class PGetPlayer extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
 	@Override
@@ -56,8 +59,8 @@ public class PGetPlayer extends ServerMsgProcessor {
 	 * player de la instancia (el que envio la solicitud).
 	 * 
 	 * @param msg Es casteado a {@link MsgPlainText} y se interpreta que el
-	 *        texto representa el identificador del player que se quiere
-	 *        retornar.
+	 * texto representa el identificador del player que se quiere
+	 * retornar.
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */

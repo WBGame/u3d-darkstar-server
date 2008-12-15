@@ -12,6 +12,7 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGet2DGamePriceResponse;
 import common.processors.IProcessor;
 
+
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la devolución de los datos correspondientes al precio
@@ -34,9 +35,11 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PGet2DGamePrice();
 	}
 	
@@ -47,13 +50,13 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 	 * player seteado en esta instancia de procesador.
 	 * 
 	 * @param msg Es casteado a {@link MsgPlainText} y se interpreta que el
-	 *        texto representa el identificador del minijuego del cual se quiere
-	 *        retornar su precio.
+	 * texto representa el identificador del minijuego del cual se quiere
+	 * retornar su precio.
 	 * 
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		try {
 			// Este debería ser el id del juego del cual se debe obtener el
 			// precio
@@ -64,9 +67,10 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 			float price = ModelAccess.getInstance().get2DGamePrice(id2DGame);
 			
 			// Creo el mensaje a devolver.
-			MsgGet2DGamePriceResponse msgG2DGPR = (MsgGet2DGamePriceResponse) MessageFactory
-					.getInstance().createMessage(
-							MsgTypes.MSG_GET_2DGAMES_PRICE_RESPONSE_TYPE);
+			MsgGet2DGamePriceResponse msgG2DGPR = 
+						(MsgGet2DGamePriceResponse) MessageFactory
+						.getInstance().createMessage(
+						MsgTypes.MSG_GET_2DGAMES_PRICE_RESPONSE_TYPE);
 			
 			msgG2DGPR.setPrice(price);
 			msgG2DGPR.setId2DGame(id2DGame);

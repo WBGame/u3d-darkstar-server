@@ -8,6 +8,7 @@ import common.messages.IMessage;
 import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
  * avanzar al siguiente estado en una quest.
@@ -29,6 +30,8 @@ public class PNextQuestState extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
 	public IProcessor factoryMethod() {
@@ -41,6 +44,7 @@ public class PNextQuestState extends ServerMsgProcessor {
 	 * {@link ModelAccess#nextQuestState(String, String, String)}.
 	 * 
 	 * @param msg Contiene el id de la quest en cuestión.
+	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
 	public void process(IMessage msg) {

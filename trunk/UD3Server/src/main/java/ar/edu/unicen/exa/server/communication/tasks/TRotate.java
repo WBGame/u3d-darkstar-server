@@ -23,31 +23,36 @@ import common.messages.notify.MsgRotate;
  */
 public class TRotate extends TaskCommunication {
 
-	/**
-	 * @param msg
-	 */
-	public TRotate(IMessage msg) {
+    /**
+     * Class Constructor.
+     * 
+     * @param msg the msg
+     */
+	public TRotate(final IMessage msg) {
 		super(msg);
 	}
 
 	/**
-	 * TODO hacer javaDoc
+	 * This method allow to create a  new Task Communication.
 	 * 
-	 * @param msg
-	 * @return
+	 * @param msg the msg
+	 * 
+	 * @return  new Msg.
 	 */
 	@Override
-	public TaskCommunication factoryMethod(IMessage msg) {
+	public final TaskCommunication factoryMethod(final IMessage msg) {
 		return new TRotate(msg);
 	}
-
-	public void run() {
+	/**
+	 * 
+	 */
+	public final void run() {
 		String msgReport;
 		msgReport = new String();
 		//FIXME handle exception and common errors
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
-			msgReport ="Message Usseless for this taks!";
+			msgReport = "Message Usseless for this taks!";
 			System.err.println(msgReport);
 		}
 
@@ -61,7 +66,7 @@ public class TRotate extends TaskCommunication {
 			.getBinding(userId);
 		} catch (Exception e) {
 			//TODO Create exception if player {@link userId} cannot be found
-			msgReport ="User <" + userId + "> Cannot be found";
+			msgReport = "User <" + userId + "> Cannot be found";
 			System.err.println(msgReport);
 		}
 		//Obtain the IIGridStructure for the player
@@ -72,7 +77,7 @@ public class TRotate extends TaskCommunication {
 		Cell current = structure.getCell(player.getPosition());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
-			msgReport ="Player outside the board";
+			msgReport = "Player outside the board";
 			System.err.println(msgReport);
 		}
 		//Hold Client Session

@@ -22,7 +22,7 @@ import common.messages.MsgTypes;
  * 
  * @author Diego
  */
-public class TaskCommFactory {
+public final class TaskCommFactory {
 	
 	/**
 	 * Contiene el mapeo de los tipos de mensajes con la tarea encargada de
@@ -31,7 +31,8 @@ public class TaskCommFactory {
 	private Hashtable<String, TaskCommunication>	comTaskForMsgType;
 	
 	/** La instancia <i>singleton</i> de esta clase. */
-	private static final TaskCommFactory			INSTANCE	= new TaskCommFactory();
+	private static final TaskCommFactory			
+				INSTANCE = new TaskCommFactory();
 	
 	/**
 	 * Constructor por defecto. Privado, por tratarse de un <i>singleton</i>.
@@ -110,7 +111,7 @@ public class TaskCommFactory {
 	 * @param msg el mensaje a usar
 	 * @return la nueva tarea
 	 */
-	public final TaskCommunication createComTask(final IMessage msg) {
+	public TaskCommunication createComTask(final IMessage msg) {
 		return this.comTaskForMsgType.get(msg.getType()).factoryMethod(msg);
 	}
 	
@@ -125,20 +126,20 @@ public class TaskCommFactory {
 	 * @param comTask tarea de comunicación correspondiente asociado a su tipo
 	 *        de mensaje interno.
 	 */
-	public final void addComTask(final TaskCommunication comTask) {
+	public void addComTask(final TaskCommunication comTask) {
 		this.comTaskForMsgType.put(comTask.getMsgType(), comTask);
 	}
 	
 	/**
-	 * Elimina una asociación del hash para un tipo de mensaje dado. Si ese tipo
-	 * no se encuentra como clave del hash, no se hace nada.
+	 * Elimina una asociación del hash para un tipo de mensaje dado.
+	 * Si ese tipo no se encuentra como clave del hash, no se hace nada.
 	 * 
 	 * @param msgType tipo de mensaje al que se quitará su asociación
 	 * 
 	 * @return la tarea correspondiente o <code>null</code> si no había alguna
 	 *         mapeada para el tipo de mensaje dado
 	 */
-	public final TaskCommunication removeComTask(final String msgType) {
+	public TaskCommunication removeComTask(final String msgType) {
 		return this.comTaskForMsgType.remove(msgType);
 	}
 	
@@ -150,7 +151,7 @@ public class TaskCommFactory {
 	 * 
 	 * @return <code>true</code> si y solo si el tipo de mensaje está mapeado.
 	 */
-	public final boolean containsMsgType(final String msgType) {
+	public boolean containsMsgType(final String msgType) {
 		return this.comTaskForMsgType.containsKey(msgType);
 	}
 	

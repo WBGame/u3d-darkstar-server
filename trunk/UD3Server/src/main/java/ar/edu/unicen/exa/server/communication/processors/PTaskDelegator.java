@@ -10,6 +10,7 @@ import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
 import common.messages.IMessage;
 import common.processors.IProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Este Porcesador de mensajes, delega las acciones a tomar a tareas de
  * comunicacion de darkstar ({@link TaskCommunication}).<BR/>
@@ -38,10 +39,12 @@ public class PTaskDelegator extends ServerMsgProcessor {
 	 * internos mediante los setters de la clase antes de invocar el metodo
 	 * {@link PTaskDelegator#process(IMessage)}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
 	@Override
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PTaskDelegator();
 	}
 	
@@ -50,16 +53,17 @@ public class PTaskDelegator extends ServerMsgProcessor {
 	 * parametro a travez de la {@link TaskCommFactory}, y la "submitea" al
 	 * {@link TaskManager} para ser ejecutada.
 	 * 
-	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 * @param msg El mensaje que se procesara.
+	 * 
+	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
 	@Override
-	public void process(final IMessage msg) {
+	public final void process(final IMessage msg) {
 		TaskCommunication comT = TaskCommFactory.getInstance().createComTask(
 				msg);
 		
-		comT.setCellAsociete( this.getCellAsociete() );
-		comT.setPlayerAsociete( this.getPlayerAsociete() );
+		comT.setCellAsociete(this.getCellAsociete());
+		comT.setPlayerAsociete(this.getPlayerAsociete());
 		
 		AppContext.getTaskManager().scheduleTask(comT);
 	}

@@ -14,6 +14,7 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGetBuyable2DGamesResponse;
 import common.processors.IProcessor;
 
+
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la lista de juegos 2D que se pueden comprar.
@@ -35,9 +36,11 @@ public class PGetBuyable2DGames extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PGetBuyable2DGames();
 	}
 	
@@ -47,17 +50,18 @@ public class PGetBuyable2DGames extends ServerMsgProcessor {
 	 * mensaje {@link MsgGetBuyable2DGamesResponse} y lo envia al player seteado
 	 * en esta instancia de procesador.
 	 * 
-	 * @param msg
+	 * @param msg the msg
 	 * 
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		try {
 			List<String> buyable2DGames = new Vector<String>(ModelAccess
 					.getInstance().getBuyables2DGames());
 			
-			MsgGetBuyable2DGamesResponse msgGB2DGRs = (MsgGetBuyable2DGamesResponse) MessageFactory
+			MsgGetBuyable2DGamesResponse msgGB2DGRs = 
+				(MsgGetBuyable2DGamesResponse) MessageFactory
 					.getInstance().createMessage(
 							MsgTypes.MSG_GET_BUYABLE_2DGAMES_RESPONSE_TYPE);
 			

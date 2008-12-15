@@ -29,9 +29,11 @@ public class PAbortQuest extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PAbortQuest();
 	}
 	
@@ -43,7 +45,7 @@ public class PAbortQuest extends ServerMsgProcessor {
 	 * @param msg Contiene el id de la quest que se abandona.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		MsgPlainText msgAbortQuestRequest = (MsgPlainText) msg;
 
 		String idPlayer = getPlayerAsociete().getIdEntity();

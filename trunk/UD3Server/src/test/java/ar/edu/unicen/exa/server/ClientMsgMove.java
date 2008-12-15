@@ -344,7 +344,7 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * @param message el mensaje ha imprimir.
 	 */
 	
-	public final void printMessage(IMessage message){
+	public final void printMessage(final IMessage message) {
 		MsgMove iMsg = (MsgMove) message;
 		logger.info("Tipo de Mensaje : " + message.getType()
 		+ " Pos Origen: " + iMsg.getPosOrigen()
