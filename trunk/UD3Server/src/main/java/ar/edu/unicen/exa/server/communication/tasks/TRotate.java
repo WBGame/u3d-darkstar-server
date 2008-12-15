@@ -12,7 +12,6 @@ import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
-import common.messages.notify.MsgMove;
 import common.messages.notify.MsgRotate;
 
 /**
@@ -43,9 +42,7 @@ public class TRotate extends TaskCommunication {
 	}
 
 	public void run() {
-		String strNewWorld;
 		String msgReport;
-		strNewWorld = new String();
 		msgReport = new String();
 		//FIXME handle exception and common errors
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
@@ -55,7 +52,7 @@ public class TRotate extends TaskCommunication {
 		}
 
 		//if is a MsgMove
-		MsgMove msg = (MsgMove) getMessage();
+		MsgRotate msg = (MsgRotate) getMessage();
 
 		String userId = msg.getIdDynamicEntity();
 		Player player = null;
@@ -72,16 +69,24 @@ public class TRotate extends TaskCommunication {
 		.getStructure(player.getActualWorld());
 
 		//Obtain the actual player cell
-		Cell current = structure.getCell(msg.getPosOrigen());
+		Cell current = structure.getCell(player.getPosition());
 		if (current == null) {
 			//TODO Create exception if detect player outside the board \
 			msgReport ="Player outside the board";
 			System.err.println(msgReport);
 		}
-		ClientSession session = player.getSession();
-		current.send(msg, session);
+		//Hold Client Session
+		ClientSession session = player.getSession();		
+		//Unsuscribe player adjacents cells
 		Cell[] adyacentes = structure
-		.getAdjacents(current, msg.getPosDestino());
+		.getAdjacents(current, player.getPosition());
+		for (int i = 0; i < adyacentes.length; i++) {
+			adyacentes[i].leaveFromChannel(session);
+		}
+		//Hold the new adjacent after rotate
+		current.send(msg, session);
+		adyacentes = structure
+		.getAdjacents(current, msg.getAngle());
 
 		//verify the adjacent
 		if (adyacentes == null) {
@@ -90,6 +95,11 @@ public class TRotate extends TaskCommunication {
 		if (adyacentes.length == 0) {
 			return;
 		} 
-		//TODO calculate the rotation
+		//Set Player new angle
+		player.setAngle(msg.getAngle());
+		//and join his channels
+		for (int i = 0; i < adyacentes.length; i++) {
+			adyacentes[i].joinToChannel(session);
+		}
 	}		
 }
