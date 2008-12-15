@@ -59,10 +59,10 @@ public class TestLogin implements SimpleClientListener {
 		try {
 			
 			System.out.print("Name: ");
-			ct.setLogin( flujo.readLine() );
+			ct.setLogin(flujo.readLine());
 			
 			System.out.print("Password: ");
-			ct.setPassword( flujo.readLine() );
+			ct.setPassword(flujo.readLine());
 			
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage());
@@ -151,7 +151,7 @@ public class TestLogin implements SimpleClientListener {
 	 * nombre de usuario name y contraseña password. 
 	 */
 	public final PasswordAuthentication getPasswordAuthentication() {
-		return new PasswordAuthentication( 
+		return new PasswordAuthentication(
 				getLogin(),
 				getPassword().toCharArray() 
 		);

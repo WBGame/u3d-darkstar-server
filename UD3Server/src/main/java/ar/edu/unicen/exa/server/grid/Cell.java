@@ -177,8 +177,8 @@ public class Cell implements Serializable {
 	 * Determina si la posicion dada esta dentro de la celda. Para ello utiliza
 	 * la variable de instancia {@link bounds}
 	 * 
-	 * @return true si la posición dada está dentro de esta celda. false en otro
-	 * caso.
+	 * @return true si la posición dada está dentro de esta celda. 
+	 * false en otro caso.
 	 * @param position posición a evaluar.
 	 * @generated "De UML a Java V5.0 
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"

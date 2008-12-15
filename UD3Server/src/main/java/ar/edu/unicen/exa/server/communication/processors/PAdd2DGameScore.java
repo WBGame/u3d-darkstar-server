@@ -10,6 +10,7 @@ import common.messages.IMessage;
 import common.messages.requests.MsgAdd2DGameScore;
 import common.processors.IProcessor;
 
+
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo
  * agregar un puntaje a un minijuego.
@@ -31,10 +32,12 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
 	@Override
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PAdd2DGameScore();
 	}
 	
@@ -45,10 +48,11 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 	 * modelo.
 	 * 
 	 * @param msg Contiene el Score a agregar al modelo.
+	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
 	@Override
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		// casteo el mensaje paraobtener el scrore.
 		MsgAdd2DGameScore msgAddScore = (MsgAdd2DGameScore) msg;
 		

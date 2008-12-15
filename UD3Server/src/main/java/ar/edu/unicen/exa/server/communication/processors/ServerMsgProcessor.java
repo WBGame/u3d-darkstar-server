@@ -13,6 +13,7 @@ import common.messages.MsgTypes;
 import common.processors.IProcessor;
 import common.processors.MsgProcessorFactory;
 
+// TODO: Auto-generated Javadoc
 /**
  * La clase representa la base de la jerarquia de procesadores de mensajes en el
  * servidor Darkstar.<BR/>
@@ -29,22 +30,26 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	private String						msgType;
 
 	/** Referencia al player relacionado al mensaje a procesar. */
-	protected ManagedReference<Player>	playerAsociete;
+	private  ManagedReference<Player>	playerAsociete;
 
 	/** Referencia a la celda relacionada al mensaje a procesar. */
-	protected ManagedReference<Cell>	cellAsociete;
+	private  ManagedReference<Cell>	cellAsociete;
 
 	/**
+	 * Gets the msg type.
+	 * 
 	 * @return El tipo de mensaje que se procesaran por la instancia del
-	 *         procesador.
+	 * procesador.
 	 */
 	public final String getMsgType() {
 		return msgType;
 	}
 
 	/**
+	 * Sets the msg type.
+	 * 
 	 * @param msgType El tipo de mensaje que se procesaran por la instancia del
-	 *        procesador.
+	 * procesador.
 	 */
 	@Override
 	public final void setMsgType(final String msgType) {
@@ -52,13 +57,17 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
-	 * @return associated player 
+	 * Gets the player asociete.
+	 * 
+	 * @return associated player
 	 */
 	public final Player getPlayerAsociete() {
 		return playerAsociete.get();
 	}
 
 	/**
+	 * Sets the player asociete.
+	 * 
 	 * @param associeted player relacionado al mensaje a procesar.
 	 */
 	public final void setPlayerAsociete(final Player associeted) {
@@ -68,6 +77,8 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
+	 * Gets the cell asociete.
+	 * 
 	 * @return Referencia a la celda relacionada al mensaje a procesar.
 	 */
 	public final Cell getCellAsociete() {
@@ -75,6 +86,8 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
+	 * Sets the cell asociete.
+	 * 
 	 * @param associeted celda relacionada al mensaje a procesar.
 	 */
 	public final void setCellAsociete(final Cell associeted) {

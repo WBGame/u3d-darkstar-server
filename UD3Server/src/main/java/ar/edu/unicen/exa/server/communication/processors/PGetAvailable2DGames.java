@@ -14,6 +14,7 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGetAvailable2DGamesResponse;
 import common.processors.IProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la lista de juegos 2D que están disponibles para el
@@ -36,9 +37,11 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PGetAvailable2DGames();
 	}
 	
@@ -48,19 +51,20 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 	 * Construye un mensaje {@link MsgGetAvailable2DGamesResponse} y lo envia al
 	 * player seteado en esta instancia de procesador.
 	 * 
-	 * @param msg
+	 * @param msg the msg
 	 * 
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		try {
 			String idPlayer = playerAsociete.get().getIdEntity();
 			
 			List<String> availableGames = new Vector<String>(ModelAccess
 					.getInstance().getAvailableGames(idPlayer));
 			
-			MsgGetAvailable2DGamesResponse msgA2DGRs = (MsgGetAvailable2DGamesResponse) MessageFactory
+			MsgGetAvailable2DGamesResponse msgA2DGRs = 
+				(MsgGetAvailable2DGamesResponse) MessageFactory
 					.getInstance().createMessage(
 							MsgTypes.MSG_GET_AVAILABLE_2DGAMES_RESPONSE_TYPE);
 			

@@ -41,13 +41,13 @@ public abstract class TaskCommunication implements Task {
 	private transient IMessage			message;
 	
 	/** Referencia al player relacionado al mensaje a procesar. */
-	protected ManagedReference<Player>	playerAsociete;
+	private ManagedReference<Player>	playerAsociete;
 	
 	/** Referencia a la celda relacionada al mensaje a procesar. */
-	protected ManagedReference<Cell>	cellAsociete;
+	private ManagedReference<Cell>	cellAsociete;
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
-	protected String					msgType;
+	private String					msgType;
 
 	/**
 	 * Constructor que inicializa el estado interno con el parámetro. Setea el
@@ -65,7 +65,7 @@ public abstract class TaskCommunication implements Task {
 	 * Constructor por defecto, de usarse, luego se debe setear manualmente el
 	 * mensaje.
 	 */
-	public TaskCommunication() {}
+	public TaskCommunication() { }
 	
 	/**
 	 * Retorna el mensaje de esta tarea.
@@ -93,8 +93,8 @@ public abstract class TaskCommunication implements Task {
 	}
 	
 	/**
-	 * Sigue el patrón de FactoryMethod, su implementación debe crear y devolver
-	 * una instancia de la clase implementadora.
+	 * Sigue el patrón de FactoryMethod, su implementación 
+	 * debe crear y devolver una instancia de la clase implementadora.
 	 * 
 	 * @param msg El mensaje con el que trabajará la tarea internamente.
 	 * 
@@ -110,12 +110,12 @@ public abstract class TaskCommunication implements Task {
 	}
 	
 	/**
-	 * @param playerAsociete Referencia al player relacionado al mensaje a
+	 * @param playerAsociate Referencia al player relacionado al mensaje a
 	 *        procesar.
 	 */
-	public final void setPlayerAsociete(final Player playerAsociete) {
+	public final void setPlayerAsociete(final Player playerAsociate) {
 		this.playerAsociete = AppContext.getDataManager().createReference(
-				playerAsociete
+				playerAsociate
 		);
 	}
 	
@@ -127,12 +127,13 @@ public abstract class TaskCommunication implements Task {
 	}
 	
 	/**
-	 * @param cellAsociete Referencia a la celda relacionada al mensaje a
+	 * This method allow to set the asociate cell.
+	 * @param cellAsociate Referencia a la celda relacionada al mensaje a
 	 *        procesar.
 	 */
-	public final void setCellAsociete(final Cell cellAsociete) {
+	public final void setCellAsociete(final Cell cellAsociate) {
 		this.cellAsociete = AppContext.getDataManager().createReference(
-				cellAsociete
+				cellAsociate
 		);
 	}
 }

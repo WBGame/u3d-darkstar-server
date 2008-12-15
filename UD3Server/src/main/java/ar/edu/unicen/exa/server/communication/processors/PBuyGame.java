@@ -8,6 +8,7 @@ import common.messages.IMessage;
 import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
+
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
  * comprar un juego.
@@ -29,9 +30,11 @@ public class PBuyGame extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PBuyGame();
 	}
 	
@@ -41,9 +44,10 @@ public class PBuyGame extends ServerMsgProcessor {
 	 * {@link ModelAccess#buy2DGame(String, String)}.
 	 * 
 	 * @param msg Contiene el id del juego 2D que se quiere comprar.
+	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		MsgPlainText msgBuyGame = (MsgPlainText) msg;
 		
 		String id2DGame = msgBuyGame.getMsg();

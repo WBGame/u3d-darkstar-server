@@ -25,8 +25,6 @@ import java.util.logging.Logger;
  * 
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com/> 
  * @encoding UTF-8 
- * 
- * TODO implementar el método receivedMessage().
  */
 public class UserSessionListener 
 implements ClientSessionListener, Serializable {

@@ -4,7 +4,6 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import common.messages.IMessage;
-import common.messages.notify.MsgChangePlayerState;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgChangePlayerState}.<BR/>
@@ -16,23 +15,30 @@ import common.messages.notify.MsgChangePlayerState;
 public class TChangePlayerState extends TaskCommunication {
 	
 	/**
-	 * @param msg
+	 * The Constructor.
+	 * 
+	 * @param msg the msg
 	 */
-	public TChangePlayerState(IMessage msg) {
+	public TChangePlayerState(final IMessage msg) {
 		super(msg);
 	}
 	
 	/**
-	 * TODO hacer javaDoc
-	 * @param msg
-	 * @return
+	 * Create the Task across the factory.
+	 * 
+	 * @param msg the msg
+	 * 
+	 * @return the task communication
 	 */
 	@Override
-	public TaskCommunication factoryMethod(IMessage msg) {
+	public final TaskCommunication factoryMethod(final IMessage msg) {
 		return new TChangePlayerState(msg);
 	}
 	
 
+	/**
+	 * 
+	 */
 	public void run() {
 		
 	}

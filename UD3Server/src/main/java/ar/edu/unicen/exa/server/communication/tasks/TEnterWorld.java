@@ -22,8 +22,10 @@ import common.messages.MsgPlainText;
  * * Suscribirlo a la celda por defecto del mundo y a las adyacentes segun
  * coresponda.<BR/>
  * * Quitarlo del mundo en el que estaba el jugador previamente.<BR/>
- * * Desuscribirlo de las celdas en las que se encontraba en el mundo anterior.<BR/>
- * * Enviar los mensaje correspondientes {@link MsgArrived} a las celdas del mundo
+ * * Desuscribirlo de las celdas en las que se 
+ *   encontraba en el mundo anterior.<BR/>
+ * * Enviar los mensaje correspondientes 
+ *   {@link MsgArrived} a las celdas del mundo
  * nuevo.<BR/>
  * * Enviar los mensaje correspondientes {@link MsgLeft} a las celdas del mundo
  * viejo.<BR/>
@@ -34,20 +36,23 @@ import common.messages.MsgPlainText;
 public class TEnterWorld extends TaskCommunication {
 
 	/**
-	 * @param msg
+	 * class Constructor.
+	 * 
+	 * @param msg the msg
 	 */
-	public TEnterWorld(IMessage msg) {
+	public TEnterWorld(final IMessage msg) {
 		super(msg);
 	}
 
 	/**
-	 * TODO hacer javaDoc
+	 *Create the Task across the factory.
 	 * 
-	 * @param msg
-	 * @return
+	 * @param msg the msg.
+	 * 
+	 * @return TEnterWorld
 	 */
 	@Override
-	public TaskCommunication factoryMethod(IMessage msg) {
+	public final TaskCommunication factoryMethod(final IMessage msg) {
 		return new TEnterWorld(msg);
 	}
 
@@ -90,7 +95,7 @@ public class TEnterWorld extends TaskCommunication {
 			msgReport = "Player outside the board";
 			System.err.println(msgReport);
 		}
-		ClientSession session =player.getSession();// player.getSession();
+		ClientSession session = player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
 		.getAdjacents(current, player.getPosition());
@@ -108,8 +113,8 @@ public class TEnterWorld extends TaskCommunication {
 		}
 		//unsubscribe client from the actual cell
 		current.leaveFromChannel(session);
-		//TODO unsubscribe from the actual world.
-		//TODO obtain from the message the new world id
+		
+		//obtain from the message the new world id
 		strNewWorld = msg.getMsg();
 		// set the new world for the user
 		player.setActualWorld(strNewWorld);

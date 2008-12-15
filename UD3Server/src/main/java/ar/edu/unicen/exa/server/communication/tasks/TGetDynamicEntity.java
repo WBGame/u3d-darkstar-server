@@ -4,7 +4,7 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import common.messages.IMessage;
-import common.messages.responses.MsgGetDynamicEntityResponse;
+
 
 /**
  * La tarea se ejecutara al recibir un mensaje ({@link MsgGetDynamicEntity})
@@ -22,23 +22,28 @@ import common.messages.responses.MsgGetDynamicEntityResponse;
 public class TGetDynamicEntity extends TaskCommunication {
 	
 	/**
-	 * @param msg
+	 * The Constructor.
+	 * 
+	 * @param msg the msg
 	 */
-	public TGetDynamicEntity(IMessage msg) {
+	public TGetDynamicEntity(final IMessage msg) {
 		super(msg);
 	}
 	
 	/**
-	 * TODO hacer javaDoc
+	 * TODO hacer javaDoc.
 	 * 
-	 * @param msg
-	 * @return
+	 * @param msg the msg
+	 * 
+	 * @return the task communication
 	 */
 	@Override
-	public TaskCommunication factoryMethod(IMessage msg) {
+	public final TaskCommunication factoryMethod(final IMessage msg) {
 		return new TGetDynamicEntity(msg);
 	}
-	
+	/**
+	 * TODO.
+	 */
 	public void run() {
 		
 	}

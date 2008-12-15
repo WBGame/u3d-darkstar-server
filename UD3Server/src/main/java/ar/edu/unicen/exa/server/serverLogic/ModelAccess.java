@@ -178,8 +178,9 @@ public class ModelAccess {
 	/**
 	 * Agrega el puntaje pasado como parametro al modelo, realizando todas las
 	 * acciones corresponidentes.<BR/>
-	 * Estas acciones consiten en actualizar los stats para el jugador dueño del
-	 * puntaje, asi como tmb el historial de puntajes para el minijuego asociado
+	 * Estas acciones consiten en actualizar los stats para el jugador 
+	 * dueño del puntaje, asi como tmb el historial de puntajes para el
+	 * minijuego asociado
 	 * y chequear si es el puntaje mas alto.
 	 * 
 	 * @param score El puntaje a agregar al modelo.
@@ -317,7 +318,7 @@ public class ModelAccess {
 	 * 
 	 * @return valor del juego especificado.
 	 */
-	public float get2DGamePrice(String id2DGame) {
+	public float get2DGamePrice(final String id2DGame) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

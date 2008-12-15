@@ -8,6 +8,7 @@ import common.messages.IMessage;
 import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
  * finalizar una quest.
@@ -29,9 +30,11 @@ public class PFinishQuest extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
+	 * @return the i processor
+	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public IProcessor factoryMethod() {
+	public final IProcessor factoryMethod() {
 		return new PFinishQuest();
 	}
 	
@@ -41,9 +44,10 @@ public class PFinishQuest extends ServerMsgProcessor {
 	 * {@link ModelAccess#finishQuest(String, String)}.
 	 * 
 	 * @param msg Contiene el id de la quest que se finaliza.
+	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public final void process(final IMessage msg) {
 		MsgPlainText msgFinishQuestReq = (MsgPlainText) msg;
 		
 		String idQuest = msgFinishQuestReq.getMsg();
