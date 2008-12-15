@@ -29,9 +29,7 @@ public class PGetRanking extends ServerMsgProcessor {
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PGetRanking() {
-		
-	}
+	public PGetRanking() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -79,7 +77,7 @@ public class PGetRanking extends ServerMsgProcessor {
 			msgGRR.setRanking(rankingToReturn);
 			
 			// Envio el mensaje con la respuesta. al Player que solicito
-			this.playerAsociete.get().send(msgGRR);
+			getPlayerAsociete().send(msgGRR);
 			
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.

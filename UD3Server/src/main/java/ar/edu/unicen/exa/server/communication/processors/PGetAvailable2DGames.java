@@ -6,6 +6,7 @@ package ar.edu.unicen.exa.server.communication.processors;
 import java.util.List;
 import java.util.Vector;
 
+import ar.edu.unicen.exa.server.player.Player;
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
@@ -58,10 +59,10 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 	 */
 	public final void process(final IMessage msg) {
 		try {
-			String idPlayer = playerAsociete.get().getIdEntity();
+			Player p = getPlayerAsociete();
 			
 			List<String> availableGames = new Vector<String>(ModelAccess
-					.getInstance().getAvailableGames(idPlayer));
+					.getInstance().getAvailableGames(p.getIdEntity()));
 			
 			MsgGetAvailable2DGamesResponse msgA2DGRs = 
 				(MsgGetAvailable2DGamesResponse) MessageFactory
@@ -71,8 +72,7 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 			msgA2DGRs.setIds2DGame(availableGames);
 
 			// Envio el mensaje con la respuesta al Player que la solicitó
-			playerAsociete.get().send(msgA2DGRs);
-			
+			p.send(msgA2DGRs);
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.
 			e.printStackTrace();

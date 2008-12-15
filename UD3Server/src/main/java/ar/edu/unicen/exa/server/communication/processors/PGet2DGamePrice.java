@@ -76,7 +76,7 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 			msgG2DGPR.setId2DGame(id2DGame);
 			
 			// Envio el mensaje con la respuesta al Player que solicito
-			playerAsociete.get().send(msgG2DGPR);
+			getPlayerAsociete().send(msgG2DGPR);
 			
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.

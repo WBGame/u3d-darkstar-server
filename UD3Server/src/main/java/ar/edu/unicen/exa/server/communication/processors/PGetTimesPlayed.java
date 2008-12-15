@@ -3,6 +3,7 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import ar.edu.unicen.exa.server.player.Player;
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
@@ -62,11 +63,10 @@ public class PGetTimesPlayed extends ServerMsgProcessor {
 			MsgPlainText msgTimePlayedRq = (MsgPlainText) msg;
 			
 			String id2DGame = msgTimePlayedRq.getMsg();
-			
-			String idPlayer = playerAsociete.get().getIdEntity();
+			Player p = getPlayerAsociete();
 			
 			int timesPlayed = ModelAccess.getInstance().getPlayedTimes(
-					id2DGame, idPlayer);
+					id2DGame, p.getIdEntity());
 			
 			MsgGetTimesPlayedResponse msgGTPR = (MsgGetTimesPlayedResponse) MessageFactory
 					.getInstance().createMessage(
@@ -76,8 +76,7 @@ public class PGetTimesPlayed extends ServerMsgProcessor {
 			msgGTPR.setId2DGame(id2DGame);
 			
 			// Envio el mensaje con la respuesta al Player que la solicitó
-			playerAsociete.get().send(msgGTPR);
-			
+			p.send(msgGTPR);
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.
 			e.printStackTrace();

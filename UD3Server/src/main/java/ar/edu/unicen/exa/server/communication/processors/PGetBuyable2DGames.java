@@ -68,8 +68,7 @@ public class PGetBuyable2DGames extends ServerMsgProcessor {
 			msgGB2DGRs.setIds2DGame(buyable2DGames);
 			
 			// Envio el mensaje con la respuesta al Player que la solicitó
-			playerAsociete.get().send(msgGB2DGRs);
-			
+			getPlayerAsociete().send(msgGB2DGRs);
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.
 			e.printStackTrace();

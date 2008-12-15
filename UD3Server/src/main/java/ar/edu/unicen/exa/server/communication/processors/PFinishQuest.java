@@ -52,7 +52,7 @@ public class PFinishQuest extends ServerMsgProcessor {
 		
 		String idQuest = msgFinishQuestReq.getMsg();
 		
-		String idPlayer = playerAsociete.get().getIdEntity();
+		String idPlayer = getPlayerAsociete().getIdEntity();
 		
 		ModelAccess.getInstance().finishQuest(idPlayer, idQuest);
 	}
