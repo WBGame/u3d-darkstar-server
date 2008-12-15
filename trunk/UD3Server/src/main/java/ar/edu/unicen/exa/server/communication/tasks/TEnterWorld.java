@@ -66,7 +66,7 @@ public class TEnterWorld extends TaskCommunication {
 		//if is a MsgPlainText
 		MsgPlainText msg = (MsgPlainText) getMessage();
 
-		String userId = (super.getSenderCurrentSession()).getName();
+		String userId = getPlayerAsociete().getId().toString();
 		Player player = null;
 		try {
 			player = (Player) AppContext.getDataManager().getBinding(userId);
@@ -86,7 +86,7 @@ public class TEnterWorld extends TaskCommunication {
 			msgReport ="Player outside the board";
 			System.err.println(msgReport);
 		}
-		ClientSession session = player.getSession();
+		ClientSession session =player.getSession();// player.getSession();
 		current.send(msg, session);
 		Cell[] adyacentes = structure
 		.getAdjacents(current, player.getPosition());
