@@ -46,7 +46,7 @@ public class PAbortQuest extends ServerMsgProcessor {
 	public void process(IMessage msg) {
 		MsgPlainText msgAbortQuestRequest = (MsgPlainText) msg;
 
-		String idPlayer = getPlayerAsociete().get().getIdEntity();
+		String idPlayer = getPlayerAsociete().getIdEntity();
 
 		String idQuest = msgAbortQuestRequest.getMsg();
 
