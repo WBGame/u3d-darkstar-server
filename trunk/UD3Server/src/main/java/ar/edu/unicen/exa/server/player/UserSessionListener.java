@@ -119,9 +119,7 @@ implements ClientSessionListener, Serializable {
 	 */
 	public final void disconnected(final boolean graceful) {
 		ClientSession session = getPlayer().getSession();
-		String grace = graceful ? 
-				"correctamente" 
-				: "forzadamente";
+		String grace = graceful ? "correctamente" : "forzadamente";
 		logger.log(
 				Level.INFO,
 				"El usuario {0} se ha desconectado {1}",
