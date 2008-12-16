@@ -15,7 +15,6 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGetAvailable2DGamesResponse;
 import common.processors.IProcessor;
 
-// TODO: Auto-generated Javadoc
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la lista de juegos 2D que están disponibles para el
@@ -24,7 +23,7 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PGetAvailable2DGames extends ServerMsgProcessor {
+public final class PGetAvailable2DGames extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
@@ -42,7 +41,7 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PGetAvailable2DGames();
 	}
 	
@@ -57,7 +56,7 @@ public class PGetAvailable2DGames extends ServerMsgProcessor {
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			Player p = getPlayerAsociete();
 			

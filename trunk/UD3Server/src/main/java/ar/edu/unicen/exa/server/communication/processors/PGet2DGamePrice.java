@@ -21,15 +21,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PGet2DGamePrice extends ServerMsgProcessor {
+public final class PGet2DGamePrice extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PGet2DGamePrice() {
-		
-	}
+	public PGet2DGamePrice() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -39,7 +37,7 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PGet2DGamePrice();
 	}
 	
@@ -56,7 +54,7 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			// Este debería ser el id del juego del cual se debe obtener el
 			// precio
@@ -81,8 +79,6 @@ public class PGet2DGamePrice extends ServerMsgProcessor {
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-	
 }

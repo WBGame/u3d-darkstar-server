@@ -18,7 +18,7 @@ import common.processors.IProcessor;
  * @author lito
  * @see #process(IMessage)
  */
-public class PSetPlayerProperty extends ServerMsgProcessor {
+public final class PSetPlayerProperty extends ServerMsgProcessor {
 	
 	/**
 	 * Construcotr por defecto, inicializa las variables internas en {@code
@@ -36,8 +36,7 @@ public class PSetPlayerProperty extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PSetPlayerProperty();
 	}
 	
@@ -56,8 +55,7 @@ public class PSetPlayerProperty extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			MsgSetPlayerProperty msgSPP = (MsgSetPlayerProperty) msg;
 			
@@ -72,5 +70,4 @@ public class PSetPlayerProperty extends ServerMsgProcessor {
 			System.out.println("");
 		}
 	}
-	
 }

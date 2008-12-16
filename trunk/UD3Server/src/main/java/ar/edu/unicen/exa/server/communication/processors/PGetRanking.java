@@ -23,7 +23,7 @@ import common.processors.IProcessor;
  * @author fede
  * @see #process(IMessage)
  */
-public class PGetRanking extends ServerMsgProcessor {
+public final class PGetRanking extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
@@ -59,13 +59,12 @@ public class PGetRanking extends ServerMsgProcessor {
 	 * @author fede
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
-	public void process(IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			// Puede arrojar UnsopportedMessageException
-			MsgGetRankingResponse msgGRR = (MsgGetRankingResponse) MessageFactory
-					.getInstance().createMessage(
-							MsgTypes.MSG_GET_RANKING_RESPONSE_TYPE);
+			MsgGetRankingResponse msgGRR = 
+				(MsgGetRankingResponse) MessageFactory.getInstance()
+				.createMessage(MsgTypes.MSG_GET_RANKING_RESPONSE_TYPE);
 			
 			// El mensaje de solicitud de ranking, para obtener el id del
 			// minijuego para el que se quiere el ranking.
@@ -82,8 +81,6 @@ public class PGetRanking extends ServerMsgProcessor {
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-	
 }

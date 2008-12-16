@@ -22,15 +22,13 @@ import common.processors.IProcessor;
  * @author lito
  * @see #process(IMessage)
  */
-public class PTaskDelegator extends ServerMsgProcessor {
+public final class PTaskDelegator extends ServerMsgProcessor {
 	
 	/**
 	 * Crea una nueva instancia de la clase, setendo sus variables internas en
 	 * {@code null}.
 	 */
-	public PTaskDelegator() {
-		
-	}
+	public PTaskDelegator() { }
 	
 	/**
 	 * Crea una nueva instancia de la clase, setendo sus variables internas en
@@ -43,8 +41,7 @@ public class PTaskDelegator extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PTaskDelegator();
 	}
 	
@@ -57,8 +54,7 @@ public class PTaskDelegator extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		TaskCommunication comT = TaskCommFactory.getInstance().createComTask(
 				msg);
 		

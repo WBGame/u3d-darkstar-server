@@ -16,7 +16,7 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PNextQuestState extends ServerMsgProcessor {
+public final class PNextQuestState extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
@@ -47,7 +47,7 @@ public class PNextQuestState extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public void process(final IMessage msg) {
 		MsgPlainText msgNextQuestState = (MsgPlainText) msg;
 		
 		String idPlayer = getPlayerAsociete().getIdEntity();
