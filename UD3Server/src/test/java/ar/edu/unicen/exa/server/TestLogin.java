@@ -18,17 +18,21 @@ import com.sun.sgs.client.simple.SimpleClientListener;
 /**
  * Test user login.
  * 
- * Esta clase es utilizada para testear el login. COntiene una implementacion 
+ * Esta clase es utilizada para testear el login. Contiene una implementacion 
  * basica de un cliente y solo tiene la funcionalidad para logearse por medio 
  * del nombre y password, y enviar mensajes.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com>
+ * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8   
  */
-public class TestLogin implements SimpleClientListener {
+/**
+ * @author facundo
+ *
+ */
+public final class TestLogin implements SimpleClientListener {
 
 	/** Creamos un logger para esta clase. */
-	private final static Logger logger =
+	private static final Logger LOGGER =
 		Logger.getLogger(TestLogin.class.getName());
 	
 	/**  Para cumplir con la version de la clase Serializable. */
@@ -40,9 +44,9 @@ public class TestLogin implements SimpleClientListener {
 	/** Instancia {@link SimpleClient} para este cliente. */
 	private final SimpleClient simpleClient;
 	
-	/** Login del usuario */
+	/** Login del usuario. */
 	private String login;
-	/** Password del usuario */
+	/** Password del usuario. */
 	private String password;
 	
 	/**
@@ -65,7 +69,7 @@ public class TestLogin implements SimpleClientListener {
 			ct.setPassword(flujo.readLine());
 			
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -76,13 +80,15 @@ public class TestLogin implements SimpleClientListener {
 			String texto = flujo.readLine();
 			ct.send(texto); 
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 		ct.logout();
 	}
 
-	/** Logout from server */
+	/** 
+	 * Logout from server. 
+	 */
 	private void logout() {
 		this.simpleClient.logout(false);
 	}
@@ -98,7 +104,7 @@ public class TestLogin implements SimpleClientListener {
 	 * Inicializa asincronicamente el login especificando las propiedades 
 	 * host y port del cliente.
 	 */
-	protected final void login() {
+	protected void login() {
 		try {
 			Properties connectProps = new Properties();
 			connectProps.put("host", "localhost");
@@ -150,7 +156,7 @@ public class TestLogin implements SimpleClientListener {
 	 * @return PasswordAuthentication la autenticacion para el cliente con
 	 * nombre de usuario name y contraseña password. 
 	 */
-	public final PasswordAuthentication getPasswordAuthentication() {
+	public PasswordAuthentication getPasswordAuthentication() {
 		return new PasswordAuthentication(
 				getLogin(),
 				getPassword().toCharArray() 
@@ -160,8 +166,8 @@ public class TestLogin implements SimpleClientListener {
 	/**
 	 * Informa al usuario que se logeo correctamente.
 	 */
-	public final void loggedIn() {
-		logger.info("Usuario logeado.");
+	public void loggedIn() {
+		LOGGER.info("Usuario logeado.");
 	}
 
 	/**
@@ -169,8 +175,8 @@ public class TestLogin implements SimpleClientListener {
 	 * 
 	 * @param reason la razon por la cual el login fallo.
 	 */
-	public final void loginFailed(final String reason) {
-		logger.info("Falló el Logeo del usuario, razón: " + reason);
+	public void loginFailed(final String reason) {
+		LOGGER.info("Falló el Logeo del usuario, razón: " + reason);
 	}
 
 	/**
@@ -180,9 +186,9 @@ public class TestLogin implements SimpleClientListener {
 	 * @param graceful si {@code true}, el cliente se desconecta
 	 *        correctamente.
 	 */
-	public final void disconnected(final boolean graceful, 
+	public void disconnected(final boolean graceful, 
 			final String reason) {
-		logger.info("Desconectado: " + reason);
+		LOGGER.info("Desconectado: " + reason);
 	}
 
 	/**
@@ -194,7 +200,7 @@ public class TestLogin implements SimpleClientListener {
 	 * @return ClientChannelListener Capturador de eventos que se producen 
 	 * en el canal channel.
 	 */
-	public final ClientChannelListener joinedChannel(
+	public ClientChannelListener joinedChannel(
 			final ClientChannel channel) {
 		return null;
 	}
@@ -205,8 +211,8 @@ public class TestLogin implements SimpleClientListener {
 	 * @param message mensaje que resive el cliente.   
 	 *  
 	 */
-	public final void receivedMessage(final ByteBuffer message) {
-		logger.info("El servidor ha enviado el mensaje: " 
+	public void receivedMessage(final ByteBuffer message) {
+		LOGGER.info("El servidor ha enviado el mensaje: " 
 				+ decodeString(message));
 	}
 
@@ -214,15 +220,15 @@ public class TestLogin implements SimpleClientListener {
 	 * Informa al cliente que se ha reconectado.
 	 * 
 	 */
-	public final void reconnected() {
-		logger.info("reconectado");
+	public void reconnected() {
+		LOGGER.info("reconectado");
 	}
 
 	/**
 	 * Informa al cliente que esta reconectando.
 	 */
-	public final void reconnecting() {
-		logger.info("reconectando");
+	public void reconnecting() {
+		LOGGER.info("reconectando");
 	}
 
 	/**
@@ -230,7 +236,7 @@ public class TestLogin implements SimpleClientListener {
 	 * 
 	 * @param text el texto ha enviar
 	 */
-	protected final void send(final String text) {
+	protected void send(final String text) {
 		try {
 			ByteBuffer message = encodeString(text);
 			simpleClient.send(message);
@@ -245,25 +251,44 @@ public class TestLogin implements SimpleClientListener {
 	 * 
 	 * @return boolean Indica si el usuario esta conectado.
 	 */
-	
-	public final boolean isConnected() {
+	public boolean isConnected() {
 		return simpleClient.isConnected();
 	}
 
+	
+	/**
+	 * Getter.
+	 * 
+	 * @return login 
+	 */
 	public String getLogin() {
 		return login;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	/**
+	 * Setter. 
+	 * 
+	 * @param name user login 
+	 */
+	public void setLogin(final String name) {
+		this.login = name;
 	}
 
+	/**
+	 * Getter.
+	 * 
+	 * @return user password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	/**
+	 * Setter.
+	 * 
+	 * @param pass user password
+	 */
+	public void setPassword(final String pass) {
+		this.password = pass;
 	}
-	
 }

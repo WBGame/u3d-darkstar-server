@@ -34,10 +34,10 @@ import common.messages.notify.MsgMove;
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
  */
-public class ClientMsgMove implements SimpleClientListener {
+public final class ClientMsgMove implements SimpleClientListener {
 
 	/** Creamos un logger para esta clase. */
-	private static final  Logger logger =
+	private static final  Logger LOGGER =
 		Logger.getLogger(ClientMsgMove.class.getName());
 	
 	/**  Para cumplir con la version de la clase Serializable. */
@@ -60,7 +60,6 @@ public class ClientMsgMove implements SimpleClientListener {
 	 */
 	private ClientChannel channel;
 	
-	
 	/**
 	 * Corre el test para un mesaje de movimiento.
 	 *
@@ -81,7 +80,7 @@ public class ClientMsgMove implements SimpleClientListener {
 			cmm.setPassword(flujo.readLine());
 			
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -96,7 +95,7 @@ public class ClientMsgMove implements SimpleClientListener {
 				cmm.printMessage(message);
 				cmm.sendToChannel(message); 
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, e.getMessage());
+				LOGGER.log(Level.SEVERE, e.getMessage());
 				e.printStackTrace();
 			}
 		} while("s".equals(opcion));
@@ -122,7 +121,7 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * Inicializa asincronicamente el login especificando las propiedades 
 	 * host y port del cliente.
 	 */
-	protected final void login() {
+	protected void login() {
 		try {
 			Properties connectProps = new Properties();
 			connectProps.put("host", "localhost");
@@ -141,7 +140,7 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * @return PasswordAuthentication la autenticacion para el cliente con
 	 * nombre de usuario name y contraseña password. 
 	 */
-	public final PasswordAuthentication getPasswordAuthentication() {
+	public PasswordAuthentication getPasswordAuthentication() {
 		return new PasswordAuthentication(
 				getLogin(),
 				getPassword().toCharArray() 
@@ -151,8 +150,8 @@ public class ClientMsgMove implements SimpleClientListener {
 	/**
 	 * Informa al usuario que se logeo correctamente.
 	 */
-	public final void loggedIn() {
-		logger.info("Usuario logeado.");
+	public void loggedIn() {
+		LOGGER.info("Usuario logeado.");
 	}
 
 	/**
@@ -160,8 +159,8 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * 
 	 * @param reason la razon por la cual el login fallo.
 	 */
-	public final void loginFailed(final String reason) {
-		logger.info("Falló el Logeo del usuario, razón: " + reason);
+	public void loginFailed(final String reason) {
+		LOGGER.info("Falló el Logeo del usuario, razón: " + reason);
 	}
 
 	/**
@@ -171,25 +170,25 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * @param graceful si {@code true}, el cliente se desconecta
 	 *        correctamente.
 	 */
-	public final void disconnected(final boolean graceful, 
+	public void disconnected(final boolean graceful, 
 			final String reason) {
-		logger.info("Desconectado: " + reason);
+		LOGGER.info("Desconectado: " + reason);
 	}
 
 	/**
 	 * No tiene funcionalidad asociada debido a que no se hace uso de los 
 	 * channels.
 	 * 
-	 * @param channel el canal por el cual se envian los mensajes.
+	 * @param ch el canal por el cual se envian los mensajes.
 	 * 
 	 * @return ClientChannelListener Capturador de eventos que se producen 
 	 * en el canal channel.
 	 */
-	public final ClientChannelListener joinedChannel(
-			final ClientChannel channel) {
-		this.channel = channel;
-		String channelName = channel.getName();
-		logger.info("Suscripto al canal " + channelName);
+	public ClientChannelListener joinedChannel(
+			final ClientChannel ch) {
+		this.channel = ch;
+		String channelName = ch.getName();
+		LOGGER.info("Suscripto al canal " + channelName);
 		return new ChannelListener();
 	}
 	/**
@@ -199,23 +198,23 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * @param message mensaje que resive el cliente.   
 	 *  
 	 */
-	public final void receivedMessage(final ByteBuffer message) {
-		logger.info("El servidor ha enviado el mensaje: ");
+	public void receivedMessage(final ByteBuffer message) {
+		LOGGER.info("El servidor ha enviado el mensaje: ");
 	}
 
 	/**
 	 * Informa al cliente que se ha reconectado.
 	 * 
 	 */
-	public final void reconnected() {
-		logger.info("reconectado");
+	public void reconnected() {
+		LOGGER.info("reconectado");
 	}
 
 	/**
 	 * Informa al cliente que esta reconectando.
 	 */
-	public final void reconnecting() {
-		logger.info("reconectando");
+	public void reconnecting() {
+		LOGGER.info("reconectando");
 	}
 
 	/**
@@ -223,7 +222,7 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * 
 	 */
 	
-	protected final void send() {
+	protected void send() {
 		try {
 			ByteBuffer message = null;
 			simpleClient.send(message);
@@ -238,45 +237,45 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * 
 	 * @return boolean Indica si el usuario esta conectado.
 	 */
-	
-	public final boolean isConnected() {
+	public boolean isConnected() {
 		return simpleClient.isConnected();
 	}
 
 	/**
+	 * Getter.
 	 * 
 	 * @return el nombre del usuario.
 	 */
-	
-	public final String getLogin() {
+	public String getLogin() {
 		return login;
 	}
 	
 	/**
+	 * Setter.
 	 * 
-	 * @param login el nombre del usuario.
+	 * @param name el nombre del usuario.
 	 */
-	
-	public final void setLogin(String login) {
-		this.login = login;
+	public void setLogin(final String name) {
+		this.login = name;
 	}
 	
 	/**
+	 * Getter.
 	 * 
 	 * @return el password del usuario.
 	 */
-	
-	public final String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
 	/**
+	 * Setter.
 	 * 
-	 * @param password contraseña del usuario.
+	 * @param pass contraseña del usuario.
 	 */
 	
-	public final void setPassword(String password) {
-		this.password = password;
+	public void setPassword(final String pass) {
+		this.password = pass;
 	}
 	
 	/**
@@ -302,8 +301,9 @@ public class ClientMsgMove implements SimpleClientListener {
 
 		// Creo origen
 		Vector3f origen =  new Vector3f();
+		// 10, 15, 20
 		origen.set(10, 15, 20);
-		
+				
 		// Seteo el origen
 		iMsg.setPosOrigen(origen);
 		
@@ -322,16 +322,17 @@ public class ClientMsgMove implements SimpleClientListener {
 	
     /**
      * Envia un mensaje a travez del canal suscripto al cliente.
+     * 
+     * @param message mensaje a enviar.
      */
-	
-	public final void sendToChannel(IMessage message) {
+	public void sendToChannel(final IMessage message) {
     	
     	// Convierto Mensaje a ByteBuffer
 		ByteBuffer msj = message.toByteBuffer();
     	
         try {
                 this.channel.send(msj);
-                logger.info("Se ha enviado el mensaje MsgMove al canal " 
+                LOGGER.info("Se ha enviado el mensaje MsgMove al canal " 
                 		+ this.channel.getName());
         	} catch (Exception e) {
                 e.printStackTrace();
@@ -344,9 +345,9 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * @param message el mensaje ha imprimir.
 	 */
 	
-	public final void printMessage(final IMessage message) {
+	public void printMessage(final IMessage message) {
 		MsgMove iMsg = (MsgMove) message;
-		logger.info("Tipo de Mensaje : " + message.getType()
+		LOGGER.info("Tipo de Mensaje : " + message.getType()
 		+ " Pos Origen: " + iMsg.getPosOrigen()
 		+ " Pos Destino: " + iMsg.getPosDestino()
 		+ " Id Dynamic Entity: " + iMsg.getIdDynamicEntity());
@@ -358,43 +359,38 @@ public class ClientMsgMove implements SimpleClientListener {
 	 * evento de desubscripcion del usuario. 
 	 *
 	 */
-	public class ChannelListener implements ClientChannelListener {
+	public final class ChannelListener implements ClientChannelListener {
 
 	    /**
 	     * Constructora de la clase.
 	     */
-	    
-	    public ChannelListener() {
-
-	    }
+	    public ChannelListener() { }
 	    
 	    /**
 	     * Este método es invocado cuando el servidor desuscribe al usuario del
 	     * canal channel al cual esta asociado. 
 	     * 
-	     * @param channel el canal que fue quitado el usuario.
+	     * @param ch el canal que fue quitado el usuario.
 	     */
-
-	    public final void leftChannel(final ClientChannel channel) {
-	    	logger.info("El usuario fue quitado del canal "
-	    			+ channel.getName());
+	    public void leftChannel(final ClientChannel ch) {
+	    	LOGGER.info("El usuario fue quitado del canal "
+	    			+ ch.getName());
 	    }
 	    
 	    /**
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param channel el canal por el cual se recivió el mensaje.
-	     * @param message mensaje que se recivió.
+	     * @param ch el canal por el cual se recivió el mensaje.
+	     * @param msg mensaje que se recivió.
 	     */
-	    
-	    public final void receivedMessage(
-	    		final ClientChannel channel, final ByteBuffer message) {
-	    	logger.info("Se ha recivido el mensaje del canal "
-	    			+ channel.getName());
+	    public void receivedMessage(final ClientChannel ch, 
+	    		final ByteBuffer msg) {
+	    	LOGGER.info("Se ha recivido el mensaje del canal "
+	    			+ ch.getName());
 	    	IMessage iMessage = null;
 			try {
-				iMessage = MessageFactory.getInstance().createMessage(message);
+				iMessage = MessageFactory.getInstance().createMessage(msg);
 			} catch (MalformedMessageException e) {
 				e.printStackTrace();
 			} catch (UnsopportedMessageException e) {
