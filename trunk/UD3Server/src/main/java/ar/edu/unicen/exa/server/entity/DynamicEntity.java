@@ -6,7 +6,7 @@ import com.sun.sgs.app.AppContext;
 /** 
  * Ofrece funcionalidad a las entidades que tienen movimiento dentro del mundo.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com/>
+ * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8 
  */
 public class DynamicEntity extends Entity {

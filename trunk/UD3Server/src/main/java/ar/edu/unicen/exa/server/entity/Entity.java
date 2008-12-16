@@ -1,4 +1,5 @@
 package ar.edu.unicen.exa.server.entity;
+
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedObject;
 import java.io.Serializable;
@@ -6,7 +7,7 @@ import java.io.Serializable;
 /** 
  * Almacena un identificador unico para cada una de las entidades.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com/>
+ * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8
  */
 public class Entity implements ManagedObject, Serializable {
