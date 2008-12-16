@@ -21,7 +21,7 @@ import com.sun.sgs.app.ClientSession;
  * TODO method initialize doesn't have the final implementation.
  * TODO method loggedIn need more delegation to class Player.
  */
-public class AppListenerImpl implements AppListener, Serializable {
+public final class AppListenerImpl implements AppListener, Serializable {
 	/** Para cumplir con la clase serializable. */
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +35,7 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 * 
 	 * @param props propiedades para configurar la aplicacion
 	 */
-	public final void initialize(final Properties props) {
-	}
+	public void initialize(final Properties props) { }
 
 	/** 
 	 * Este método es invocado cada vez que un usuario se logea en el sistema.
@@ -52,7 +51,7 @@ public class AppListenerImpl implements AppListener, Serializable {
 	 * @param session sesion de un player
 	 * @return ClientSessionListener un listener para la session del jugador.
 	 */
-	public final ClientSessionListener loggedIn(final ClientSession session) {
+	public ClientSessionListener loggedIn(final ClientSession session) {
 		// Retorno del metodo
 		UserSessionListener user;
 		// Jugador

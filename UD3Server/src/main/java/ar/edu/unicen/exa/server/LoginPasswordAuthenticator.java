@@ -25,7 +25,7 @@ import com.sun.sgs.impl.auth.NamePasswordCredentials;
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
  * @encoding UTF-8
  */
-public class LoginPasswordAuthenticator implements IdentityAuthenticator {
+public final class LoginPasswordAuthenticator implements IdentityAuthenticator {
 
 	/** Creamos un logger para esta clase. */
 	private final Logger logger =
@@ -49,7 +49,7 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 	 * @return identidad del player 
 	 * @throws CredentialException si la credencial no es válida
 	 */
-	public final Identity authenticateIdentity(
+	public Identity authenticateIdentity(
 			final IdentityCredentials credentials) 
 				throws CredentialException {
 
@@ -86,7 +86,7 @@ public class LoginPasswordAuthenticator implements IdentityAuthenticator {
 	 * por esta clase.
 	 */
 
-	public final String[] getSupportedCredentialTypes() {
+	public String[] getSupportedCredentialTypes() {
 		return new String [] { NamePasswordCredentials.TYPE_IDENTIFIER };
 	}
 }
