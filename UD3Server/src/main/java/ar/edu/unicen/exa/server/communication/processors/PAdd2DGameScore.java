@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
@@ -10,7 +7,6 @@ import common.messages.IMessage;
 import common.messages.requests.MsgAdd2DGameScore;
 import common.processors.IProcessor;
 
-
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo
  * agregar un puntaje a un minijuego.
@@ -18,15 +14,13 @@ import common.processors.IProcessor;
  * @author fede
  * @see #process(IMessage)
  */
-public class PAdd2DGameScore extends ServerMsgProcessor {
+public final class PAdd2DGameScore extends ServerMsgProcessor {
 	
 	/**
 	 * Construcotr por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PAdd2DGameScore() {
-		
-	}
+	public PAdd2DGameScore() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -37,7 +31,7 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
 	@Override
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PAdd2DGameScore();
 	}
 	
@@ -52,7 +46,7 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
 	@Override
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		// casteo el mensaje paraobtener el scrore.
 		MsgAdd2DGameScore msgAddScore = (MsgAdd2DGameScore) msg;
 		
@@ -61,6 +55,5 @@ public class PAdd2DGameScore extends ServerMsgProcessor {
 		
 		// Se agrega el score a la modelo.
 		ModelAccess.getInstance().add2DGameScore(score);
-	}
-	
+	}	
 }

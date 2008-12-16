@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
@@ -15,15 +12,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PAbortQuest extends ServerMsgProcessor {
+public final class PAbortQuest extends ServerMsgProcessor {
 	
 	/**
 	 * Construcotr por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PAbortQuest() {
-		
-	}
+	public PAbortQuest() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -33,7 +28,7 @@ public class PAbortQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PAbortQuest();
 	}
 	
@@ -45,7 +40,7 @@ public class PAbortQuest extends ServerMsgProcessor {
 	 * @param msg Contiene el id de la quest que se abandona.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		MsgPlainText msgAbortQuestRequest = (MsgPlainText) msg;
 
 		String idPlayer = getPlayerAsociete().getIdEntity();
@@ -54,5 +49,4 @@ public class PAbortQuest extends ServerMsgProcessor {
 
 		ModelAccess.getInstance().abortQuest(idPlayer, idQuest);
 	}
-	
 }

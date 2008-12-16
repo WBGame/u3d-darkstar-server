@@ -21,7 +21,7 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PGetTimesPlayed extends ServerMsgProcessor {
+public final class PGetTimesPlayed extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
@@ -58,7 +58,7 @@ public class PGetTimesPlayed extends ServerMsgProcessor {
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public void process(IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			MsgPlainText msgTimePlayedRq = (MsgPlainText) msg;
 			
@@ -68,9 +68,9 @@ public class PGetTimesPlayed extends ServerMsgProcessor {
 			int timesPlayed = ModelAccess.getInstance().getPlayedTimes(
 					id2DGame, p.getIdEntity());
 			
-			MsgGetTimesPlayedResponse msgGTPR = (MsgGetTimesPlayedResponse) MessageFactory
-					.getInstance().createMessage(
-							MsgTypes.MSG_GET_TIMES_PLAYED_RESPONSE_TYPE);
+			MsgGetTimesPlayedResponse msgGTPR = 
+				(MsgGetTimesPlayedResponse) MessageFactory.getInstance()
+				.createMessage(MsgTypes.MSG_GET_TIMES_PLAYED_RESPONSE_TYPE);
 			
 			msgGTPR.setTimesPlayed(timesPlayed);
 			msgGTPR.setId2DGame(id2DGame);

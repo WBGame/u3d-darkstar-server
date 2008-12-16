@@ -16,15 +16,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PStartQuest extends ServerMsgProcessor {
+public final class PStartQuest extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PStartQuest() {
-		
-	}
+	public PStartQuest() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -34,7 +32,7 @@ public class PStartQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PStartQuest();
 	}
 	
@@ -47,7 +45,7 @@ public class PStartQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		MsgPlainText msgStartQuestRequest = (MsgPlainText) msg;
 		
 		String idPlayer = getPlayerAsociete().getIdEntity();

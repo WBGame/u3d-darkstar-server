@@ -28,7 +28,7 @@ import common.processors.IProcessor;
  * @author lito
  * @see #process(IMessage)
  */
-public class PGetPlayer extends ServerMsgProcessor {
+public final class PGetPlayer extends ServerMsgProcessor {
 	
 	/**
 	 * Construcotr por defecto, inicializa las variables internas en {@code
@@ -46,7 +46,6 @@ public class PGetPlayer extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	@Override
 	public IProcessor factoryMethod() {
 		return new PGetPlayer();
 	}
@@ -64,7 +63,6 @@ public class PGetPlayer extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	@Override
 	public void process(final IMessage msg) {
 		try {
 			// Puede arrojar UnsopportedMessageException
@@ -82,9 +80,12 @@ public class PGetPlayer extends ServerMsgProcessor {
 			
 			// tabla de hash auxiliar para poner las propieddades presentes en
 			// el objeto Player, y las del ModelAccess.
-			HashMap<String, IPlayerProperty> properties = new HashMap<String, IPlayerProperty>();
+			HashMap<String, IPlayerProperty> properties = 
+				new HashMap<String, IPlayerProperty>();
+			
 			// Coloco las propiedades del manged object.
-			for (IPlayerProperty prop : playerToReturn.getProperties().values()) {
+			for (IPlayerProperty prop : playerToReturn.getProperties()
+					.values()) {
 				properties.put(prop.getId(), prop);
 			}
 			// Coloco las propiedades del ModelAccess.

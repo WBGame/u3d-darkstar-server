@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
@@ -8,7 +5,6 @@ import common.messages.IMessage;
 import common.messages.MsgPlainText;
 import common.processors.IProcessor;
 
-// TODO: Auto-generated Javadoc
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
  * finalizar una quest.
@@ -16,15 +12,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PFinishQuest extends ServerMsgProcessor {
+public final class PFinishQuest extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PFinishQuest() {
-		
-	}
+	public PFinishQuest() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -34,7 +28,7 @@ public class PFinishQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PFinishQuest();
 	}
 	
@@ -47,7 +41,7 @@ public class PFinishQuest extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		MsgPlainText msgFinishQuestReq = (MsgPlainText) msg;
 		
 		String idQuest = msgFinishQuestReq.getMsg();
@@ -55,6 +49,5 @@ public class PFinishQuest extends ServerMsgProcessor {
 		String idPlayer = getPlayerAsociete().getIdEntity();
 		
 		ModelAccess.getInstance().finishQuest(idPlayer, idQuest);
-	}
-	
+	}	
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.grid.Cell;
@@ -13,7 +10,6 @@ import common.messages.MsgTypes;
 import common.processors.IProcessor;
 import common.processors.MsgProcessorFactory;
 
-// TODO: Auto-generated Javadoc
 /**
  * La clase representa la base de la jerarquia de procesadores de mensajes en el
  * servidor Darkstar.<BR/>
@@ -27,13 +23,13 @@ import common.processors.MsgProcessorFactory;
 public abstract class ServerMsgProcessor implements IProcessor {
 
 	/** El tipo de mensaje que se procesaran por la instancia del procesador. */
-	private String						msgType;
+	private String msgType;
 
 	/** Referencia al player relacionado al mensaje a procesar. */
-	private  ManagedReference<Player>	playerAsociete;
+	private ManagedReference<Player> playerAsociete;
 
 	/** Referencia a la celda relacionada al mensaje a procesar. */
-	private  ManagedReference<Cell>	cellAsociete;
+	private ManagedReference<Cell>	cellAsociete;
 
 	/**
 	 * Gets the msg type.
@@ -48,12 +44,12 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	/**
 	 * Sets the msg type.
 	 * 
-	 * @param msgType El tipo de mensaje que se procesaran por la instancia del
+	 * @param type tipo de mensaje que se procesará por la instancia del
 	 * procesador.
 	 */
 	@Override
-	public final void setMsgType(final String msgType) {
-		this.msgType = msgType;
+	public final void setMsgType(final String type) {
+		this.msgType = type;
 	}
 
 	/**
@@ -153,7 +149,5 @@ public abstract class ServerMsgProcessor implements IProcessor {
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE,
 				new PTaskDelegator());
-
 	}
-
 }

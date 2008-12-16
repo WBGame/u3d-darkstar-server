@@ -1,13 +1,9 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import common.messages.IMessage;
 import common.messages.MsgPlainText;
 import common.processors.IProcessor;
-
 
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
@@ -16,15 +12,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PBuyGame extends ServerMsgProcessor {
+public final class PBuyGame extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PBuyGame() {
-		
-	}
+	public PBuyGame() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -34,7 +28,7 @@ public class PBuyGame extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PBuyGame();
 	}
 	
@@ -47,7 +41,7 @@ public class PBuyGame extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		MsgPlainText msgBuyGame = (MsgPlainText) msg;
 		
 		String id2DGame = msgBuyGame.getMsg();
@@ -55,6 +49,5 @@ public class PBuyGame extends ServerMsgProcessor {
 		String idPlayer = getPlayerAsociete().getIdEntity();
 		
 		ModelAccess.getInstance().buy2DGame(id2DGame, idPlayer);
-	}
-	
+	}	
 }

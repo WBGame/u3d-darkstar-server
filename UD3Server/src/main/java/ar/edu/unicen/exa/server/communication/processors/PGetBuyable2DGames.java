@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.processors;
 
 import java.util.List;
@@ -14,7 +11,6 @@ import common.messages.MsgTypes;
 import common.messages.responses.MsgGetBuyable2DGamesResponse;
 import common.processors.IProcessor;
 
-
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la lista de juegos 2D que se pueden comprar.
@@ -22,15 +18,13 @@ import common.processors.IProcessor;
  * @author Polo
  * @see #process(IMessage)
  */
-public class PGetBuyable2DGames extends ServerMsgProcessor {
+public final class PGetBuyable2DGames extends ServerMsgProcessor {
 	
 	/**
 	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
-	public PGetBuyable2DGames() {
-		
-	}
+	public PGetBuyable2DGames() { }
 	
 	/**
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
@@ -40,7 +34,7 @@ public class PGetBuyable2DGames extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
-	public final IProcessor factoryMethod() {
+	public IProcessor factoryMethod() {
 		return new PGetBuyable2DGames();
 	}
 	
@@ -55,7 +49,7 @@ public class PGetBuyable2DGames extends ServerMsgProcessor {
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
-	public final void process(final IMessage msg) {
+	public void process(final IMessage msg) {
 		try {
 			List<String> buyable2DGames = new Vector<String>(ModelAccess
 					.getInstance().getBuyables2DGames());
