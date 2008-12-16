@@ -28,7 +28,7 @@ import com.sun.sgs.impl.auth.NamePasswordCredentials;
 public final class LoginPasswordAuthenticator implements IdentityAuthenticator {
 
 	/** Creamos un logger para esta clase. */
-	private final Logger logger =
+	private static Logger logger =
 		Logger.getLogger(LoginPasswordAuthenticator.class.getName());
 
 	/**
@@ -46,21 +46,19 @@ public final class LoginPasswordAuthenticator implements IdentityAuthenticator {
 	 * verifique si dicha información es válida para autentificarse. 
 	 * 
 	 * @param credentials para autentificación 
-	 * @return identidad del player 
+	 * @return Identity associeted to player.
 	 * @throws CredentialException si la credencial no es válida
 	 */
-	public Identity authenticateIdentity(
-			final IdentityCredentials credentials) 
-				throws CredentialException {
+	public Identity authenticateIdentity(final IdentityCredentials credentials) 
+	throws CredentialException {
 
 		if (!(credentials instanceof NamePasswordCredentials)) {
 			throw new CredentialException("Credencial desconocida");
 		}
 
 		NamePasswordCredentials npc = (NamePasswordCredentials) credentials;
-		
+
 		// se obtiene el password y nombre que ingresó el usuario. 
-		
 		String name = npc.getName();
 		char[] passaux = npc.getPassword();
 		String password = new String(passaux);
@@ -72,20 +70,21 @@ public final class LoginPasswordAuthenticator implements IdentityAuthenticator {
 		// si no es válida se rechaza el ingreso al usuario.
 		if (!isValid) {
 			throw new CredentialException(
-					"El nombre de usuario o contraseña no es válida");
+			"El nombre de usuario o contraseña no es válida");
 		}
-		
+
 		logger.info("Es válida la autenticación para el usuario " 
 				+ name + " con password " + password);
-		
+
 		return new IdentityImpl(name);
 	}
 
 	/**
-	 * @return los identificadores para los tipos de credenciales soportados
+	 * Getter.
+	 * 
+	 * @return identificadores para los tipos de credenciales soportados
 	 * por esta clase.
 	 */
-
 	public String[] getSupportedCredentialTypes() {
 		return new String [] { NamePasswordCredentials.TYPE_IDENTIFIER };
 	}
