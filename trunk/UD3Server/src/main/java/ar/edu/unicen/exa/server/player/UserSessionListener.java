@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com/> 
  * @encoding UTF-8 
  */
-public class UserSessionListener 
+public final class UserSessionListener 
 implements ClientSessionListener, Serializable {
 
 	/**
@@ -37,7 +37,7 @@ implements ClientSessionListener, Serializable {
 	/** 
 	 * Logger para esta clase.
 	 */
-	private final static Logger logger = 
+	private static final Logger LOGGER = 
 		Logger.getLogger(UserSessionListener.class.getName());
 
 	/**
@@ -52,7 +52,7 @@ implements ClientSessionListener, Serializable {
 	 * 
 	 * @return Player jugador que hace referencia el {@code ManagedReference}.
 	 */
-	public final Player getPlayer() {
+	public Player getPlayer() {
 		return playerRef.get();
 	}
 
@@ -63,7 +63,7 @@ implements ClientSessionListener, Serializable {
 	 * 
 	 * @param player instancia de un jugador.
 	 */
-	public final void setPlayer(final Player player) {
+	public void setPlayer(final Player player) {
 		if (player == null) {
             throw new NullPointerException(
             		"No existe una instancia para la clase Player");
@@ -73,7 +73,7 @@ implements ClientSessionListener, Serializable {
         try {
         	this.playerRef = dataMgr.createReference(player);
             
-        	logger.log(
+        	LOGGER.log(
             		Level.INFO, "Establecer una referencia al Player: {0} ",
             		player.getIdEntity()
             );
@@ -91,7 +91,7 @@ implements ClientSessionListener, Serializable {
 	 * Need to implement exceptions
 	 * @param msg mensaje que recibe de un usuario.
 	 */
-	public final void receivedMessage(final ByteBuffer msg) {
+	public void receivedMessage(final ByteBuffer msg) {
 		//create a new task for the message
 		IMessage iMessage = null;
 		try {
@@ -115,10 +115,17 @@ implements ClientSessionListener, Serializable {
 	 * @param graceful si {@code true}, el cliente se desconecta
 	 *        correctamente.
 	 */
-	public final void disconnected(final boolean graceful) {
+	public void disconnected(final boolean graceful) {
 		ClientSession session = getPlayer().getSession();
-		String grace = graceful ? "correctamente" : "forzadamente";
-		logger.log(
+		
+		String grace = null; 
+		if (graceful) {
+			grace = "correctamente";
+		} else {
+			grace = "forzadamente";
+		}
+		
+		LOGGER.log(
 				Level.INFO,
 				"El usuario {0} se ha desconectado {1}",
 				new Object[] { session.getName(), grace } 
