@@ -1,8 +1,3 @@
-/**
- * ComTaskFactory.java
- * 
- * @author lito
- */
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import java.util.Hashtable;

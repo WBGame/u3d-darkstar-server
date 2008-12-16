@@ -12,7 +12,7 @@ import common.messages.IMessage;
  * 
  * @author lito
  */
-public class TChangePlayerState extends TaskCommunication {
+public final class TChangePlayerState extends TaskCommunication {
 	
 	/**
 	 * The Constructor.
@@ -31,7 +31,7 @@ public class TChangePlayerState extends TaskCommunication {
 	 * @return the task communication
 	 */
 	@Override
-	public final TaskCommunication factoryMethod(final IMessage msg) {
+	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TChangePlayerState(msg);
 	}
 	
