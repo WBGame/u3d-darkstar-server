@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import com.sun.sgs.app.AppContext;
@@ -33,7 +30,7 @@ import common.messages.MsgPlainText;
  * @author lito
  * 
  */
-public class TEnterWorld extends TaskCommunication {
+public final class TEnterWorld extends TaskCommunication {
 
 	/**
 	 * class Constructor.
@@ -52,14 +49,14 @@ public class TEnterWorld extends TaskCommunication {
 	 * @return TEnterWorld
 	 */
 	@Override
-	public final TaskCommunication factoryMethod(final IMessage msg) {
+	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TEnterWorld(msg);
 	}
 
 	/**
 	 * TODO javadoc. 
 	 */
-	public final void run() {
+	public void run() {
 		String strNewWorld;
 		String msgReport;
 		strNewWorld = new String();
@@ -113,7 +110,7 @@ public class TEnterWorld extends TaskCommunication {
 		}
 		//unsubscribe client from the actual cell
 		current.leaveFromChannel(session);
-		
+
 		//obtain from the message the new world id
 		strNewWorld = msg.getMsg();
 		// set the new world for the user
@@ -127,13 +124,10 @@ public class TEnterWorld extends TaskCommunication {
 		//Notify to the player near the current cell
 		current.send(msg, session);
 		//get the adjacent cells for the spawn cell
-	 	adyacentes = structure.getAdjacents(current , player.getPosition());
+		adyacentes = structure.getAdjacents(current , player.getPosition());
 		//and join his channels
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);
 		}
-
 	}
-
-
 }

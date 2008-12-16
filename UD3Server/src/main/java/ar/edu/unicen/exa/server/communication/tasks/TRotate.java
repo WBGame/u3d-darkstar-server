@@ -21,7 +21,7 @@ import common.messages.notify.MsgRotate;
  * 
  * @author lito
  */
-public class TRotate extends TaskCommunication {
+public final class TRotate extends TaskCommunication {
 
     /**
      * Class Constructor.
@@ -40,13 +40,13 @@ public class TRotate extends TaskCommunication {
 	 * @return  new Msg.
 	 */
 	@Override
-	public final TaskCommunication factoryMethod(final IMessage msg) {
+	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TRotate(msg);
 	}
 	/**
 	 * 
 	 */
-	public final void run() {
+	public void run() {
 		String msgReport;
 		msgReport = new String();
 		//FIXME handle exception and common errors

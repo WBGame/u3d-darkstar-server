@@ -1,10 +1,6 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import common.messages.IMessage;
-
 
 /**
  * La tarea se ejecutara al recibir un mensaje ({@link MsgGetDynamicEntity})
@@ -19,7 +15,7 @@ import common.messages.IMessage;
  * 
  * @author lito
  */
-public class TGetDynamicEntity extends TaskCommunication {
+public final class TGetDynamicEntity extends TaskCommunication {
 	
 	/**
 	 * The Constructor.
@@ -38,7 +34,7 @@ public class TGetDynamicEntity extends TaskCommunication {
 	 * @return the task communication
 	 */
 	@Override
-	public final TaskCommunication factoryMethod(final IMessage msg) {
+	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TGetDynamicEntity(msg);
 	}
 	/**

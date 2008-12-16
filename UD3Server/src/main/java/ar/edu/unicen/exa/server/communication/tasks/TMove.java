@@ -18,7 +18,7 @@ import common.messages.notify.MsgMove;
  * de ellas.
  * 
  */
-public class TMove extends TaskCommunication {
+public final class TMove extends TaskCommunication {
 	
 	/**
 	 * Constructor que inicializa el estado interno de la tarea con el 
@@ -37,14 +37,14 @@ public class TMove extends TaskCommunication {
 	 * @return Una instancia de esta clase
 	 */
 	@Override
-	public final TaskCommunication factoryMethod(final IMessage msg) {
+	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TMove(msg);
 	}
 	
 	/**
-	 * //TODO javadoc.
+	 * TODO javadoc.
 	 */
-	public final void run() {
+	public void run() {
 		//FIXME manejar excepciones y errores comunes.
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
 			//throw El mensaje no me sirve para esta tarea!
@@ -89,5 +89,4 @@ public class TMove extends TaskCommunication {
 			adyacentes[i].send(msg, session);
 		}
 	}
-	
 }
