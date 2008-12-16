@@ -19,11 +19,8 @@ import common.messages.IMessage;
  * 
  * @author Kopp Roberto <robertokopp at hotmail dot com/>
  * @encoding UTF-8
- * 
- * TODO Implementar metodo send.
- * 
  */
-public class Player extends DynamicEntity {
+public final class Player extends DynamicEntity {
 	
 	/**  Para cumplir con la version de la clase Serializable. */
 	
@@ -68,7 +65,7 @@ public class Player extends DynamicEntity {
 	 * @param session sesión correspondiente al juagdor.
 	 * @return Player una instancia para el jugador.
 	 */
-	public static final Player create(final ClientSession session) {
+	public static Player create(final ClientSession session) {
 		
 		// Data manager del sistema
 		DataManager d = AppContext.getDataManager();
@@ -98,27 +95,32 @@ public class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * @Mock
+	 * Send a IMessage directly to the player using client/server scheme.
 	 * 
 	 * @param message mensaje que se envia al usuario.
+	 * 
+	 * @see {@link ClientSession#send(java.nio.ByteBuffer)}
 	 */
-	public final void send(final IMessage message) {
+	public void send(final IMessage message) {
 		refSession.get().send(message.toByteBuffer());
 	}
 	
 	/**
+	 * Getter.
 	 * 
 	 * @param playerproperty identificador de la propiedad.
 	 * @return property propiedad del jugador
 	 */
-	public final IPlayerProperty getProperty(final String playerproperty) {
+	public IPlayerProperty getProperty(final String playerproperty) {
 		return this.properties.get(playerproperty);
 	}
 	
 	/**
+	 * Getter.
+	 * 
 	 * @return session el objeto sesion asociado al player. 
 	 */
-	public final ClientSession getSession() {
+	public ClientSession getSession() {
 		return refSession.get();
 	}
 	
@@ -127,13 +129,12 @@ public class Player extends DynamicEntity {
 	 * {@link ClientSession} por medio del DataManager e indicando que el 
 	 * Player se actualizara para establecer la referencia.
 	 * 
-	 * 
 	 * @param session sesion correspondiente al loggedIn del usuario. Si es el 
 	 * valor de la sesion es null se producira una excepsion la cual es 
 	 * capturada para establecer la referencia en null, lo que significa que no
 	 * se hara uso de la sesion a la cual se hace referencia.
 	 */
-	public final void setSession(final ClientSession session) {
+	public void setSession(final ClientSession session) {
         
     	DataManager dataMgr = AppContext.getDataManager();
         
@@ -152,7 +153,7 @@ public class Player extends DynamicEntity {
 	 * 
 	 * @return properties propiedades del jugador
 	 */
-	public final Hashtable<String, IPlayerProperty> getProperties() {
+	public Hashtable<String, IPlayerProperty> getProperties() {
 		return properties;
 	}
 	
@@ -162,7 +163,7 @@ public class Player extends DynamicEntity {
 	 * 
 	 * @param pproperties propiedades del jugador
 	 */
-	public final void setProperties(
+	public void setProperties(
 			final Hashtable<String, IPlayerProperty> pproperties) {
 		this.properties = pproperties;
 	}
@@ -172,7 +173,7 @@ public class Player extends DynamicEntity {
 	 * 
 	 * @return state estado del jugador
 	 */
-	public final PlayerState getState() {
+	public PlayerState getState() {
 		return state;
 	}
 	
@@ -181,7 +182,7 @@ public class Player extends DynamicEntity {
 	 * 
 	 * @param pstate el estado del jugador
 	 */
-	public final void setState(final PlayerState pstate) {
+	public void setState(final PlayerState pstate) {
 		this.state = pstate;
 	}
 	
@@ -193,7 +194,7 @@ public class Player extends DynamicEntity {
 	 * @return boolean si {@code true}, significa que el usuario esta conectado
 	 *  al servidor.
 	 */
-	public final boolean isConnected() {
+	public boolean isConnected() {
 		if (refSession != null) {	
 			return refSession.get().isConnected();
 		}
