@@ -1,16 +1,12 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import common.messages.IMessage;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgChangePlayerState}.<BR/>
- * Devera actualizar el estado de la entidad afectada, y reenviar
- * el mensaje a travez las celdas pertinentes.
+ * Deberá actualizar el estado de la entidad afectada, y reenviar
+ * el mensaje a través las celdas pertinentes.
  * 
- * @author lito
  */
 public final class TChangePlayerState extends TaskCommunication {
 	
@@ -37,10 +33,12 @@ public final class TChangePlayerState extends TaskCommunication {
 	
 
 	/**
-	 * 
+	 * TODO comentar.
 	 */
 	public void run() {
-		
+		/*
+		 * TODO implementar. El mensaje que se recibirá: MsgChangePlayerState
+		 */
 	}
 	
 }
