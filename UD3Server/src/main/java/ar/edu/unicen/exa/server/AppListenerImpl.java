@@ -35,7 +35,13 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	 * 
 	 * @param props propiedades para configurar la aplicacion
 	 */
-	public void initialize(final Properties props) { }
+	public final void initialize(final Properties props) {
+		/*
+		 * - Inicializar la matriz de celdas
+		 * - Channels - Cells
+		 * - GridManager
+		 */
+	}
 
 	/** 
 	 * Este método es invocado cada vez que un usuario se logea en el sistema.
@@ -51,7 +57,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	 * @param session sesion de un player
 	 * @return ClientSessionListener un listener para la session del jugador.
 	 */
-	public ClientSessionListener loggedIn(final ClientSession session) {
+	public final ClientSessionListener loggedIn(final ClientSession session) {
 		// Retorno del metodo
 		UserSessionListener user;
 		// Jugador
