@@ -12,22 +12,21 @@ import common.messages.MsgTypes;
 import common.messages.MsgPlainText;
 
 /**
- * La tarea se ejecutara al recibir un mensaje directo desde un cliente, el cual
- * informa que entrara al mundo indicado en el mensaje. Las acciones a tomar son
- * las siguiente:<BR/>
- * * Agragar el jugador al mundo desedeado.<BR/>
- * * Suscribirlo a la celda por defecto del mundo y a las adyacentes segun
- * coresponda.<BR/>
- * * Quitarlo del mundo en el que estaba el jugador previamente.<BR/>
- * * Desuscribirlo de las celdas en las que se 
- *   encontraba en el mundo anterior.<BR/>
- * * Enviar los mensaje correspondientes 
- *   {@link MsgArrived} a las celdas del mundo
- * nuevo.<BR/>
- * * Enviar los mensaje correspondientes {@link MsgLeft} a las celdas del mundo
- * viejo.<BR/>
- * 
- * @author lito
+ * La tarea se ejecutará al recibir un mensaje directo desde un cliente, el cual
+ * informa que entrará al mundo indicado en el mensaje. Las acciones a tomar son
+ * las siguientes:
+ * <ol>
+ * 	<li>Agregar el jugador al mundo deseado.</li>
+ * 	<li>Suscribirlo a la celda por defecto del mundo y a las adyacentes según
+ * corresponda.</li>
+ * 	<li>Quitarlo del mundo en el que estaba el jugador previamente.</li>
+ * 	<li>Desuscribirlo de las celdas en las que se encontraba en el mundo 
+ * anterior.</li>
+ * 	<li>Enviar los mensajes correspondientes {@link MsgArrived} a las celdas 
+ * del mundo nuevo.</li>
+ * 	<li>Enviar los mensajes correspondientes {@link MsgLeft} a las celdas del 
+ * mundo viejo.</li>
+ * </ol>
  * 
  */
 public final class TEnterWorld extends TaskCommunication {
@@ -57,6 +56,12 @@ public final class TEnterWorld extends TaskCommunication {
 	 * TODO javadoc. 
 	 */
 	public void run() {
+		/**
+		 * FIXME acomodar este método basándose en TMove.
+		 *  el método MsgPlainText.getMsg(); retorna el id
+		 *  del nuevo mundo.
+		 * 
+		 */
 		String strNewWorld;
 		String msgReport;
 		strNewWorld = new String();
@@ -129,5 +134,8 @@ public final class TEnterWorld extends TaskCommunication {
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);
 		}
+
 	}
+
+
 }
