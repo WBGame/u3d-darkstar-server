@@ -2,8 +2,7 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.nio.ByteBuffer;
 
-import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
-import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.AppContext;
@@ -12,6 +11,7 @@ import com.sun.sgs.app.ChannelListener;
 import com.sun.sgs.app.ClientSession;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+import common.processors.MsgProcessorFactory;
 
 /**
  * Procesa los mensajes que llegan por los canales. Para esto debe generar un
@@ -20,12 +20,11 @@ import common.messages.MessageFactory;
  * Channel, por ejemplo se puede asociar el mismo ChannelMessageListener a todos
  * los canales.
  * 
- * @author Jair Tabares.
  * @encoding UTF-8
  * 
- * TODO probably is needed set player cell to.
  */
 public class ChannelMessageListener implements ChannelListener {
+
 	/**
 	 * @param channel
 	 *            a channel
@@ -38,16 +37,31 @@ public class ChannelMessageListener implements ChannelListener {
 			final ClientSession session, final ByteBuffer msg) {
 		try {
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
-			TaskCommunication taskCommunication = TaskCommFactory.getInstance()
-					.createComTask(iMessage);
 			
+			ServerMsgProcessor processor = 
+				(ServerMsgProcessor) MsgProcessorFactory.getInstance()
+				.createProcessor(iMessage.getType());
+		
 			Player p = (Player) AppContext.getDataManager().getBinding(
 					session.getName() 
 			);
+
+			processor.setPlayerAsociete(p);
 			
-			taskCommunication.setPlayerAsociete(p);
+			//debo obtener la IGridStructure del jugador
+			IGridStructure structure = GridManager.getInstance()
+					.getStructure(p.getActualWorld());
+
+			//Obtengo la celda donde está el jugador
+			Cell current = structure.getCell(p.getPosition());
+			if (current == null) {
+				//throw el jugador está afuera del tablero!
+				System.err.println("El jugador está afuera del tablero!");
+			}
 			
-			AppContext.getTaskManager().scheduleTask(taskCommunication);
+			processor.setCellAsociete(current);
+			
+			processor.process(iMessage);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
