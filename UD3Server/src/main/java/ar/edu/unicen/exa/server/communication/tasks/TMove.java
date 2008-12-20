@@ -5,7 +5,6 @@ import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 
-import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
@@ -13,8 +12,8 @@ import common.messages.notify.MsgMove;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgMove}.<BR/>
- * Devera actualizar la posicion de la entidad en movimiento, y realizar toda la
- * logica asociada a la subscripcion de celdas y el reenvio del mensaje a travez
+ * Deberá actualizar la posición de la entidad en movimiento, y realizar toda la
+ * lógica asociada a la suscripción de celdas y el reenvio del mensaje a través
  * de ellas.
  * 
  */
@@ -45,38 +44,43 @@ public final class TMove extends TaskCommunication {
 	 * TODO javadoc.
 	 */
 	public void run() {
-		//FIXME manejar excepciones y errores comunes.
-		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
-			//throw El mensaje no me sirve para esta tarea!
-			System.err.println("El mensaje no me sirve para esta tarea!");
-		}
-		
-		//El mensaje es de tipo MsgMove
-		MsgMove msg = (MsgMove) getMessage();
 
-		String userId = msg.getIdDynamicEntity();
-		Player player = null;
-		try {
-			player = (Player) AppContext.getDataManager()
-					.getBinding(userId);
-		} catch (Exception e) {
-			//throw no pude encontrar al usuario <userId>
-			System.err.println("No pude encontrar al usuario <" + userId + ">");
-		}
+		//Castear al mensage que corresponda
+		MsgMove msg = (MsgMove) getMessage();
+		Player player = getPlayerAsociete();
+		Cell cell = getCellAsociete();
+		ClientSession session = player.getSession();
+		
+		//Actualizamos la posicion del player
+		player.setPosition(msg.getPosDestino());
+		
 		//debo obtener la IGridStructure del jugador
 		IGridStructure structure = GridManager.getInstance()
 				.getStructure(player.getActualWorld());
-
-		//Obtengo la celda donde está el jugador
-		Cell current = structure.getCell(msg.getPosOrigen());
-		if (current == null) {
-			//throw el jugador está afuera del tablero!
-			System.err.println("El jugador está afuera del tablero!");
+		
+		Cell destino = structure.getCell(msg.getPosDestino());
+		
+		if (!cell.equals(destino)) {
+			cell.leaveFromChannel(session);
+			destino.joinToChannel(session);
+			cell = destino;
 		}
-		ClientSession session = player.getSession();
-		current.send(msg, session);
-		Cell[] adyacentes = structure
-				.getAdjacents(current, msg.getPosDestino());
+		
+		
+		//le seteo el tipo para que el cliente lo reciba.
+		msg.setType(MsgTypes.MSG_MOVE_NOTIFY_TYPE);
+		
+		cell.send(msg, session);
+
+		/*
+		 * TODO refactorizar las siguientes líneas y ponerlas en Cell.send
+		 * (si vale la pena) 
+		 */
+
+		Cell[] adyacentes = structure.getAdjacents(
+				cell, 
+				player.getPosition()
+			);
 		
 		//las siguientes líneas podrían formar una tarea por sí solas
 		if (adyacentes == null) {
@@ -89,4 +93,5 @@ public final class TMove extends TaskCommunication {
 			adyacentes[i].send(msg, session);
 		}
 	}
+	
 }
