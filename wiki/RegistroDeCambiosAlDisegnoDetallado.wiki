@@ -105,6 +105,7 @@ Motivo: Determina si la posicion dada esta dentro de la celda y no entiendo porq
    * *Cambio:* private ManagedReference`<`Cell`>` refCellAssocieted
    * *Motivo:* el primer motivo es que es un atributo ManagedReference, lo cual facilita el entendimiento que su nombre comience con _ref_. Segundo, no sé si _asociete_ es francés, pero definitivamente no es inglés ni español.
    * *Autor:* Sebastián Perruolo.
+   * *Estado:* pedido.
 
 ==Cambio==
    * *Clase:* ServerMsgProcessor
@@ -112,3 +113,4 @@ Motivo: Determina si la posicion dada esta dentro de la celda y no entiendo porq
    * *Cambio:* private ManagedReference`<`Cell`>` refPlayerAssocieted
    * *Motivo:* el primer motivo es que es un atributo ManagedReference, lo cual facilita el entendimiento que su nombre comience con _ref_. Segundo, no sé si _asociete_ es francés, pero definitivamente no es inglés ni español.
    * *Autor:* Sebastián Perruolo.
+   * *Estado:* pedido.
