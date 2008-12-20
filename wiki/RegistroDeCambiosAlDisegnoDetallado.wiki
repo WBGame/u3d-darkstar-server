@@ -98,3 +98,17 @@ Método: public Object isInside(Vector3f position);
 Cambio: public boolean isInside(Vector3f position);
 Motivo: Determina si la posicion dada esta dentro de la celda y no entiendo porqué retorna un Object.
 
+
+==Cambio==
+   * *Clase:* ServerMsgProcessor
+   * *Atributo:* private ManagedReference`<`Cell`>` cellAsociete
+   * *Cambio:* private ManagedReference`<`Cell`>` refCellAssocieted
+   * *Motivo:* el primer motivo es que es un atributo ManagedReference, lo cual facilita el entendimiento que su nombre comience con _ref_. Segundo, no sé si _asociete_ es francés, pero definitivamente no es inglés ni español.
+   * *Autor:* Sebastián Perruolo.
+
+==Cambio==
+   * *Clase:* ServerMsgProcessor
+   * *Atributo:* private ManagedReference`<`Cell`>` playerAsociete
+   * *Cambio:* private ManagedReference`<`Cell`>` refPlayerAssocieted
+   * *Motivo:* el primer motivo es que es un atributo ManagedReference, lo cual facilita el entendimiento que su nombre comience con _ref_. Segundo, no sé si _asociete_ es francés, pero definitivamente no es inglés ni español.
+   * *Autor:* Sebastián Perruolo.
