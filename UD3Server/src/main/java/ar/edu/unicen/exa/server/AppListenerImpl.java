@@ -40,6 +40,12 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		 * - Inicializar la matriz de celdas
 		 * - Channels - Cells
 		 * - GridManager
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
 		 */
 	}
 
