@@ -63,7 +63,18 @@ public final class TChangeWorld extends TaskCommunication {
 	}
 
 	/**
-	 * TODO javadoc. 
+	 * Este metodo cambia de mundo al jugador. Para ello, se obtiene el 
+	 * mundo actual y la celda donde se encuentra. Luego se crea el mensaje
+	 * {@link MsgLeft} para notificar al los jugadores que estan en la misma
+	 * celda y en las visivebles por otros, que el jugador no se encuntra en
+	 * la celda y finalmente se desuscribe del canal asociado a la celda.
+	 * Para ingresar al nuevo mundo, hacemos uso del procesador correspondiente
+	 * al mensaje {@link MsgEnterWorld}, que contiene la funcionalidad para 
+	 * actualizar el nuevo mundo, suscribir al nuevo canal, notificar la 
+	 * llegada del jugador a las correspondientes celdas. 
+	 * 
+	 * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
+	 * 
 	 */
 	public void run() {
 
