@@ -112,7 +112,7 @@ public final class PGetPlayer extends ServerMsgProcessor {
 					playerToReturn.getIdEntity()));
 			
 			// Envio el mensaje con la respuesta. al Player que solicito
-			getPlayerAsociete().send(msgGPR);
+			getPlayerAssociated().send(msgGPR);
 			
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.

@@ -1,11 +1,11 @@
 package ar.edu.unicen.exa.server.player;
 
-import ar.edu.unicen.exa.server.communication.tasks.TaskCommFactory;
-import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
 import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+import common.processors.MsgProcessorFactory;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -85,27 +85,29 @@ implements ClientSessionListener, Serializable {
 
 	/**
 	 *  
-	 * Create a Imessage with the data received and create a new task with
-	 * the data
-	 * TODO add verifications for correct type of data received. 
-	 * Need to implement exceptions
-	 * @param msg mensaje que recibe de un usuario.
+	 * Crea un <Link Imessage> con el mensaje recibido y ademas se obtiene un 
+	 * <Link ServerMsgProcessor> para el tipo de mensaje corresponiente. Luego
+	 * se realiza el procesamiento del mismo.
+	 *  
+	 * @param msg mensaje que se recibe del cliente.
 	 */
 	public void receivedMessage(final ByteBuffer msg) {
-		//create a new task for the message
-		IMessage iMessage = null;
 		try {
-			iMessage = MessageFactory.getInstance().createMessage(msg);
+			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
+			
+			ServerMsgProcessor processor = 
+				(ServerMsgProcessor) MsgProcessorFactory.getInstance()
+				.createProcessor(iMessage.getType());
+		
+			processor.setPlayerAssociated(this.getPlayer());
+			
+			processor.process(iMessage);
+			
 		} catch (MalformedMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Exception: {0}", e);
 		} catch (UnsopportedMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Exception: {0}", e);
 		}
-		TaskCommunication taskCommunication = TaskCommFactory.getInstance()
-					.createComTask(iMessage);
-		AppContext.getTaskManager().scheduleTask(taskCommunication);
 	}
 
 	/**

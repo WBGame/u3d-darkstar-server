@@ -59,7 +59,7 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 		try {
 			MsgSetPlayerProperty msgSPP = (MsgSetPlayerProperty) msg;
 			
-			Player player = getPlayerAsociete(); 
+			Player player = getPlayerAssociated(); 
 			
 			IPlayerProperty prop = msgSPP.getPlaerProperty();
 			// tirara la excepcion al querer seterale el valor a una propiedad

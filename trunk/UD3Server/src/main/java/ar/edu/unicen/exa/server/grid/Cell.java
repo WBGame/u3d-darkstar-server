@@ -2,22 +2,24 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
-
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
+import com.sun.sgs.app.ChannelManager;
 import com.sun.sgs.app.ClientSession;
+import com.sun.sgs.app.Delivery;
 import com.sun.sgs.app.ManagedReference;
 import common.messages.IMessage;
+
+
 
 /**
  * Representa una zona fisica del mundo. Esta zona esta delimitada por los
  * bounds. Ademas, esta zona esta asociada a un unico {@code Channel} , es decir
  * hay una correspondencia uno a uno entre celdas y canales.
- * 
- * @generated "De UML a Java V5.0 
- * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
  */
+
+
 public class Cell implements Serializable {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1301727798124952702L;
@@ -26,8 +28,6 @@ public class Cell implements Serializable {
 	 * Es una referencia {@code ManagedReference} a la {@link IGridStructure}
 	 * contenedora de la celda.
 	 * 
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	private ManagedReference<IGridStructure> refStructure;
 
@@ -35,55 +35,59 @@ public class Cell implements Serializable {
 	 * Es la identificacion unica de una celda. No se debe repetir para niguna
 	 * celda de una misma estructura.
 	 * 
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	private Object id;
+	private String id;
 
 	/**
 	 * Es una referencia {@code ManagedReference} al {@code Channel} asociado a
 	 * la celda.
-	 * 
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	private ManagedReference<Channel> refChannel;
 
 	/**
 	 * Determina el espacio circundado por la celda en el espacio fisico del
 	 * mundo.
-	 * 
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	private Rectangle bounds;
 
 	/**
 	 * Creador.
-	 * @param cellId identificador de la celda.
+	 * 
 	 * @param cellBunds límites de la celda.
 	 * @param parent Estructura a la que pertenece la celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public Cell(final Object cellId, final Rectangle cellBunds, 
+	public Cell(final Rectangle cellBunds, 
 			final IGridStructure parent) {
-		this.id = cellId;
+		//XXX parte de la inicializacion del sistema. 
+		//generador de nuevos ids unicos para cada celda
+		this.id = CellIDGenerator.getNextID();
+		System.out.println("idcell = " + id);
 		this.bounds = cellBunds;
-		//FIXME remove if
+		System.out.println("x= " + bounds.getX() + " y= " + bounds.getY());
 		if (parent != null) {
 			refStructure = AppContext.getDataManager().createReference(parent);
 		}
+    	
+		ChannelManager channelMgr = AppContext.getChannelManager();
+        
+        //se crea el canal con nombre de channel + el id de la celda 
+		//corresponiente, además se indica qué la clase ChannelMessageListener
+		//será la encargada de recibir los mensajes que se envian a dicho canal
+    	
+    	String channelName = "channel_" + id; 
+    	
+        Channel channel = channelMgr.createChannel(channelName, 
+        									  new ChannelMessageListener(), 
+                                              Delivery.RELIABLE);
+        this.setChannel(channel);
 	}
 
 	/**
 	 * Retorna el identificador de la celda.
 	 * 
 	 * @return el identificador de esta instancia de celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public final Object getId() {
+	public final String getId() {
 		return id;
 	}
 
@@ -92,8 +96,6 @@ public class Cell implements Serializable {
 	 * celda.
 	 * 
 	 * @return el Channel de esta celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Channel getChannel() {
 		return refChannel.get();
@@ -106,8 +108,6 @@ public class Cell implements Serializable {
 	 * DataManager} .
 	 * 
 	 * @param cellChannel canal que se debe asociar a la celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void setChannel(final Channel cellChannel) {
 		this.refChannel = AppContext.getDataManager()
@@ -118,8 +118,6 @@ public class Cell implements Serializable {
 	 * Retorna el espacio circundado por la celda.
 	 * 
 	 * @return Los límites de esta celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Rectangle getBounds() {
 		return bounds;
@@ -129,8 +127,6 @@ public class Cell implements Serializable {
 	 * Establece el espacio circundado por la celda.
 	 * 
 	 * @param cellBounds Límites de esta celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void setBounds(final Rectangle cellBounds) {
 		this.bounds = cellBounds;
@@ -142,8 +138,6 @@ public class Cell implements Serializable {
 	 * referencia debe ser de tipo {@code ManagedReference} .
 	 * 
 	 * @return referencia a la estructura contenedora.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final IGridStructure getStructure() {
 		return refStructure.get();
@@ -154,8 +148,6 @@ public class Cell implements Serializable {
 	 * contenido por la celda.
 	 * 
 	 * @param client jugador a subscribir.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void joinToChannel(final ClientSession client) {
 		getChannel().join(client);
@@ -166,8 +158,6 @@ public class Cell implements Serializable {
 	 * canal contenido por la celda.
 	 * 
 	 * @param client jugador a desuscribir.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void leaveFromChannel(final ClientSession client) {
 		getChannel().leave(client);
@@ -179,9 +169,8 @@ public class Cell implements Serializable {
 	 * 
 	 * @return true si la posición dada está dentro de esta celda. 
 	 * false en otro caso.
+	 * 
 	 * @param position posición a evaluar.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final boolean isInside(final Vector3f position) {
 		//TODO verificar este metodo ya que Vector3f tiene 3 coordenadas
@@ -194,8 +183,6 @@ public class Cell implements Serializable {
 	 * 
 	 * @param msg mensaje a enviar.
 	 * @param player jugador que disparó el mensaje
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void send(final IMessage msg, final ClientSession player) {
 		getChannel().send(player, msg.toByteBuffer());

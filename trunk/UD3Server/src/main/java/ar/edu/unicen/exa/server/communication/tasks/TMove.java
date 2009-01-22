@@ -4,7 +4,6 @@ import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
-
 import com.sun.sgs.app.ClientSession;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
@@ -12,13 +11,19 @@ import common.messages.notify.MsgMove;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgMove}.<BR/>
- * Deberá actualizar la posición de la entidad en movimiento, y realizar toda la
- * lógica asociada a la suscripción de celdas y el reenvio del mensaje a través
- * de ellas.
+ * Deberá actualizar la posición de la entidad en movimiento, y realizar toda
+ * la lógica asociada a la suscripción de celdas y el reenvio del mensaje a 
+ * través de ellas.
  * 
+ * @author lito
  */
 public final class TMove extends TaskCommunication {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1351514003104851241L;
+
 	/**
 	 * Constructor que inicializa el estado interno de la tarea con el 
 	 * parámetro.
@@ -41,57 +46,69 @@ public final class TMove extends TaskCommunication {
 	}
 	
 	/**
-	 * TODO javadoc.
+	 * Etse metodo es el encargado de actualizar la posicion del jugador,
+	 * como asi tambien enviar a las demas celdas el mensaje de notificacion
+	 * correspondiente al movimiento del mismo. En caso de que el jugador
+	 * se cambie de celda, se realiza la desuscripcion del la celda actual
+	 * y se suscribe a la nueva celda. 
+	 * 
+	 * @author Roberto Kopp <robertokopp at hotmail dot com/>
+	 * @author Sebastian Perruolo <sebastianperruolo at gmail dot com/>
+	 * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
+	 * 
+	 * @encoding UTF-8
 	 */
 	public void run() {
 
-		//Castear al mensage que corresponda
-		MsgMove msg = (MsgMove) getMessage();
-		Player player = getPlayerAsociete();
-		Cell cell = getCellAsociete();
-		ClientSession session = player.getSession();
+		//ver si el mensaje recibido sea el correspondiente para esta tarea
+		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
+			throw new Error("Tipo de mensaje no válido para esta tarea");
+		}
+		//instancia del jugador
+		Player player = getPlayerAssociated();
 		
-		//Actualizamos la posicion del player
-		player.setPosition(msg.getPosDestino());
-		
-		//debo obtener la IGridStructure del jugador
+		//obtener la estructura del mundo actual
 		IGridStructure structure = GridManager.getInstance()
 				.getStructure(player.getActualWorld());
 		
+		//recuperar la celda actual
+		Cell actualCell = structure.getCell(player.getPosition());
+  	    //Cell cell = getCellAssociated();
+		
+		//Castear al mensage que corresponda
+		MsgMove msg = (MsgMove) getMessage();
+
+		//Actualizamos la posicion del player
+		player.setPosition(msg.getPosDestino());
+		
 		Cell destino = structure.getCell(msg.getPosDestino());
 		
-		if (!cell.equals(destino)) {
-			cell.leaveFromChannel(session);
+		ClientSession session = player.getSession();
+		//si el jugador cambio de celda
+		if (!actualCell.getId().equals(destino.getId())) {
+			//no habria que avisarle por medio de un mensaje a los restantes 
+			//jugadores que se encuentran en la misma celda que el jugador? 
+			//ya que no va a estar mas porque se cambio de celda o el jugador
+			//desaparece de la escena por medio del frustum?
+			actualCell.leaveFromChannel(session);
 			destino.joinToChannel(session);
-			cell = destino;
 		}
 		
-		
-		//le seteo el tipo para que el cliente lo reciba.
+		//crear el mensaje de llegada del jugador al nuevo mundo
 		msg.setType(MsgTypes.MSG_MOVE_NOTIFY_TYPE);
 		
-		cell.send(msg, session);
-
-		/*
-		 * TODO refactorizar las siguientes líneas y ponerlas en Cell.send
-		 * (si vale la pena) 
-		 */
-
-		Cell[] adyacentes = structure.getAdjacents(
-				cell, 
-				player.getPosition()
-			);
+		//notificar a la misma celda que el jugador se movió
+		destino.send(msg, session);
+		
+		/*Cell[] adyacentes = structure.getAdjacents(destino,
+				player.getPosition());
 		
 		//las siguientes líneas podrían formar una tarea por sí solas
-		if (adyacentes == null) {
-			return;
-		}
-		if (adyacentes.length == 0) {
-			return;
-		}
-		for (int i = 0; i < adyacentes.length; i++) {
-			adyacentes[i].send(msg, session);
-		}
+		if (adyacentes != null) {
+			//notificar a las celdas visibles que el jugador se movió
+			for (int i = 0; i < adyacentes.length; i++) {
+				adyacentes[i].send(msg, session);
+			}
+		}*/
 	}
-	
 }

@@ -47,7 +47,7 @@ public class CellTest extends TestCase {
     			BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT
     		);
 		//IGridStructure parent = new MatrixGridStructure();
-    	Cell cell = new Cell(cellId, cellBunds, null);
+    	Cell cell = new Cell(cellBunds, null);
     	Vector3f positionInSide = new Vector3f(
     			Float.parseFloat("1"),
     			Float.parseFloat("1"),

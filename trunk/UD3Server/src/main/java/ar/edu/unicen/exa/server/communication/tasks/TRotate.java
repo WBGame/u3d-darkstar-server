@@ -24,6 +24,10 @@ import common.messages.notify.MsgRotate;
 public final class TRotate extends TaskCommunication {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Class Constructor.
      * 
      * @param msg the msg

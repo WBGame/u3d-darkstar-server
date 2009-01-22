@@ -1,14 +1,16 @@
 package ar.edu.unicen.exa.server.grid;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
-
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
 import ar.edu.unicen.exa.server.player.Player;
-
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
 import com.sun.sgs.app.ChannelListener;
 import com.sun.sgs.app.ClientSession;
+import com.sun.sgs.app.DataManager;
+import common.exceptions.MalformedMessageException;
+import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
 import common.processors.MsgProcessorFactory;
@@ -23,7 +25,14 @@ import common.processors.MsgProcessorFactory;
  * @encoding UTF-8
  * 
  */
-public class ChannelMessageListener implements ChannelListener {
+//XXX debe implementar Serializable para que no se produzcan excepciones.
+
+public class ChannelMessageListener implements ChannelListener, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param channel
@@ -35,6 +44,7 @@ public class ChannelMessageListener implements ChannelListener {
 	 */
 	public final void receivedMessage(final Channel channel,
 			final ClientSession session, final ByteBuffer msg) {
+			
 		try {
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
 			
@@ -42,29 +52,31 @@ public class ChannelMessageListener implements ChannelListener {
 				(ServerMsgProcessor) MsgProcessorFactory.getInstance()
 				.createProcessor(iMessage.getType());
 		
-			Player p = (Player) AppContext.getDataManager().getBinding(
+
+			DataManager dataMgr = AppContext.getDataManager();
+			
+			//recuperar el jugador desde el DataManager
+			Player player = (Player) dataMgr.getBinding(
 					session.getName() 
 			);
-
-			processor.setPlayerAsociete(p);
-			
-			//debo obtener la IGridStructure del jugador
+					
+			//obtener lel mundo actual del jugador
 			IGridStructure structure = GridManager.getInstance()
-					.getStructure(p.getActualWorld());
-
-			//Obtengo la celda donde está el jugador
-			Cell current = structure.getCell(p.getPosition());
-			if (current == null) {
-				//throw el jugador está afuera del tablero!
-				System.err.println("El jugador está afuera del tablero!");
-			}
+					.getStructure(player.getActualWorld());
 			
-			processor.setCellAsociete(current);
+			//obtener la celda donde se encuentra el jugador
+			Cell cell = structure.getCell(player.getPosition());
+		
+			processor.setPlayerAssociated(player);
+			
+			processor.setCellAssociated(cell);
 			
 			processor.process(iMessage);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (MalformedMessageException e) {
+					e.printStackTrace();
+		} catch (UnsopportedMessageException e) {
+					e.printStackTrace();
+		}		
 	}
 }

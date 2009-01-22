@@ -58,7 +58,7 @@ public final class PGetAvailable2DGames extends ServerMsgProcessor {
 	 */
 	public void process(final IMessage msg) {
 		try {
-			Player p = getPlayerAsociete();
+			Player p = getPlayerAssociated();
 			
 			List<String> availableGames = new Vector<String>(ModelAccess
 					.getInstance().getAvailableGames(p.getIdEntity()));
