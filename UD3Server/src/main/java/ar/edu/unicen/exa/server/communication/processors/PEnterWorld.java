@@ -47,7 +47,14 @@ public final class PEnterWorld extends ServerMsgProcessor {
 	}
 
 	/**
-	 * TODO javadoc. 
+	 * Este procesador contiene la funcionalidad asociada al ingreso de un 
+	 * jugador a un mundo. Se obtiene el mundo por medio del mensaje recivido 
+	 * el mundo al que desea ingresar, actualizando el mundo del jugador como
+	 * asi tambien la celda y posicion inicial, suscribirlo al canal y 
+	 * finalmente enviar el mensaje {@link MsgArrived} a las celdas 
+	 * correspondientes. 
+	 *  
+	 * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
 	 * 
 	 * @param msg mensaje a procesar
 	 */
