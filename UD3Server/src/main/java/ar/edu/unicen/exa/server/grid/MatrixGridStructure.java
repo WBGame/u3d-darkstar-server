@@ -1,8 +1,10 @@
 package ar.edu.unicen.exa.server.grid;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
-
 import com.jme.math.Vector3f;
+import com.sun.sgs.app.AppContext;
+
 
 /** 
  *  Es una coleccion de celdas dispuestas en forma de matriz con el objetivo de
@@ -11,8 +13,6 @@ import com.jme.math.Vector3f;
  *  identificador del IGameState del cliente. Es decir, representa a un objeto
  *  IGameState del cliente en el servidor.
  *  
- * @generated "De UML a Java V5.0 
- * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
  */
 public class MatrixGridStructure implements IGridStructure {
 	/** The version of the serialized form of this class. */
@@ -20,62 +20,84 @@ public class MatrixGridStructure implements IGridStructure {
 	
 	/** 
 	 * Identificador unico de la estructura.
-	 * @generated "De UML a Java V5.0
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	private String idWorld;
+	private String worldID = null;
 	
 	/**
 	 * Celda inicial, es decir la celda en la que aparece por defecto el
 	 * jugador cuando ingresa por primera vez al mundo. 
 	 */
-	private Cell spawn;
-
+	private Cell spawn = null;
+	
+	//XXX agrege la pos inicial del jugador para setearle la pos inicial 
+	//cuando ingresa por primera vez y para calcular la celda spawn.
+	/**
+	 * Posición inicial, es decir la posicion en la que aparece por defecto el
+	 * jugador cuando ingresa por primera vez al mundo. 
+	 */
+	private Vector3f spawnPosPlayer = null;
+	
 	/** 
 	 *  Representacion en forma de matriz de las celdas de la estructura.
 	 * @uml.annotations for <code>structure</code>
 	 *     collection_type="server.grid.Cell"
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	private Cell[][] structure;
-	
+	private Cell[][] structure = null;
+
 	/**
-	 * //TODO javadoc.
-	 * @param anStructure Estructura, siendo Cell[x=width][y=height].
+	 * //TODO javadoc Cell[x=width][y=height].
+	 * 
+	 * @param gridWidth Ancho de la grilla
+	 * @param gridHeight Alto de la grilla
+	 * @param cellSize tamaño de la celda
 	 */
-	public MatrixGridStructure(final Cell[][] anStructure) {
-		structure = anStructure;
+	public MatrixGridStructure(final int gridWidth, final int gridHeight,
+			final int cellSize) {
+		//XXX parte de la inicializacion del sistema.
+		//modificacion de la constructora para la inicializacion de la
+		//de la matriz
+		structure = new Cell[gridWidth][gridHeight];
+		int height = 0;
+		for (int y = 0; y < gridHeight; y++) {
+			int width = 0;
+			for (int x = 0; x < gridWidth; x++) {
+				Rectangle bound = new Rectangle(width, height, cellSize,
+						cellSize);
+				structure[x][y] = new Cell(bound, this);
+				width += cellSize;
+			}
+			height += cellSize;
+		}
+		//posicion del jugador inicial por defecto
+		this.setSpawnPosition(50, 0, 50);
 	}
 	
 	/**
 	 * Setea el identificador único de la estructura.
+	 * 
 	 * @param id identificador único.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final void setIdWorld(final String id) {
-		this.idWorld = id;
+		AppContext.getDataManager().markForUpdate(this);
+		this.worldID = id;
 	}
 
 	/**
 	 * Retorna el identificador único de la estructura.
+	 * 
 	 * @return identificador único.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final String getIdWorld() {
-		return this.idWorld;
+		return this.worldID;
 	}
 
 	/**
 	 * Retorna la celda que contiene la posición "position".
 	 * 
 	 * @param position posición a evaluar.
+	 * 
 	 * @return la celda que contiene la posición "position". <code>null</code>
 	 * si la posición "position" está fuera de la grilla.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Cell getCell(final Vector3f position) {
 		for (int i = 0; i < structure.length; i++) {
@@ -93,8 +115,6 @@ public class MatrixGridStructure implements IGridStructure {
 	 * defecto el jugador cuando ingresa por primera vez al mundo.
 	 * 
 	 * @return la celda inicial.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public final Cell getSpawnCell() {
 		return spawn;
@@ -110,10 +130,10 @@ public class MatrixGridStructure implements IGridStructure {
 	 * 
 	 * @param cell celda de la cual obtener los adyacentes.
 	 * @param position posición dentro de la celda.
+	 * 
 	 * @return un vector vacío ya que esta implementación contiene una sola 
 	 * 		celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+
 	 */
 	public final Cell[] getAdjacents(final Cell cell, final Vector3f position) {
 		//Vector result = new Vector();
@@ -184,11 +204,12 @@ public class MatrixGridStructure implements IGridStructure {
 	 * @param matrix estructura.
 	 * @param x coordenada.
 	 * @param y coordenada.
+	 * 
 	 * @return true si las coordenadas entán dentro de la estructura, false en
 	 * 		otro caso.
 	 */
-	private static boolean isInside(final Cell[][] matrix, 
-			final int x, final int y) {
+	private boolean isInside(final Cell[][] matrix, 
+		final int x, final int y) {
 		if (x < 0) {
 			return false;
 		}
@@ -203,15 +224,32 @@ public class MatrixGridStructure implements IGridStructure {
 		}
 		return true;
 	}
+	
 	/**
-	 * Establece la celda inicial, es decir la celda en la que aparece por
+	 * Establece la posicion inicial, es decir la posicion en la que aparece
+	 * por defecto el jugador cuando ingresa por primera vez al mundo.
+	 * 
+	 * @param x coord eje x
+	 * @param y coord eje y
+	 * @param z coord eje z
+	 */
+	public final void setSpawnPosition(final float x, final float y, 
+			final float z) {
+		AppContext.getDataManager().markForUpdate(this);
+		//posición inicial del jugador en la grid
+		spawnPosPlayer = new Vector3f(x, y, z);
+		//obtener la celda inicial del jugador en la grid
+		spawn = this.getCell(this.spawnPosPlayer);
+	}
+	
+	/**
+	 * Retorna la posicion inicial, es decir la posicion en la que aparece por
 	 * defecto el jugador cuando ingresa por primera vez al mundo.
 	 * 
-	 * @param spawnCell celda inicial
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return la posicion inicial
 	 */
-	public final void setSpawnCell(final Cell spawnCell) {
-		spawn = spawnCell;
+	public final Vector3f getSpawnPosition() {
+		return spawnPosPlayer;
 	}
+
 }

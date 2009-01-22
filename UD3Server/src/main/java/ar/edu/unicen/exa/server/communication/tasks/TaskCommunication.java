@@ -5,13 +5,14 @@
  */
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import java.io.Serializable;
+import ar.edu.unicen.exa.server.entity.DynamicEntity;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
-
 import common.messages.IMessage;
 
 /**
@@ -19,7 +20,7 @@ import common.messages.IMessage;
  * ejecucion de acciones correspondientes a comunicacion y mensajeria del
  * servidor.<BR/>
  * Abstrae el comportamiento de las tareas de comunicacion del servidor, al
- * definir una {@link ManagedReference} (a un {@link Player}) y una
+ * definir una {@link ManagedReference} (a un {@link DynamicEntity}) y una
  * {@link ManagedReference} (a una {@link Cell}) que representan las entidades
  * relacionadas a la recepsion y/o envio de los mensajes resultado de la
  * ejecucion de las acciones correspondientes a las sublcalses de tareas de
@@ -27,8 +28,15 @@ import common.messages.IMessage;
  * 
  * @author lito
  */
-public abstract class TaskCommunication implements Task {
+//XXX debe implementar serializable debido a que las tareas se serializan
+//durante el scheduling de la misma.
+public abstract class TaskCommunication implements Task, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * El mensaje relacionado.<BR/>
 	 * Se declara transient, para obligar a que las sublcalses, declaren campos
@@ -38,16 +46,18 @@ public abstract class TaskCommunication implements Task {
 	 * que realizar indirecciones a travez del mensaje para obtener los datos
 	 * que necesite ya que los mismos seran campos internos.
 	 */
-	private transient IMessage			message;
+	//XXX desabilito la opcion transient debido a que los mensajes en en el 
+	//metodo run() de las tareas llegan con null
+	private /*transient*/ IMessage			message;
 	
 	/** Referencia al player relacionado al mensaje a procesar. */
-	private ManagedReference<Player>	playerAsociete;
+	private ManagedReference<Player>	playerAssociated = null;
 	
 	/** Referencia a la celda relacionada al mensaje a procesar. */
-	private ManagedReference<Cell>	cellAsociete;
+	private ManagedReference<Cell>	cellAssociated = null;
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
-	private String					msgType;
+	private String	msgType;
 
 	/**
 	 * Constructor que inicializa el estado interno con el parámetro. Setea el
@@ -105,35 +115,35 @@ public abstract class TaskCommunication implements Task {
 	/**
 	 * @return Referencia al player relacionado al mensaje a procesar.
 	 */
-	public final Player getPlayerAsociete() {
-		return playerAsociete.get();
+	public final Player getPlayerAssociated() {
+		return playerAssociated.get();
 	}
 	
 	/**
-	 * @param playerAsociate Referencia al player relacionado al mensaje a
+	 * @param associated Referencia al player relacionado al mensaje a
 	 *        procesar.
 	 */
-	public final void setPlayerAsociete(final Player playerAsociate) {
-		this.playerAsociete = AppContext.getDataManager().createReference(
-				playerAsociate
+	public final void setPlayerAssociated(final Player associated) {
+		this.playerAssociated = AppContext.getDataManager().createReference(
+				associated
 		);
 	}
 	
 	/**
 	 * @return Referencia a la celda relacionada al mensaje a procesar.
 	 */
-	public final Cell getCellAsociete() {
-		return cellAsociete.get();
+	public final Cell getCellAssociated() {
+		return cellAssociated.get();
 	}
 	
 	/**
 	 * This method allow to set the asociate cell.
-	 * @param cellAsociate Referencia a la celda relacionada al mensaje a
+	 * @param associated Referencia a la celda relacionada al mensaje a
 	 *        procesar.
 	 */
-	public final void setCellAsociete(final Cell cellAsociate) {
-		this.cellAsociete = AppContext.getDataManager().createReference(
-				cellAsociate
+	public final void setCellAssociated(final Cell associated) {
+		this.cellAssociated = AppContext.getDataManager().createReference(
+				associated
 		);
 	}
 }

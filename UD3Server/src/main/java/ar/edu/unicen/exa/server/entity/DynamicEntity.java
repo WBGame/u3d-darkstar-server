@@ -14,24 +14,24 @@ public class DynamicEntity extends Entity {
 	/**  Para cumplir con la version de la clase Serializable. */
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	/** 
 	 *  Mundo donde se encuentra el jugador o personaje.
 	 */
-	
+
 	private String actualWorld;
 
 	/** 
 	 *  Angulo donde se encuentra el jugador o personaje. 
 	 */
 	
-	private Vector3f angle;
+	private Vector3f angle = null;
 
 	/** 
 	 *  Posicion donde se encuentra el jugador o personaje.
 	 */
 	
-	private Vector3f position;
+	private Vector3f position = null;
 
 	/**
 	 * @return actualWorld donde se encuentra el jugador

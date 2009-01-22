@@ -10,16 +10,12 @@ import com.jme.math.Vector3f;
  *  debe poseer un identificador unico que se corresponde uno a uno con el
  *  identificador del  {@code IGameState} del cliente. Es decir, representa
  *  a un objeto  {@code IGameState} del cliente en el servidor.
- *  
- * @generated "De UML a Java V5.0 
- * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
  */
 public interface IGridStructure extends Serializable, ManagedObject {
 	/**
 	 * Retorna el identificador del mundo.
+	 * 
 	 * @return el identificador del mundo. 
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	String getIdWorld();
 
@@ -28,8 +24,6 @@ public interface IGridStructure extends Serializable, ManagedObject {
 	 * repetirse entre las estructuras.
 	 * 
 	 * @param id identificador del mundo
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	void setIdWorld(String id);
 
@@ -38,21 +32,10 @@ public interface IGridStructure extends Serializable, ManagedObject {
 	 * parÃ¡metro.
 	 * 
 	 * @return la {@link Cell} que corresponde
+	 * 
 	 * @param position posiciÃ³n a evaluar
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	Cell getCell(Vector3f position);
-
-	/**
-	 * Retorna la celda inicial, es decir la celda en la que aparece por
-	 * defecto el jugador cuando ingresa por primera vez al mundo.
-	 * 
-	 * @return la celda inicial
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
-	 */
-	Cell getSpawnCell();
 
 	/**
 	 * Retorna la coleccion de aquellas celdas que son adyacentes a la celda
@@ -63,20 +46,40 @@ public interface IGridStructure extends Serializable, ManagedObject {
 	 * celdas para mas informacion.
 	 * 
 	 * @return las celdas adyacentes.
+	 * 
 	 * @param cell celda de la cual obtener los adyacentes.
 	 * @param position posiciÃ³n dentro de la celda.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	Cell[] getAdjacents(Cell cell, Vector3f position);
 
 	/**
-	 * Establece la celda inicial, es decir la celda en la que aparece por
+	 * Retorna la celda inicial, es decir la celda en la que aparece por
 	 * defecto el jugador cuando ingresa por primera vez al mundo.
 	 * 
-	 * @param spawnCell celda inicial
-	 * @generated "De UML a Java V5.0
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
+	 * @return la celda inicial
 	 */
-	void setSpawnCell(Cell spawnCell);
+	Cell getSpawnCell();
+	
+	/**
+	 * Retorna la posicion inicial, es decir la posicion en la que aparece por
+	 * defecto el jugador cuando ingresa por primera vez al mundo.
+	 * 
+	 * @return la posicion inicial
+	 */
+	Vector3f getSpawnPosition();
+	
+	/**
+	 * Establece la posicion inicial, es decir la posicion en la que aparece
+	 * por defecto el jugador cuando ingresa por primera vez al mundo.
+	 * 
+	 * @param x coord eje x
+	 * @param y coord eje y
+	 * @param z coord eje z
+	 */
+	void setSpawnPosition(float x, float y, float z);
+
+	//XXX eliminacion del metodo. No es necesario ya que la ceda spawn se
+	//calcula cada vez que se setea una nueva poscion inicial del jugador
+	
+	//void setSpawnCell(Cell spawnCell);
 }

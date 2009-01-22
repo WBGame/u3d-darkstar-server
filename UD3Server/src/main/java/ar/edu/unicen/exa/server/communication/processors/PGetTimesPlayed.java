@@ -63,7 +63,7 @@ public final class PGetTimesPlayed extends ServerMsgProcessor {
 			MsgPlainText msgTimePlayedRq = (MsgPlainText) msg;
 			
 			String id2DGame = msgTimePlayedRq.getMsg();
-			Player p = getPlayerAsociete();
+			Player p = getPlayerAssociated();
 			
 			int timesPlayed = ModelAccess.getInstance().getPlayedTimes(
 					id2DGame, p.getIdEntity());

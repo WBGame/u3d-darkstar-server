@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.jme.math.Vector3f;
+
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 import com.sun.sgs.client.simple.SimpleClient;
@@ -20,6 +20,7 @@ import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+import common.messages.MsgEmpty;
 import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
 import common.messages.notify.MsgMove;
@@ -35,11 +36,11 @@ import common.messages.notify.MsgMove;
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
  */
-public final class ClientMsgMove implements SimpleClientListener {
+public final class ClientMsgEnterWorld implements SimpleClientListener {
 
 	/** Creamos un logger para esta clase. */
 	private static final  Logger LOGGER =
-		Logger.getLogger(ClientMsgMove.class.getName());
+		Logger.getLogger(ClientMsgEnterWorld.class.getName());
 	
 	/**  Para cumplir con la version de la clase Serializable. */
 	private static final long serialVersionUID = 1L;
@@ -67,7 +68,7 @@ public final class ClientMsgMove implements SimpleClientListener {
 	 * @param args los argumentos de la linea de comando.
 	 */
 	public static void main(final String[] args) {
-		ClientMsgMove cmm = new ClientMsgMove();
+		ClientMsgEnterWorld cmm = new ClientMsgEnterWorld();
 
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader flujo = new BufferedReader(isr);		
@@ -99,11 +100,12 @@ public final class ClientMsgMove implements SimpleClientListener {
 		
 		String opcion = null;
 		do {
-			System.out.print("Presione Enter para mover al jugador");
+			System.out.print("Cambiar al mundo: ");
 			try {
-				flujo.readLine();
-				IMessage message = cmm.buildMessageMove();
+				String idMundo = flujo.readLine();
+				IMessage message = cmm.buildMessageChangeWorld(idMundo);
 				cmm.sendToChannel(message);
+				System.out.print("Cambiar de mundo? (s/n): ");
 				opcion = flujo.readLine();
 
 			} catch (IOException e) {
@@ -125,7 +127,7 @@ public final class ClientMsgMove implements SimpleClientListener {
 	/**
 	 * Creamos un cliente {@link SimpleClient}.
 	 */
-	protected ClientMsgMove() {
+	protected ClientMsgEnterWorld() {
 		simpleClient = new SimpleClient(this);
 	}
 
@@ -232,7 +234,6 @@ public final class ClientMsgMove implements SimpleClientListener {
 	/**
 	 * Codifica el texto y lo envía directamente al servidor.
 	 * 
-	 * @param message mensaje a enviar directamente al servidor
 	 */
 	
 	protected void send(final IMessage message) {
@@ -243,14 +244,14 @@ public final class ClientMsgMove implements SimpleClientListener {
         		simpleClient.send(msg);
                 MsgPlainText iMsg = (MsgPlainText) message;
 
-                LOGGER.info("Se ha enviado el tipo de mensaje " 
-                		+ iMsg.getType() 
+                LOGGER.info("Se ha enviado el tipo de mensaje " + iMsg.getType() 
                 		+ " con el mensaje mundo: " + iMsg.getMsg());
                 
         	} catch (Exception e) {
                 e.printStackTrace();
         	}
 	}
+
 	/**
 	 * Se utiliza la instancia de simpreClient para conocer el estado actual 
 	 * de conexion correspondiente al usuario.
@@ -305,6 +306,7 @@ public final class ClientMsgMove implements SimpleClientListener {
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 */
+	
 	private IMessage buildMessageEnterWorld(String idMundo) {
 		
 		MsgPlainText msg = null;
@@ -322,48 +324,29 @@ public final class ClientMsgMove implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje de movimiento {@link MsgMove} simulando la 
-	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * Contruye un mensaje para cambiar de mundo {@link MsgChangeWorld} 
+	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
+	 * a travez del canal. 
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 */
-	
-	private IMessage buildMessageMove() {
+	private IMessage buildMessageChangeWorld(String idMundo) {
 		
-		MsgMove iMsg = null;
-		
+		MsgPlainText msg = null;
 		try {
-			//	Creo un mensaje
-			iMsg = (MsgMove) MessageFactory.getInstance()
-			.createMessage(MsgTypes.MSG_MOVE_SEND_TYPE);
-
-		} catch (UnsopportedMessageException e) {
-			e.printStackTrace();
+			msg = (MsgPlainText) MessageFactory.getInstance()
+					.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+			
+			msg.setMsg(idMundo);
+			
+		} catch (UnsopportedMessageException e1) {
+			e1.printStackTrace();
 		}
 
-		// Creo origen
-		Vector3f origen =  new Vector3f();
-		// 10, 15, 20
-		origen.set(10, 15, 20);
-				
-		// Seteo el origen
-		iMsg.setPosOrigen(origen);
-		
-		// Creo Destino
-		Vector3f destino =  new Vector3f();
-		destino.set(0, 10, 10);
-		
-		// Seteo el destino
-		iMsg.setPosDestino(destino);
-		
-		// Seteo el id de la Entidad
-		iMsg.setIdDynamicEntity(login);
-				
-		return iMsg;
+		return msg;
 	}
 	
-    /**
+	/**
      * Envia un mensaje a travez del canal suscripto al cliente.
      * 
      * @param message mensaje a enviar.
@@ -375,14 +358,11 @@ public final class ClientMsgMove implements SimpleClientListener {
     	
         try {
                 this.channel.send(msj);
-    			MsgMove iMsg = (MsgMove) message;
-    			
-    			LOGGER.info("Se ha enviado el mensaje por el canal " 
-    			+ channel.getName()
-    			+ " Tipo de Mensaje : " + iMsg.getType()
-    			+ " Pos Origen: " + iMsg.getPosOrigen()
-    			+ " Pos Destino: " + iMsg.getPosDestino()
-    			+ " Id Dynamic Entity: " + iMsg.getIdDynamicEntity());
+                MsgPlainText iMsg = (MsgPlainText) message;
+
+                LOGGER.info("Se ha enviado el tipo de mensaje " + iMsg.getType() 
+                		+ " con el mensaje " + iMsg.getMsg() + " a travez del canal "  
+                		+ this.channel.getName());
                 
         	} catch (Exception e) {
                 e.printStackTrace();
@@ -396,11 +376,9 @@ public final class ClientMsgMove implements SimpleClientListener {
 	 */
 	
 	public void printMessage(final IMessage message) {
-		MsgMove iMsg = (MsgMove) message;
-		LOGGER.info("Tipo de Mensaje : " + message.getType()
-		+ " Pos Origen: " + iMsg.getPosOrigen()
-		+ " Pos Destino: " + iMsg.getPosDestino()
-		+ " Id Dynamic Entity: " + iMsg.getIdDynamicEntity());
+		MsgEmpty iMsg = (MsgEmpty) message;
+		LOGGER.info("Tipo de Mensaje : " + iMsg.getType()
+		+ " Mundo: " /*+ iMsg.getMsg()*/);
 	}
 	
 	/**
@@ -436,7 +414,6 @@ public final class ClientMsgMove implements SimpleClientListener {
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {
-
 	    	IMessage iMessage = null;
 			try {
 				iMessage = MessageFactory.getInstance().createMessage(msg);
@@ -446,25 +423,10 @@ public final class ClientMsgMove implements SimpleClientListener {
 				e.printStackTrace();
 			}
 			
-			if (iMessage.getType().equals(MsgTypes.MSG_ARRIVED_TYPE)) {
-			
-				MsgPlainText msgPlainText = (MsgPlainText) iMessage;
-				LOGGER.info("Se ha recivido del canal "
-						+ ch.getName() + " el tipo de mensaje: " 
-						+ msgPlainText.getType() 
-						+ " con el mensaje id jugador: "
-						+ msgPlainText.getMsg());
-			
-			} else {
-				MsgMove iMsg = (MsgMove) iMessage;
-			
-				LOGGER.info("Se ha recivido el mensaje del canal " 
-						+ ch.getName()
-						+ " Tipo de Mensaje : " + iMsg.getType()
-						+ " Pos Origen: " + iMsg.getPosOrigen()
-						+ " Pos Destino: " + iMsg.getPosDestino()
-						+ " Id Dynamic Entity: " + iMsg.getIdDynamicEntity());
-			}
+			MsgPlainText iMsg = (MsgPlainText) iMessage;
+			LOGGER.info("Se ha recivido del canal "
+	    			+ ch.getName()+ " el tipo de mensaje: " + iMsg.getType() + 
+					" con el mensaje id jugador: " + iMsg.getMsg());
 	    }
 	}
 }

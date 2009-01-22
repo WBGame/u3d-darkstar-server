@@ -1,19 +1,17 @@
 package ar.edu.unicen.exa.server.grid;
 
 import java.io.Serializable;
-import java.util.Hashtable;
-
 import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
-import com.sun.sgs.app.ManagedReference;
+import com.sun.sgs.app.ObjectNotFoundException;
+import com.sun.sgs.app.TransactionException;
 
 /** 
  *  Contiene referencias a todas las  {@link IGridStructure} de celdas. Se 
  *  pueden agregar estructuras, remover estructuras como asi tambien obtenerla
  *  una estructura dado el identificador del mundo.
  *  
- * @generated "De UML a Java V5.0 
- * 			(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
  */
 public final class GridManager implements Serializable, ManagedObject {
 	/** The version of the serialized form of this class. */
@@ -23,40 +21,50 @@ public final class GridManager implements Serializable, ManagedObject {
 	 *  Es una tabla de hash que contiene referencias  {@code ManagedReference}
 	 *  a las estructuras que mantiene.
 	 *  
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	private Hashtable<String, ManagedReference<IGridStructure>> worlds;
+	//XXX no se hizo uso de la tabla de hash debido a que se generaban
+	//excepciones cuando se recuperaban los mundos
+	//almacenar los mundos por medio de su id utilizando el metodo setBinding()
+	//del DataManger y recuperalo con getBinding()
+	//private Hashtable<Long, ManagedReference<IGridStructure>> worlds = null;
 
 	/** 
 	 *  Instancia unica singleton de la clase.
-	 *  
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	private static GridManager instance;
+	private static GridManager instance = null; 
+	
+	//XXX agregado para la generacion de id's unicos para los mundos 
+	/** Almacena el proximo identificador de mundo a generar. */
+    private long nextWorldID;
 
 	/**
 	 * Metodo privado para implementar un singleton.
 	 */
 	private GridManager() {
+		//worlds = new Hashtable<Long, ManagedReference<IGridStructure>>();
 		
+		nextWorldID = 0L;
 	}
 	/**
 	 * Retorna la estructura que se corresponde con el
 	 * identificador pasado por parametro.
 	 * 
 	 * @return estructura que se corresponde con el identificador
+	 * 
 	 * @param id identificador de la estructura a obtener
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public IGridStructure getStructure(final Object id) {
-		ManagedReference<IGridStructure> result = worlds.get(id.toString());
-		if (result == null) {
+	public IGridStructure getStructure(final String id) {
+		
+		DataManager dataManager = AppContext.getDataManager();
+		IGridStructure grid = null;
+		try {
+			String name = IGridStructure.class.getName() + "_" + id;
+			grid = (IGridStructure) dataManager.getBinding(name);
+		} catch (Exception e) {
 			return null;
 		}
-		return result.get();
+
+		return grid;
 	}
 
 	/**
@@ -65,14 +73,24 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * metodo {@code createReference()} del {@code DataManager}.
 	 * 
 	 * @param structure estructura a almacenar
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public void addStructure(final IGridStructure structure) {
-		ManagedReference<IGridStructure> refStructure = 
-				AppContext.getDataManager().createReference(structure);
-
-		worlds.put(structure.getIdWorld(), refStructure);
+		
+		DataManager dataManager = AppContext.getDataManager();
+		dataManager.markForUpdate(this);
+		nextWorldID++;
+		String worldID = String.valueOf(nextWorldID);
+		structure.setIdWorld(worldID);
+		String name = IGridStructure.class.getName() + "_" + worldID;
+		try {
+			dataManager.setBinding(name, structure);
+		} catch (IllegalArgumentException iae) {
+			iae.printStackTrace();
+		} catch (ObjectNotFoundException onfe) {
+			onfe.printStackTrace();
+		} catch (TransactionException te) {
+			te.printStackTrace();
+		}
 	}
 
 	/**
@@ -83,9 +101,28 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public static GridManager getInstance() {
+		//XXX parte de la inicializacion del sistema.
+		//modificacion del metodo para levantar el GridManager del Object Store
 		if (instance == null) {
-			instance = new GridManager();
-		}
+			DataManager d = AppContext.getDataManager();
+			String name = GridManager.class.getName();
+			try {	
+				// recupero el GridManager a partir del nombre de la clase.
+				// esto puede lanzar una excepcion que indica la ausencia 
+				// del objeto, entonces se debe crear una nueva instancia de
+				// GridManager.
+				instance = (GridManager) d.getBinding(name);
+				System.out.println(
+						"Se ha recuperado la instancia de GridManager");
+			} catch (Exception e) {
+				// creo un GridManager 
+				instance = new GridManager();
+				// registro la instancia dentro del Object Store.
+				d.setBinding(name , instance);
+				System.out.println(
+						"Se ha creado una nueva instancia de GridManager");
+			}
+		}		
 		return instance;
 	}
 
@@ -94,10 +131,13 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * pasado por parametro.
 	 * 
 	 * @param id identificador de la estructura a eliminar.
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
-	public void removeStructure(final Object id) {
-		worlds.remove(id);
+	public void removeStructure(final String id) {
+		//XXX modificacion del metodo para la eliminacion de un objeto dentro
+		//del object store
+		String name = IGridStructure.class.getName() + "_" + id;
+		DataManager dataManager = AppContext.getDataManager();
+		dataManager.markForUpdate(this);
+		dataManager.removeBinding(name);
 	}
 }

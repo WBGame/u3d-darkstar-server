@@ -21,9 +21,6 @@ public class MatrixGridStructureTest {
 	/** Instancia de  Cell. */
 	private Cell theCell = null;
 	
-	/** Identificador del mundo que se utilizará. */
-	private static final String WORLD_ID = "anIdentifier";
-	
 	/** limite inferior X. */
 	private static final int BOUND_X = -10;
 	/** limite inferior Y. */
@@ -41,14 +38,7 @@ public class MatrixGridStructureTest {
 	 */
 	private MatrixGridStructure getInstance() {
 		if (instance == null) {
-			Cell[][] oneCell = new Cell[1][1];
-	    	String cellId = "test";
-	    	Rectangle cellBunds = new Rectangle(
-	    			BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT
-	    		);
-	    	theCell = new Cell(cellId, cellBunds, null);
-			oneCell[0][0] = theCell;
-			instance = new MatrixGridStructure(oneCell);
+			instance = new MatrixGridStructure(1,1,100);
 		}
 		return instance;
 	}
@@ -60,8 +50,8 @@ public class MatrixGridStructureTest {
 	 */
 	@Test
 	public final void testSetIdWorld() {
-		getInstance().setIdWorld(WORLD_ID);
-		assertEquals(instance.getIdWorld(), WORLD_ID);
+		getInstance().setIdWorld("1");
+		assertEquals(instance.getIdWorld(), 1);
 	}
 
 	/**
@@ -71,8 +61,8 @@ public class MatrixGridStructureTest {
 	 */
 	@Test
 	public final void testGetIdWorld() {
-		getInstance().setIdWorld(WORLD_ID);
-		assertEquals(instance.getIdWorld(), WORLD_ID);
+		getInstance().setIdWorld("1");
+		assertEquals(instance.getIdWorld(), 1);
 	}
 
 	/**

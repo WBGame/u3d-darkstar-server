@@ -10,7 +10,6 @@ import ar.edu.unicen.exa.server.communication.tasks.TaskCommunication;
 import common.messages.IMessage;
 import common.processors.IProcessor;
 
-// TODO: Auto-generated Javadoc
 /**
  * Este Porcesador de mensajes, delega las acciones a tomar a tareas de
  * comunicacion de darkstar ({@link TaskCommunication}).<BR/>
@@ -58,8 +57,13 @@ public final class PTaskDelegator extends ServerMsgProcessor {
 		TaskCommunication comT = TaskCommFactory.getInstance().createComTask(
 				msg);
 		
-		comT.setCellAsociete(this.getCellAsociete());
-		comT.setPlayerAsociete(this.getPlayerAsociete());
+		comT.setPlayerAssociated(super.getPlayerAssociated());
+		
+		//XXX desabilito esta linea debido a que genera una excepcion cuando
+		//se crea la referencia a la celda porque no la celda no implementa
+		//ManagedObject
+
+		//comT.setCellAsociete(super.getCellAsociete());
 		
 		AppContext.getTaskManager().scheduleTask(comT);
 	}

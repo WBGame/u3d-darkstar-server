@@ -48,7 +48,7 @@ public final class PStartQuest extends ServerMsgProcessor {
 	public void process(final IMessage msg) {
 		MsgPlainText msgStartQuestRequest = (MsgPlainText) msg;
 		
-		String idPlayer = getPlayerAsociete().getIdEntity();
+		String idPlayer = getPlayerAssociated().getIdEntity();
 		
 		String idQuest = msgStartQuestRequest.getMsg();
 		

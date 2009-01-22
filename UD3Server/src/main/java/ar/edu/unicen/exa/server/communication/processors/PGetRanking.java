@@ -76,7 +76,7 @@ public final class PGetRanking extends ServerMsgProcessor {
 			msgGRR.setRanking(rankingToReturn);
 			
 			// Envio el mensaje con la respuesta. al Player que solicito
-			getPlayerAsociete().send(msgGRR);
+			getPlayerAssociated().send(msgGRR);
 			
 		} catch (UnsopportedMessageException e) {
 			// Esta excepcion no tendria porque ocurrir nunca.

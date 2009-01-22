@@ -1,11 +1,11 @@
 package ar.edu.unicen.exa.server.player;
 
 import ar.edu.unicen.exa.server.entity.DynamicEntity;
-
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
+
 import java.util.Hashtable;
 
 import common.datatypes.PlayerState;
@@ -25,13 +25,14 @@ public final class Player extends DynamicEntity {
 	/**  Para cumplir con la version de la clase Serializable. */
 	
 	private static final long serialVersionUID = 1L;
-
-    /**
-	 * Referencia a la sesion actual del player.
-	 */
-	private ManagedReference<ClientSession>	refSession;
 	
 	/**
+	 * Referencia a la sesion actual del player.
+	 */
+	private ManagedReference<ClientSession>	refSession = null;
+
+	
+    /**
 	 * Conjunto de propiedades del jugador que no estan presentes en
 	 * ModelAccess.
 	 */
@@ -69,40 +70,35 @@ public final class Player extends DynamicEntity {
 		
 		// Data manager del sistema
 		DataManager d = AppContext.getDataManager();
-		
+
 		// Jugador
 		Player player = null;
+		//el nombre de la sesion define el id del jugador
+		String idPlayer = session.getName();
 		
 		try {	
+			System.out.println( "Intentando recuperar una instancia del Object " +
+					"Store para " + idPlayer );
 			// recupero el Player a partir del nombre de la sesión utilizando
 			// el dataManager.
-			player = (Player) d.getBinding(session.getName());
+			player = (Player) d.getBinding(idPlayer);
 			// chequeo que uno o mas jugadores no esten simultaneamente 
 			// logeados en el sistema.
 			if (player.isConnected()) {
 				return null;
 			}
 		} catch (Exception e) {
+			System.out.println( "No existe ninguna instancia dentro del Object " +
+					"Store para " + idPlayer );
 			// creo un nuevo jugador 
 			player = new Player();
 			// seteo su id de entidad
-			player.setIdEntity(session.getName());
+			player.setIdEntity(idPlayer);
 			// registro el Player dentro del Object Store.
-			d.setBinding(player.getIdEntity() , player);
+			d.setBinding(idPlayer , player);
 		}
 		
 		return player;
-	}
-	
-	/**
-	 * Send a IMessage directly to the player using client/server scheme.
-	 * 
-	 * @param message mensaje que se envia al usuario.
-	 * 
-	 * @see {@link ClientSession#send(java.nio.ByteBuffer)}
-	 */
-	public void send(final IMessage message) {
-		refSession.get().send(message.toByteBuffer());
 	}
 	
 	/**
@@ -113,38 +109,6 @@ public final class Player extends DynamicEntity {
 	 */
 	public IPlayerProperty getProperty(final String playerproperty) {
 		return this.properties.get(playerproperty);
-	}
-	
-	/**
-	 * Getter.
-	 * 
-	 * @return session el objeto sesion asociado al player. 
-	 */
-	public ClientSession getSession() {
-		return refSession.get();
-	}
-	
-	/**
-	 * Se crea una referencia {@link ManagedReference} a la sesion del usuario
-	 * {@link ClientSession} por medio del DataManager e indicando que el 
-	 * Player se actualizara para establecer la referencia.
-	 * 
-	 * @param session sesion correspondiente al loggedIn del usuario. Si es el 
-	 * valor de la sesion es null se producira una excepsion la cual es 
-	 * capturada para establecer la referencia en null, lo que significa que no
-	 * se hara uso de la sesion a la cual se hace referencia.
-	 */
-	public void setSession(final ClientSession session) {
-        
-    	DataManager dataMgr = AppContext.getDataManager();
-        
-    	dataMgr.markForUpdate(this);
-
-        try {
-        	this.refSession = dataMgr.createReference(session);	
-        } catch (Exception e) {
-			this.refSession = null;
-		}
 	}
 	
 	/**
@@ -187,6 +151,50 @@ public final class Player extends DynamicEntity {
 	}
 	
 	/**
+	 * Getter.
+	 * 
+	 * @return session el objeto sesion asociado al player. 
+	 */
+	public ClientSession getSession() {
+		if(refSession != null)
+			return refSession.get();
+		return null;
+	}
+	
+	/**
+	 * Se crea una referencia {@link ManagedReference} a la sesion del usuario
+	 * {@link ClientSession} por medio del DataManager e indicando que el 
+	 * Player se actualizara para establecer la referencia.
+	 * 
+	 * @param session sesion correspondiente al loggedIn del usuario. Si es el 
+	 * valor de la sesion es null se producira una excepsion la cual es 
+	 * capturada para establecer la referencia en null, lo que significa que no
+	 * se hara uso de la sesion a la cual se hace referencia.
+	 */
+	public void setSession(final ClientSession session) {
+        
+    	DataManager dataMgr = AppContext.getDataManager();
+        
+    	dataMgr.markForUpdate(this);
+
+        try {
+        	this.refSession = dataMgr.createReference(session);	
+        } catch (Exception e) {
+			this.refSession = null;
+		}
+	}
+	
+	/**
+	 * Send a IMessage directly to the player using client/server scheme.
+	 * 
+	 * @param message mensaje que se envia al usuario.
+	 * 
+	 * @see {@link ClientSession#send(java.nio.ByteBuffer)}
+	 */
+	public void send(final IMessage message) {
+		getSession().send(message.toByteBuffer());
+	}
+	/**
 	 * Por medio de la referencia a la secion, se obtiene el objeto 
 	 * clientSession y con este se invoca al metodo isConnected para conocer el
 	 * estado de coneccion (true/false) del jugador.
@@ -195,8 +203,9 @@ public final class Player extends DynamicEntity {
 	 *  al servidor.
 	 */
 	public boolean isConnected() {
-		if (refSession != null) {	
-			return refSession.get().isConnected();
+		ClientSession session = getSession(); 
+		if (session != null) {	
+			return session.isConnected();
 		}
 		return false;
 	}
