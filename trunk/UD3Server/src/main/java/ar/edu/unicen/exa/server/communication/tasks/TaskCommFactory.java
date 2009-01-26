@@ -61,6 +61,15 @@ public final class TaskCommFactory {
 			TRotate tRotate = new TRotate(rotate);
 			addComTask(tRotate);
 			
+			//XXX faltaba la creacion de la tarea correspondiente al mensaje
+			//de cambio de estado del jugador
+			IMessage changePlayerState = MessageFactory.getInstance()
+				.createMessage(
+					MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE);
+			TChangePlayerState tChangePlayerState = new TChangePlayerState(
+					changePlayerState);
+			addComTask(tChangePlayerState);
+			
 		} catch (UnsopportedMessageException e) {
 			// No deberia suceder
 			e.printStackTrace();
