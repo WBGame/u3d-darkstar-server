@@ -5,8 +5,6 @@ package ar.edu.unicen.exa.server.grid;
 
 import static org.junit.Assert.*;
 
-import java.awt.Rectangle;
-
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -22,12 +20,16 @@ public class MatrixGridStructureTest {
 	private Cell theCell = null;
 	
 	/** limite inferior X. */
+	@SuppressWarnings("unused")
 	private static final int BOUND_X = -10;
 	/** limite inferior Y. */
+	@SuppressWarnings("unused")
 	private static final int BOUND_Y = -10;
 	/** Ancho de la celda. */
+	@SuppressWarnings("unused")
 	private static final int BOUND_WIDTH = 100;
 	/** Alto de la celda. */
+	@SuppressWarnings("unused")
 	private static final int BOUND_HEIGHT = 100;
 	
 	/**
