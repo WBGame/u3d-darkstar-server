@@ -18,6 +18,10 @@ import common.messages.IMessage;
 public final class TGetDynamicEntity extends TaskCommunication {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8571194487175360055L;
+	/**
 	 * The Constructor.
 	 * 
 	 * @param msg the msg

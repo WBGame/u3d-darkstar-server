@@ -11,6 +11,12 @@ import common.messages.IMessage;
 public final class TChangePlayerState extends TaskCommunication {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2534173752248112080L;
+
+
+	/**
 	 * The Constructor.
 	 * 
 	 * @param msg the msg
