@@ -42,7 +42,6 @@ public class CellTest extends TestCase {
      * test.
      */
     public final void testCellIsInside() {
-    	String cellId = "test";
     	Rectangle cellBunds = new Rectangle(
     			BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT
     		);
