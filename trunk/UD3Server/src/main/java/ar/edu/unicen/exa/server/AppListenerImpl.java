@@ -17,7 +17,7 @@ import com.sun.sgs.app.ClientSession;
 /**
  * Esta clase captura los eventos correspondiente al loggedIn de un usuario.
  * Basicamente se encarga de inicializar el servidor y recuperar o crear
- * el jugardor para la debida sesi�n.
+ * el jugador para la debida sesión.
  *
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
  * @encoding UTF-8
@@ -33,8 +33,21 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	/** Alto de la grilla. */
 	private static final int GRID_HEIGHT	= 10;
 	
-	/** Tama�o de la celda. Cuadrada (100x100). */
+	/** Tamaño de la celda. Cuadrada (100x100). */
 	private static final int CELL_SIZE = 100;
+
+	/** Posición original X del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD1_X = 100;
+	/** Posición original Y del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD1_Y = 0;
+	/** Posición original Z del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD1_Z = 100;
+	/** Posición original X del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD2_X = 150;
+	/** Posición original Y del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD2_Y = 0;
+	/** Posición original Z del primer mundo. */
+	private static final float SPAWN_POSITION_WORLD2_Z = 150;
 	
 	/**
 	 * Este metodo es invocado cuando el servidor se ejecuta por primera 
@@ -54,8 +67,12 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		//crear la grilla a partir de los datos definidos anteriormente
 		IGridStructure world1 = new MatrixGridStructure(
 				GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-		//definir cual ser� la posicion inicial del jugador dentro del mundo
-		world1.setSpawnPosition(100,0,100);
+		//definir cual será la posicion inicial del jugador dentro del mundo
+		world1.setSpawnPosition(
+				SPAWN_POSITION_WORLD1_X,
+				SPAWN_POSITION_WORLD1_Y,
+				SPAWN_POSITION_WORLD1_Z
+			);
 		//agregamos el nuevo mundo al GridManager
 		gridManager.addStructure(world1);
 		
@@ -63,7 +80,11 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		//primero, salvo la posicion inicial del jugador dentro de este mundo
 		IGridStructure world2 = new MatrixGridStructure(
 				GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-		world2.setSpawnPosition(150,0,150);
+		world2.setSpawnPosition(
+				SPAWN_POSITION_WORLD2_X,
+				SPAWN_POSITION_WORLD2_Y,
+				SPAWN_POSITION_WORLD2_Z
+			);
 		gridManager.addStructure(world2);
 		
 		//configuracion de la factoria de procesadores para los mesajes del
@@ -72,7 +93,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	}
 
 	/** 
-	 * Este m�todo es invocado cada vez que un usuario se logea en el sistema.
+	 * Este método es invocado cada vez que un usuario se logea en el sistema.
 	 *  
 	 * Por medio de la sesion se obtiene el Player. En caso de que sea null,
 	 * significa que existe un jugador con el mismo nobre de usuario conectado
@@ -95,7 +116,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		if (player != null) {
 			// para capturar los eventos asociados a este jugador
 			user = new UserSessionListener();
-			// asigno la nueva sesi�n al jugador
+			// asigno la nueva sesión al jugador
 			player.setSession(session);
 			user.setPlayer(player);
 			return user;
