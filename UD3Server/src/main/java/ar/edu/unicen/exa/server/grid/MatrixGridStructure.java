@@ -15,9 +15,25 @@ import com.sun.sgs.app.AppContext;
  *  
  */
 public class MatrixGridStructure implements IGridStructure {
+
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 3105473591463699480L;
-	
+	/** 
+	 * Posición X por defecto para cuando el jugador ingresa al mundo por 
+	 * primera vez. 
+	 */
+	private static final float DEFAULT_SPAWN_POSITION_X = 50;
+	/** 
+	 * Posición Y por defecto para cuando el jugador ingresa al mundo por 
+	 * primera vez. 
+	 */
+	private static final float DEFAULT_SPAWN_POSITION_Y = 0;
+	/** 
+	 * Posición Z por defecto para cuando el jugador ingresa al mundo por 
+	 * primera vez. 
+	 */
+	private static final float DEFAULT_SPAWN_POSITION_Z = 50;
+
 	/** 
 	 * Identificador unico de la estructura.
 	 */
@@ -69,7 +85,11 @@ public class MatrixGridStructure implements IGridStructure {
 			height += cellSize;
 		}
 		//posicion del jugador inicial por defecto
-		this.setSpawnPosition(50, 0, 50);
+		this.setSpawnPosition(
+				DEFAULT_SPAWN_POSITION_X,
+				DEFAULT_SPAWN_POSITION_Y,
+				DEFAULT_SPAWN_POSITION_Z
+			);
 	}
 	
 	/**
@@ -131,8 +151,7 @@ public class MatrixGridStructure implements IGridStructure {
 	 * @param cell celda de la cual obtener los adyacentes.
 	 * @param position posición dentro de la celda.
 	 * 
-	 * @return un vector vacío ya que esta implementación contiene una sola 
-	 * 		celda.
+	 * @return un array de las celdas adyacentes.
 
 	 */
 	public final Cell[] getAdjacents(final Cell cell, final Vector3f position) {
