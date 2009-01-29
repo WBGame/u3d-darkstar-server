@@ -73,6 +73,7 @@ public final class PGetPlayer extends ServerMsgProcessor {
 			Player playerToReturn = (Player) AppContext.getDataManager()
 					.getBinding(((MsgPlainText) msg).getMsg());
 			
+			msgGPR.setIdPlayer(playerToReturn.getIdEntity());
 			msgGPR.setActualWorld(playerToReturn.getActualWorld());
 			msgGPR.setAngle(playerToReturn.getAngle());
 			msgGPR.setPlayerState(playerToReturn.getState());
