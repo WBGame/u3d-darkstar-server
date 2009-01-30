@@ -117,3 +117,110 @@ Al mismo tiempo definir si se va a retornar null en caso de que los objetos no s
   * Sebastian Perruolo:  [ comment ]
   * Pablo inchausti:     [ comment ]
   * Roberto Kopp:        [ comment ]
+
+== MatrixStructure ==
+=== Question: ===
+¿Porque el set del id queda oculto en la clase GridManager cuando se agrega el mundo al manager?
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+
+=== Solution proposed: ===
+DESCRIPTION El metodo addStructure de la clase GridManager hace el set del id del mundo.
+
+=== Approved: ===
+  * Cabrera Facundo:     not approved
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Cabrera Facundo:     Desacoplar esto sacando la generacion de ids a un mecanismo externo porque queda oculto entre el funcionamiento. (Ver comentario en la sección GridManager).
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
+
+== MatrixStructure ==
+=== Question: ===
+Metodo getCell necesita ser optimizado porque está programado de la forma mas lenta me parece.
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+=== Solution proposed: ===
+DESCRIPTION El método fue implementado antes de que las celdas se instancien dentro de MatrixGridStructure, por lo que ahora que se instancian dentro, sabemos que todas las celdas tienen el mismo ancho y alto. Se puede hacer una cuenta matemática para obtener un rango mas chico de búsqueda (así no recorremos toda la matriz). 
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Cabrera Facundo:     [ comment ]
+  * Sebastian Perruolo:  También se podría implementar una búsqueda binaria.
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
+
+
+== Player ==
+=== Question: ===
+Según pablo hay problemas con la serializacion de un hashtable, por lo tanto las properties de un player no se podrían persistir correctamente.
+Por otra parte no veo conexión con la creación del player y la inicialización de este atributo en el codígo.
+
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+=== Solution proposed: ===
+DESCRIPTION -
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Cabrera Facundo:     [ comment ]
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
+
+
+== PTaskDelegator ==
+=== Question: ===
+Dentro del metodo process(...) es necesario setear tanto el player asociado a la task como tambien la celda. 
+En este caso me encuentro con un comentario que dice que hay problemas con las celdas porque no son Managed Object. 
+
+Ver la sección UserSessionListener punto 1.
+
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+=== Solution proposed: ===
+Descomentar la linea porque esta mal que esté comentada me parece.
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Cabrera Facundo:     [ comment ]
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
+
+
+== UserSessionListener ==
+=== Question: ===
+Dentro del metodo receivedMessage(...) es necesario setear tanto el player como la celda donde esta el mismo al objeto processor porque necesita las 2 cosas para funcionar. Es parte del estado de un procesador, y si no son seteadas falla la linea que fue comentada en la clase PTaskDelegator.
+
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+=== Solution proposed: ===
+-
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Cabrera Facundo:     [ comment ]
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
