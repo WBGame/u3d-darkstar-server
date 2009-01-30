@@ -19,9 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** 
- * Implementacion de {@code ClientSessionListener}. 
- * Esta asociado uno a uno con cada jugador ( {@link Player} ) del sistema. 
- * Debe atender peticiones de desconexion y mensajes entrantes.
+ * Implementación de {@code ClientSessionListener}. 
+ * Está asociado uno a uno con cada jugador ( {@link Player} ) del sistema. 
+ * Debe atender peticiones de desconexión y mensajes entrantes.
  * 
  * @author Pablo Inchausti <inchausti.pablo at gmail dot com/> 
  * @encoding UTF-8 
@@ -29,20 +29,15 @@ import java.util.logging.Logger;
 public final class UserSessionListener 
 implements ClientSessionListener, Serializable {
 
-	/**
-	 * Serialization code. 
-	 */
+	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 4348700548351927735L;
 
-	/** 
-	 * Logger para esta clase.
-	 */
+	/** Logger para esta clase. */
 	private static final Logger LOGGER = 
 		Logger.getLogger(UserSessionListener.class.getName());
 
 	/**
 	 * Es una referencia {@code ManagedReference} al {@link Player}.
-	 *
 	 */
 	private ManagedReference<Player> playerRef;
 
@@ -85,8 +80,8 @@ implements ClientSessionListener, Serializable {
 
 	/**
 	 *  
-	 * Crea un <Link Imessage> con el mensaje recibido y ademas se obtiene un 
-	 * <Link ServerMsgProcessor> para el tipo de mensaje corresponiente. Luego
+	 * Crea un {@link IMessage} con el mensaje recibido y ademas se obtiene un 
+	 * {@link ServerMsgProcessor} para el tipo de mensaje corresponiente. Luego
 	 * se realiza el procesamiento del mismo.
 	 *  
 	 * @param msg mensaje que se recibe del cliente.
