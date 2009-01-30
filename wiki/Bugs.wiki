@@ -28,3 +28,24 @@ DESCRIPTION: Lo mas probable es que vamos a necesitar que sea managed object.
   * Sebastian Perruolo:  [ comment ]
   * Pablo inchausti:     [ comment ]
   * Roberto Kopp:        [ comment ]
+
+== ChannelMessageListener ==
+=== Question: ===
+Si observan detenidamente el receivedMessage es casi igual que el programado para UserSessionListener.
+
+Lo unico que cambia es que en este caso usamos el ClientSession para recuperar el player.
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+
+=== Solution proposed: ===
+Abstraer este codigo a un solo lugar y extender o reutilizar el mismo porque esta mal que este 2 veces.
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
