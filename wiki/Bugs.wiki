@@ -1,0 +1,30 @@
+#summary Bugs encontrados
+#labels bugs
+
+= Introduction =
+
+Esta página registra los bugs que envió facu por mail. Cada integrante puede hacer los cambios necesarios.
+
+
+= Details =
+
+== AppListener ==
+=== Question: ===
+¿Que pasa si se cae el server con ServerMsgProcessor porque no es managed object?
+
+Ver que esto se inicializa en el metodo initialize y listo. Con lo cual esto se pierde tras una caida del servidor.
+=== Answer: ===
+(completar por el que realizo el cambio o implementación del metodo)
+
+=== Solution proposed: ===
+DESCRIPTION: Lo mas probable es que vamos a necesitar que sea managed object.
+
+=== Approved: ===
+  * Sebastian Perruolo:  [ completely | not completety | not approved ]
+  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Roberto Kopp:        [ completely | not completety | not approved ] 
+
+=== Alternative solution: ===
+  * Sebastian Perruolo:  [ comment ]
+  * Pablo inchausti:     [ comment ]
+  * Roberto Kopp:        [ comment ]
