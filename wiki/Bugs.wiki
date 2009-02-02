@@ -14,19 +14,21 @@ Esta página registra los bugs que envió facu por mail. Cada integrante puede h
 
 Ver que esto se inicializa en el metodo initialize y listo. Con lo cual esto se pierde tras una caida del servidor.
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
+El problema que ocurre es que los tipos de mensajes correspondiente al servidor, se agregan en el metodo Inicialize y si se cae el mismo estos tipo de de mensajes no se vuelven a cargar
 
 === Solution proposed: ===
 DESCRIPTION: Lo mas probable es que vamos a necesitar que sea managed object.
 
+Si lo que vos decis facu es verdad, pero esta clase no almacena los tipos de mensajes es solo un clase que abstrae todo lo correspondiente a los procesadores del servidor. Lo que tendria que ser managed object es MessageFactory debido a que en esta clase si es la que almacena los tipos de mensajes por lo tanto guardar el estado de dicha clase sea una solucion. Lo que habria que hacer es algo parecido a lo que hice con GridManager el cual almacena los mundos y ante una caida se recuperan los mismos. Esta solucion no se si es la apropiada, porque la clase MessageFactory la utiliza el cliente tambien y si almacenamos esta clase en la DB, el cliente haria lo mismo lo que se generará un error porque el cliente no tiene conocimiento de la DB. 
+
 === Approved: ===
   * Sebastian Perruolo:  [ completely | not completety | not approved ]
-  * Pablo inchausti:     [ completely | not completety | not approved ]
+  * Pablo Inchausti:     [ completely | not completety | not approved ]
   * Roberto Kopp:        [ completely | not completety | not approved ] 
 
 === Alternative solution: ===
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo Inchausti:     [ Una posible solucion es charlar con la gente del common acerca de este problema y ver de alguna manera como ellos pueden cargar los tipos de mensajes del servidor (por ejemplo cuando hacemos MessageFactory.getInstance() si no existe dicha instancia que se cargen los tipos de mensajes del servidor. Creo que esto seria lo mas correcto pero esta desicion queda en ustedes. ]
   * Roberto Kopp:        [ comment ]
 
 == ChannelMessageListener ==
