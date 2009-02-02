@@ -49,7 +49,7 @@ Abstraer este codigo a un solo lugar y extender o reutilizar el mismo porque est
 
 === Alternative solution: ===
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo Inchausti:     [ Lo que se podria hacer que la clase UserSessionListener extienda ademas de ChannelListener y que la funcionalidad implementada para recibir los mensajes de los canales este en esta clase y asi se prodria crear un metodo que abstraiga el compotamiento comun para la recepcion de mensajes directos y a travez de canales en una sola clase (UserSessionListener) ]
   * Roberto Kopp:        [ comment ]
 
 == GridManager ==
