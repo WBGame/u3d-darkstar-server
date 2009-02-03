@@ -83,7 +83,7 @@ Corregir los comentarios de toda la clase porque no representan lo que hace el c
 === Question: ===
 ¿Porque en el metodo removeStructure se utiliza "dataManager.markForUpdate(this)" si en realidad no cambia el estado de la clase GridManager?
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
+Creo que esta demás, no cambia el estado de la clase porque los mundos no se almacenan en una estructura interna a discha clase, osea cuando un mundo se elimina, se hace directamente desde la DB la cual si cambia y el estado del objeto no.
 
 === Solution proposed: ===
 DESCRIPTION Remover esta linea porque no hace falta ya que no se actualiza el estado del 
@@ -125,7 +125,7 @@ Al mismo tiempo definir si se va a retornar null en caso de que los objetos no s
 === Question: ===
 ¿Porque el set del id queda oculto en la clase GridManager cuando se agrega el mundo al manager?
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
+Es responsabilidad del manager generar un id nuevo para cada mundo, un manager tendria que hacer esto, sino será solo un repositorio de mundos.
 
 === Solution proposed: ===
 DESCRIPTION El metodo addStructure de la clase GridManager hace el set del id del mundo.
@@ -139,7 +139,7 @@ DESCRIPTION El metodo addStructure de la clase GridManager hace el set del id de
 === Alternative solution: ===
   * Cabrera Facundo:     Desacoplar esto sacando la generacion de ids a un mecanismo externo porque queda oculto entre el funcionamiento. (Ver comentario en la sección GridManager).
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo inchausti: Podemos sacar la generacion de ids y usar la implemetada en la clase CellIDGenerator y desacoplar esta funcionalidad para que el GridManger la utilice.
   * Roberto Kopp:        [ comment ]
 
 == MatrixStructure ==
@@ -158,7 +158,7 @@ DESCRIPTION El método fue implementado antes de que las celdas se instancien de
 === Alternative solution: ===
   * Cabrera Facundo:     [ comment ]
   * Sebastian Perruolo:  También se podría implementar una búsqueda binaria.
-  * Pablo inchausti:     [ comment ]
+  * Pablo inchausti: Se me ocurrió alguna busqueda tipo binaria o algo asi para que sea mas eficiente el acceso.
   * Roberto Kopp:        [ comment ]
 
 
@@ -180,7 +180,7 @@ DESCRIPTION -
 === Alternative solution: ===
   * Cabrera Facundo:     [ comment ]
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo inchausti: El problema no es el hashtable (en la clase GridManager) sino que los errores de debian al ManagedReference a esta estructura. No se preocupen que el hash va a funcionar. Por lo que vi en el código, falta setearle al player el estado inicial que tendria que ser “QUIET” y las propiedades como vos decis. Con respecto a esto ultimo no se si habria que acceder al la base de datos (ModelAccess) para recuperar las propiedades del mismo.
   * Roberto Kopp:        [ comment ]
 
 
@@ -192,8 +192,7 @@ En este caso me encuentro con un comentario que dice que hay problemas con las c
 Ver la sección UserSessionListener punto 1.
 
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
-=== Solution proposed: ===
+Unos de los problemas que me surgieron a la hora de implementar la inicialización del Server fueron las excepciones provocadas por esta línea de código. Lo analice varias veces y me di cuenta que se producía cuando el DataManger creaba una referencia al objeto Cell y requería que dicho objeto sea ManagedObject. Si descomentas esta linea se generará una excepción salvo que la clase Cell implemente ManagedObject, pero no te lo recomiendo porque habría que cambiar la estructura de la matriz y se va a complicar demasiado. === Solution proposed: ===
 Descomentar la linea porque esta mal que esté comentada me parece.
 
 === Approved: ===
@@ -204,7 +203,8 @@ Descomentar la linea porque esta mal que esté comentada me parece.
 === Alternative solution: ===
   * Cabrera Facundo:     [ comment ]
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo inchausti:     Que la clase Cell implemente ManagedObject o optar por recuperar la celda con getCell en la implementación de las tareas.
+
   * Roberto Kopp:        [ comment ]
 
 
@@ -213,7 +213,10 @@ Descomentar la linea porque esta mal que esté comentada me parece.
 Dentro del metodo receivedMessage(...) es necesario setear tanto el player como la celda donde esta el mismo al objeto processor porque necesita las 2 cosas para funcionar. Es parte del estado de un procesador, y si no son seteadas falla la linea que fue comentada en la clase PTaskDelegator.
 
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
+En este caso no le definí la celda a los procesadores porque nunca se ejecutará el procesador PTaskDelegator ya que corresponde al procesamiento de los mensajes (tareas) provenientes de los canales. Aparte, los demás procesadores no hacen uso de la instancia de Cell para su implementación, salvo la clase PTaskDelegator.
+Solo es necesario definir la celda en el método receivedMessage() de la clase ChannelMessageListener en el cual si define la celda. 
+Igualmente se puede setear la celda en el método receivedMessage() de la clase UserSessionListener pero tendríamos que llamar al método getCell() para obtenerla lo cual cargaríamos con mas procesamiento al servidor.
+
 === Solution proposed: ===
 -
 
