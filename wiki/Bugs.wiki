@@ -59,7 +59,8 @@ Cuestion de implementacion
 === Question: ===
 ¿Porque el hashtable no servia como deposito de los mundos?
 === Answer: ===
-(completar por el que realizo el cambio o implementación del metodo)
+El problema no es el hashtable sino que al tener un ManagedReference a esta estructura, se generaban excepciones ya que para acceder a un objeto que es referenciado, el código de acceso debe pertenecer o estar dentro del contexto en donde fue creada la referencia, osea, que se produce un error cuando recuperamos un mundo que fue previamente almacenado.
+Se podria haber almacenado el hashtable con setBinding y haberlo recuperado con setBinding, pero esto no sería muy eficiente ya que cada vez que se desea acceder a un mundo hay que recuperar todo el hashtable con los demas.
 
 === Solution proposed: ===
 DESCRIPTION Se reemplaza el hash por un id long con el cual se van a ir identificando los 
@@ -75,7 +76,7 @@ Corregir los comentarios de toda la clase porque no representan lo que hace el c
 === Alternative solution: ===
   * Cabrera Facundo: Si eliminamos el hashtable será necesario abstraer la logica de generación de ids porque supongo que la podemos reutilizar en varios lugares.
   * Sebastian Perruolo:  [ comment ]
-  * Pablo inchausti:     [ comment ]
+  * Pablo inchausti: Se puede abstraer para la generacion de ids, se puede reutilizar la clase CellIDGenerator, habria que hacer algunas modificaciones a la clase GridManager y al metodo que genera los ids.
   * Roberto Kopp:        [ comment ]
 
 == GridManager ==
