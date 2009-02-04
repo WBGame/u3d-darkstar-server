@@ -70,11 +70,6 @@ public final class TChangePlayerState extends TaskCommunication {
 		//recuperar la celda actual
 		Cell actualCell = structure.getCell(player.getPosition());
 		
-		Cell[] adyacentes = structure.getAdjacents(
-				actualCell, 
-				player.getPosition()
-			);
-		
 		//crear el mensaje de notificación cambio de estado
 		msg.setType(MsgTypes.MSG_CHANGE_PLAYER_STATE_NOTIFY_TYPE);
 		
@@ -82,9 +77,16 @@ public final class TChangePlayerState extends TaskCommunication {
 		//notificar a la misma celda que el jugador se movió
 		actualCell.send(msg, session);
 		
-		//notificar a las celdas adyacentes
-		for (int i = 0; i < adyacentes.length; i++) {
-			adyacentes[i].send(msg, session);
+		Cell[] adyacentes = structure.getAdjacents(
+				actualCell, 
+				player.getPosition()
+			);
+		
+		if (adyacentes != null) {
+			//notificar a las celdas adyacentes
+			for (int i = 0; i < adyacentes.length; i++) {
+				adyacentes[i].send(msg, session);
+			}
 		}
 	}
 	
