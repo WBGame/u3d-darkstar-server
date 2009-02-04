@@ -6,11 +6,11 @@ import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
 import com.sun.sgs.app.ObjectNotFoundException;
 import com.sun.sgs.app.TransactionException;
-//TODO Corregir los comentarios de toda la clase porque no representan lo que hace el codigo internamente.
-//TODO Uniformizar el codigo para el tratamiento de las excepciones porque en todos 
-//los casos es distinto.
-//Al mismo tiempo definir si se va a retornar null en caso de que los objetos no 
-//se puedan recuperar del object store, o si se va a hacer un rethrow de las 
+
+//TODO Uniformizar el codigo para el tratamiento de las excepciones porque en
+//todos los casos es distinto.
+//Al mismo tiempo definir si se va a retornar null en caso de que los objetos
+//no se puedan recuperar del object store, o si se va a hacer un rethrow de las 
 //excepciones que genera el framework.
 /** 
  *  Contiene referencias a todas las  {@link IGridStructure} de celdas. Se 
@@ -22,11 +22,6 @@ public final class GridManager implements Serializable, ManagedObject {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = -7374467626346407012L;
 
-	/** 
-	 *  Es una tabla de hash que contiene referencias  {@code ManagedReference}
-	 *  a las estructuras que mantiene.
-	 *  
-	 */
 	//XXX no se hizo uso de la tabla de hash debido a que se generaban
 	//excepciones cuando se recuperaban los mundos
 	//almacenar los mundos por medio de su id utilizando el metodo setBinding()
@@ -47,7 +42,6 @@ public final class GridManager implements Serializable, ManagedObject {
 	 */
 	private GridManager() {
 		//worlds = new Hashtable<Long, ManagedReference<IGridStructure>>();
-		
 		nextWorldID = 0L;
 	}
 	/**
@@ -73,9 +67,11 @@ public final class GridManager implements Serializable, ManagedObject {
 	}
 
 	/**
-	 * Agrega a la tabla de hash la estructura pasada por parametro. Para esto
-	 * debe encargarse de crear una {@code ManagedReference} invocando al
-	 * metodo {@code createReference()} del {@code DataManager}.
+	 * Almacena la estructura pasada por parametro. Para esto, se genera un id
+	 * de mundo unico y ademas se crea un nombre de mundo el cual esta formado 
+	 * por el nombre de la clase con los paquetes a la cual pertenece y el id 
+	 * del mismo. Finalmente por medio del {@link DataManahger} se guarda la
+	 * instancia del nuevo mundo con el metodo setBinding(). 
 	 * 
 	 * @param structure estructura a almacenar
 	 */
@@ -99,11 +95,13 @@ public final class GridManager implements Serializable, ManagedObject {
 	}
 
 	/**
-	 * Retorna la instancia singleton de la clase.
+	 * Retorna la instancia singleton de la clase. En caso de no existir, 
+	 * se recupera via getBinding y asi recuperar el estado del manager
+	 * con los mundos previamente almacenados. Si no se encuentra almacenado,
+	 * significa que se ejecuta por primera vez, entonces se crea una instancia
+	 *  y se guarda con el metodo setBinding.
 	 * 
 	 * @return la unica instancia
-	 * @generated "De UML a Java V5.0 
-	 * 		(com.ibm.xtools.transform.uml2.java5.internal.UML2JavaTransform)"
 	 */
 	public static GridManager getInstance() {
 		//XXX parte de la inicializacion del sistema.
@@ -132,17 +130,14 @@ public final class GridManager implements Serializable, ManagedObject {
 	}
 
 	/**
-	 * Remueve de la tabla de hash la estructura asociada al identificador
+	 * Remueve de la estructura asociada al identificador
 	 * pasado por parametro.
 	 * 
 	 * @param id identificador de la estructura a eliminar.
 	 */
 	public void removeStructure(final String id) {
-		//XXX modificacion del metodo para la eliminacion de un objeto dentro
-		//del object store
 		String name = IGridStructure.class.getName() + "_" + id;
 		DataManager dataManager = AppContext.getDataManager();
-		dataManager.markForUpdate(this);
 		dataManager.removeBinding(name);
 	}
 }
