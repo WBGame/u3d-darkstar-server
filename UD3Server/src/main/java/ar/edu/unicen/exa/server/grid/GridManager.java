@@ -6,7 +6,12 @@ import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
 import com.sun.sgs.app.ObjectNotFoundException;
 import com.sun.sgs.app.TransactionException;
-
+//TODO Corregir los comentarios de toda la clase porque no representan lo que hace el codigo internamente.
+//TODO Uniformizar el codigo para el tratamiento de las excepciones porque en todos 
+//los casos es distinto.
+//Al mismo tiempo definir si se va a retornar null en caso de que los objetos no 
+//se puedan recuperar del object store, o si se va a hacer un rethrow de las 
+//excepciones que genera el framework.
 /** 
  *  Contiene referencias a todas las  {@link IGridStructure} de celdas. Se 
  *  pueden agregar estructuras, remover estructuras como asi tambien obtenerla
