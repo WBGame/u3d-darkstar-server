@@ -2,8 +2,11 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.player.Player;
+
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
 import com.sun.sgs.app.ChannelListener;
@@ -13,7 +16,6 @@ import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
-import common.processors.MsgProcessorFactory;
 
 /**
  * Procesa los mensajes que llegan por los canales. Para esto debe generar un
@@ -49,7 +51,7 @@ public class ChannelMessageListener implements ChannelListener, Serializable {
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
 			
 			ServerMsgProcessor processor = 
-				(ServerMsgProcessor) MsgProcessorFactory.getInstance()
+				(ServerMsgProcessor) ServerMsgProssesorFactory.getInstance()
 				.createProcessor(iMessage.getType());
 		
 
