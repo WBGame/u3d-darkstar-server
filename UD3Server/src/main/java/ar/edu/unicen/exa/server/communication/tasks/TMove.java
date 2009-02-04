@@ -46,10 +46,10 @@ public final class TMove extends TaskCommunication {
 	}
 	
 	/**
-	 * Etse metodo es el encargado de actualizar la posicion del jugador,
-	 * como asi tambien enviar a las demas celdas el mensaje de notificacion
+	 * Este método es el encargado de actualizar la posición del jugador,
+	 * como así también enviar a las demás celdas el mensaje de notificación
 	 * correspondiente al movimiento del mismo. En caso de que el jugador
-	 * se cambie de celda, se realiza la desuscripcion del la celda actual
+	 * se cambie de celda, se realiza la desuscripción de la celda actual
 	 * y se suscribe a la nueva celda. 
 	 * 
 	 * @author Roberto Kopp <robertokopp at hotmail dot com/>
