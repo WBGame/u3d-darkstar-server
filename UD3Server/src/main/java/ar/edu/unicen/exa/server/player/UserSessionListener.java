@@ -1,22 +1,22 @@
 package ar.edu.unicen.exa.server.player;
 
+import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-import common.exceptions.MalformedMessageException;
-import common.exceptions.UnsopportedMessageException;
-import common.messages.IMessage;
-import common.messages.MessageFactory;
-import common.processors.MsgProcessorFactory;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProssesorFactory;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.DataManager;
-
-import java.io.Serializable;
 import com.sun.sgs.app.ManagedReference;
-import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import common.exceptions.MalformedMessageException;
+import common.exceptions.UnsopportedMessageException;
+import common.messages.IMessage;
+import common.messages.MessageFactory;
 
 /** 
  * Implementación de {@code ClientSessionListener}. 
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * @encoding UTF-8 
  */
 public final class UserSessionListener 
-implements ClientSessionListener, Serializable {
+		implements ClientSessionListener, Serializable {
 
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 4348700548351927735L;
@@ -91,7 +91,7 @@ implements ClientSessionListener, Serializable {
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
 			
 			ServerMsgProcessor processor = 
-				(ServerMsgProcessor) MsgProcessorFactory.getInstance()
+				(ServerMsgProcessor) ServerMsgProssesorFactory.getInstance()
 				.createProcessor(iMessage.getType());
 		
 			processor.setPlayerAssociated(this.getPlayer());
