@@ -77,8 +77,8 @@ public final class Player extends DynamicEntity {
 		String idPlayer = session.getName();
 		
 		try {	
-			System.out.println( "Intentando recuperar una instancia del Object " +
-					"Store para " + idPlayer );
+			System.out.println("Intentando recuperar una instancia del Object "
+					+ "Store para " + idPlayer);
 			// recupero el Player a partir del nombre de la sesión utilizando
 			// el dataManager.
 			player = (Player) d.getBinding(idPlayer);
@@ -88,8 +88,8 @@ public final class Player extends DynamicEntity {
 				return null;
 			}
 		} catch (Exception e) {
-			System.out.println( "No existe ninguna instancia dentro del Object " +
-					"Store para " + idPlayer );
+			System.out.println("No existe ninguna instancia dentro del Object "
+					+ "Store para " + idPlayer);
 			// creo un nuevo jugador 
 			player = new Player();
 			// seteo su id de entidad
@@ -156,8 +156,9 @@ public final class Player extends DynamicEntity {
 	 * @return session el objeto sesion asociado al player. 
 	 */
 	public ClientSession getSession() {
-		if(refSession != null)
+		if (refSession != null) {
 			return refSession.get();
+		}
 		return null;
 	}
 	
