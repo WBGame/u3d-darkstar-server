@@ -3,17 +3,16 @@ package ar.edu.unicen.exa.server.communication.tasks;
 import common.messages.IMessage;
 
 /**
- * La tarea se ejecutara al recibir un mensaje ({@link MsgGetDynamicEntity})
- * directo desde un cliente, que desea la infomacion completa de una entidad
- * dinamica cuyo identificador esta precente en el mensaje. Los pasos a seguir
- * son:<BR/>
- * * Obtener la entidad dinamica a partir del DataManager.<BR/>
+ * La tarea se ejecutará al recibir un mensaje ({@link MsgGetDynamicEntity})
+ * directo desde un cliente, que desea la infomación completa de una entidad
+ * dinámica cuyo identificador esta presente en el mensaje. <br/> 
+ * Los pasos a seguir son: <br/>
+ * * Obtener la entidad dinámica a partir del DataManager. <br/>
  * * Construir un mensaje del tipo {@link MsgGetDynamicEntityResponse} y
- * setearle la entidad dynamica.<BR/>
- * * Enviarle el mensaje construido devuelta al jugador que solicito la
- * informacion.
+ * setearle la entidad dynamica. <br/>
+ * * Enviarle el mensaje construido de vuelta al jugador que solicitó la
+ * información.
  * 
- * @author lito
  */
 public final class TGetDynamicEntity extends TaskCommunication {
 	
