@@ -94,6 +94,14 @@ public final class Player extends DynamicEntity {
 			player = new Player();
 			// seteo su id de entidad
 			player.setIdEntity(idPlayer);
+			// estado inicial del jugador
+			PlayerState state = new PlayerState();
+			state.setState(PlayerState.STATE_QUIET);
+			player.setState(state);
+			//TODO falta setear las propiedades de jugador. Creo que se
+			//hace accediando al model access.
+			//player.setProperties(pproperties);
+
 			// registro el Player dentro del Object Store.
 			d.setBinding(idPlayer , player);
 		}
