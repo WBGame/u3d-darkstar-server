@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import com.sun.sgs.app.AppContext;
@@ -16,8 +13,8 @@ import common.messages.notify.MsgRotate;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgRotate}.<BR/>
- * Devera actualizar el angulo de rotacion de la entidad afectada, y reenviar
- * el mensaje a travez las celdas pertinentes.
+ * Deberá actualizar el ángulo de rotación de la entidad afectada, y reenviar
+ * el mensaje a través de las celdas pertinentes.
  * 
  * @author lito
  */
