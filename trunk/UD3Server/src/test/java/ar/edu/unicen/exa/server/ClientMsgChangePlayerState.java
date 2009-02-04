@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.jme.math.Vector3f;
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 import com.sun.sgs.client.simple.SimpleClient;
@@ -24,15 +23,15 @@ import common.messages.MessageFactory;
 import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
 import common.messages.notify.MsgChangePlayerState;
-import common.messages.notify.MsgMove;
+
 
 /**
- * Test para mensajes de movimiento (MsgMove).
+ * Test para mensajes de cambio de estado (MsgChangePlayerState).
  * 
  * Esta clase es utilizada para testear el envío y recepcion de mensajes del
- * tipo MsgMove. Este mensaje es enviado al servidor el cual procesará el 
- * mismo mensaje enviandolo a los correspondientes clientes y mostrando el 
- * mensaje recivido por pantalla. 
+ * tipo MsgChangePlayerState. Este mensaje es enviado al servidor el cual 
+ * procesará el mismo enviandolo a los correspondientes clientes y mostrando el
+ * mensaje recibido por pantalla. 
  * 
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
@@ -301,13 +300,14 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje para entrar a un mundo {@link MsgMove} simulando la 
-	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * Contruye un mensaje para entrar a un mundo con el tipo
+	 * de mensaje {@link MsgPlainText}. 
 	 * 
-	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
+	 * @param idMundo identificador del mundo al que desea entrar.
+	 * 
+	 * @return mensaje de entrada al mundo.
 	 */
-	private IMessage buildMessageEnterWorld(String idMundo) {
+	private IMessage buildMessageEnterWorld(final String idMundo) {
 		
 		MsgPlainText msg = null;
 		try {
@@ -324,11 +324,9 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje de movimiento {@link MsgMove} simulando la 
-	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * Contruye un mensaje de cambio de estado {@link MMsgChangePlayerState}.
 	 * 
-	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
+	 * @return mensaje de cambio de estado.
 	 */
 	
 	private IMessage buildMessageChangePlayerState() {
