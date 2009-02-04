@@ -86,10 +86,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 				SPAWN_POSITION_WORLD2_Z
 			);
 		gridManager.addStructure(world2);
-		
-		//configuracion de la factoria de procesadores para los mesajes del
-        //correspondientes al sevidor
-        ServerMsgProcessor.configureMsgProcessorFactory();
+
 	}
 
 	/** 
