@@ -6,7 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-import ar.edu.unicen.exa.server.communication.processors.ServerMsgProssesorFactory;
+import ar.edu.unicen.exa.server.communication.processors
+         .ServerMsgProssesorFactory;
+import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.grid.GridManager;
+import ar.edu.unicen.exa.server.grid.IGridStructure;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ClientSession;
@@ -17,6 +21,7 @@ import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+
 
 /** 
  * Implementación de {@code ClientSessionListener}. 
@@ -64,27 +69,25 @@ public final class UserSessionListener
             		"No existe una instancia para la clase Player");
 		}
     	DataManager dataMgr = AppContext.getDataManager();
-        
         try {
         	this.playerRef = dataMgr.createReference(player);
-            
         	LOGGER.log(
             		Level.INFO, "Establecer una referencia al Player: {0} ",
             		player.getIdEntity()
             );
-        	
-		} catch (Exception e) {
+        } catch (Exception e) {
 			e.printStackTrace();
 		} 
 	}
 
-	/**
-	 *  
+	/**  
 	 * Crea un {@link IMessage} con el mensaje recibido y ademas se obtiene un 
 	 * {@link ServerMsgProcessor} para el tipo de mensaje corresponiente. Luego
 	 * se realiza el procesamiento del mismo.
 	 *  
 	 * @param msg mensaje que se recibe del cliente.
+	 * 
+	 * TODO review code fix.
 	 */
 	public void receivedMessage(final ByteBuffer msg) {
 		try {
@@ -94,10 +97,21 @@ public final class UserSessionListener
 				(ServerMsgProcessor) ServerMsgProssesorFactory.getInstance()
 				.createProcessor(iMessage.getType());
 		
-			processor.setPlayerAssociated(this.getPlayer());
+			LOGGER.info("Llego mensaje directo al servidor tipo " 
+					+ iMessage.getType());
+			
+			//obtener el mundo actual del jugador
+			IGridStructure structure = GridManager.getInstance()
+			.getStructure(getPlayer().getActualWorld());
+
+			//obtener la celda donde se encuentra el jugador
+			Cell cell = structure.getCell(getPlayer().getPosition());
+
+			// Inicialización para ejecutar el proceso asociado al mensaje.
+			processor.setPlayerAssociated(getPlayer());
+			processor.setCellAssociated(cell);
 			
 			processor.process(iMessage);
-			
 		} catch (MalformedMessageException e) {
 			LOGGER.log(Level.WARNING, "Exception: {0}", e);
 		} catch (UnsopportedMessageException e) {
