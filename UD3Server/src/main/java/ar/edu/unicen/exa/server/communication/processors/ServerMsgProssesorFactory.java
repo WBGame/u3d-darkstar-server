@@ -1,23 +1,39 @@
 package ar.edu.unicen.exa.server.communication.processors;
 
-
 import common.messages.MsgTypes;
 import common.processors.MsgProcessorFactory;
 
-public class ServerMsgProssesorFactory {
-	private static MsgProcessorFactory INSTANCE = null;
+/**
+ * Intermediario para acceder al Factory de los procesadores.
+ * 
+ * @author Sebastian Perruolo &lt;sebastian dot perruolo at gmail dot com&gt;
+ */
+public final class ServerMsgProssesorFactory {
 	
-	private ServerMsgProssesorFactory(){}
-	
-	public static MsgProcessorFactory getInstance(){
-		if(INSTANCE == null){
-			configureMsgProcessorFactory();
-			INSTANCE = MsgProcessorFactory.getInstance();
-		}
-		return INSTANCE;
-	}
 	/**
-	 * Con figura la fabrica de procesadores {@link MsgProcessorFactory}
+	 * Instancia de objeto a retornar.
+	 */
+	private static MsgProcessorFactory instance = null;
+	
+	/** Constructor. */
+	private ServerMsgProssesorFactory() { }
+
+	/**
+	 * Singleton para obtener la instancia de la clase 
+	 * {@link MsgProcessorFactory}.
+	 * 
+	 * @return Factory para los procesadores.
+	 */
+	public static MsgProcessorFactory getInstance() {
+		if (instance == null) {
+			configureMsgProcessorFactory();
+			instance = MsgProcessorFactory.getInstance();
+		}
+		return instance;
+	}
+	
+	/**
+	 * Configura la fabrica de procesadores {@link MsgProcessorFactory}
 	 * asignado para cada tipo de mensaje del framework que es recibido en el
 	 * servidor, un instancia del procesador correspondiente.
 	 */
@@ -60,8 +76,7 @@ public class ServerMsgProssesorFactory {
 
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_GET_DYNAMIC_ENTITY_TYPE, new PTaskDelegator());
-		
-		//XXX cambio de new PTaskDelegator() a new PEnterWorld()
+
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_ENTER_WORLD_TYPE, new PEnterWorld());
 
@@ -74,7 +89,7 @@ public class ServerMsgProssesorFactory {
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE,
 				new PTaskDelegator());
-		//XXX linea agregada para la tarea perteneciente al cambio de mundo
+
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_CHANGE_WORLD_TYPE, new PTaskDelegator());
 	}
