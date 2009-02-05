@@ -2,9 +2,7 @@ package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.player.Player;
-import common.messages.MsgTypes;
 import common.processors.IProcessor;
-import common.processors.MsgProcessorFactory;
 
 /**
  * La clase representa la base de la jerarquia de procesadores de mensajes en el
@@ -26,10 +24,10 @@ public abstract class ServerMsgProcessor implements IProcessor {
 
 	/** Entidad dinamica relacionada al mensaje a procesar. */
 	private Player playerAssociated = null;
-	
+
 	/** Celda relacionada al mensaje a procesar. */
 	private Cell cellAssociated;
-	
+
 	/**
 	 * Gets the msg type.
 	 * 
@@ -68,7 +66,7 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	public final void setPlayerAssociated(final Player associated) {
 		this.playerAssociated = associated;
 	}
-	
+
 	/**
 	 * Gets the cell asociete.
 	 * 
@@ -86,6 +84,4 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	public final void setCellAssociated(final Cell associated) {
 		cellAssociated = associated;
 	}
-	
-
 }
