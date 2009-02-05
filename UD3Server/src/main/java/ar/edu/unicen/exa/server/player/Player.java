@@ -7,24 +7,28 @@ import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
 
 import java.util.Hashtable;
+import java.util.logging.Logger;
 
 import common.datatypes.PlayerState;
 import common.datatypes.IPlayerProperty;
 import common.messages.IMessage;
 
 /**
- * Esta clase proveer informacion a cerca del jugador como por ej el
- * estado y sus propiedades. Ademas permite enviar mensajes por medio 
- * de la session.
+ * Esta clase proveer información a cerca del jugador como por ejemplo el
+ * estado y sus propiedades. Además permite enviar mensajes por medio 
+ * de la sessión.
  * 
- * @author Kopp Roberto <robertokopp at hotmail dot com/>
+ * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8
  */
 public final class Player extends DynamicEntity {
 	
 	/**  Para cumplir con la version de la clase Serializable. */
-	
 	private static final long serialVersionUID = 1L;
+	
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(Player.class.getName());	
 	
 	/**
 	 * Referencia a la sesion actual del player.
@@ -67,18 +71,16 @@ public final class Player extends DynamicEntity {
 	 * @return Player una instancia para el jugador.
 	 */
 	public static Player create(final ClientSession session) {
-		
 		// Data manager del sistema
 		DataManager d = AppContext.getDataManager();
-
 		// Jugador
 		Player player = null;
 		//el nombre de la sesion define el id del jugador
 		String idPlayer = session.getName();
 		
 		try {	
-			System.out.println("Intentando recuperar una instancia del Object "
-					+ "Store para " + idPlayer);
+			logger.info("Intentando recuperar una instancia del Object Store " 
+					+ "para " + idPlayer);
 			// recupero el Player a partir del nombre de la sesión utilizando
 			// el dataManager.
 			player = (Player) d.getBinding(idPlayer);
@@ -88,7 +90,7 @@ public final class Player extends DynamicEntity {
 				return null;
 			}
 		} catch (Exception e) {
-			System.out.println("No existe ninguna instancia dentro del Object "
+			logger.info("No existe ninguna instancia dentro del Object " 
 					+ "Store para " + idPlayer);
 			// creo un nuevo jugador 
 			player = new Player();
