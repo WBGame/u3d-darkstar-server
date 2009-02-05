@@ -30,21 +30,23 @@ import java.io.Serializable;
  * 
  * @author Pablo Inchausti
  */
-public class CellIDGenerator implements ManagedObject, Serializable {
+public final class CellIDGenerator implements ManagedObject, Serializable {
     
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
+    /**
+	 * 
+	 */	
 	private static CellIDGenerator tileIDgen = null;
 	
 	/**
-     * Creates a new instance of CellIDGenerator
+     * Creates a new instance of CellIDGenerator.
+     * @param initial valor desde el cual se comienza la generación de ids.
      */
-
-    private CellIDGenerator(long initial) {
+    private CellIDGenerator(final long initial) {
     	nextID = initial;
     }
 
@@ -55,7 +57,7 @@ public class CellIDGenerator implements ManagedObject, Serializable {
     
 
     /**
-     * Obtiene el proximo id unico para una celda
+     * Obtiene el proximo id unico para una celda.
      * 
      * @return String nuevo id para la celda
      */
@@ -63,15 +65,15 @@ public class CellIDGenerator implements ManagedObject, Serializable {
 
     	DataManager dataMgr = AppContext.getDataManager();
     	
-    	if(tileIDgen ==  null){
+    	if (tileIDgen == null) {
 	        
 	        String name = CellIDGenerator.class.getSimpleName();
 	        
 	        try {
 	            tileIDgen = (CellIDGenerator) dataMgr.getBinding(name);
-	        } catch(NameNotBoundException ex) {
+	        } catch (NameNotBoundException ex) {
 	            tileIDgen = new CellIDGenerator(0L);
-		    dataMgr.setBinding(name, tileIDgen );            
+		    dataMgr.setBinding(name, tileIDgen);
 	        }
     	}
         dataMgr.markForUpdate(tileIDgen);
@@ -81,6 +83,11 @@ public class CellIDGenerator implements ManagedObject, Serializable {
         return "Cell_" + String.valueOf(nextID);
     }
     
+    /**
+     * Generate the next ID.
+     * 
+     * @return next id
+     */
 	private long nextID() {
 		nextID++;
 		return nextID; 

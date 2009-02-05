@@ -12,7 +12,6 @@ import com.sun.sgs.app.AppContext;
  *  iguales. Posee un identificador unico que se corresponde uno a uno con el
  *  identificador del IGameState del cliente. Es decir, representa a un objeto
  *  IGameState del cliente en el servidor.
- *  
  */
 public class MatrixGridStructure implements IGridStructure {
 

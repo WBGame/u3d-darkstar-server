@@ -3,8 +3,11 @@ package ar.edu.unicen.exa.server.grid;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
+import java.util.logging.Logger;
+
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-import ar.edu.unicen.exa.server.communication.processors.ServerMsgProssesorFactory;
+import ar.edu.unicen.exa.server.communication.processors
+         .ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.AppContext;
@@ -25,18 +28,19 @@ import common.messages.MessageFactory;
  * los canales.
  * 
  * @encoding UTF-8
- * 
  */
-//XXX debe implementar Serializable para que no se produzcan excepciones.
-
 public class ChannelMessageListener implements ChannelListener, Serializable {
 
-	/**
-	 * 
-	 */
+	/** Serialization id. */
 	private static final long serialVersionUID = 1L;
 
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(ChannelMessageListener.class.getName());
+
 	/**
+	 * {@inheritDoc}
+	 * 
 	 * @param channel
 	 *            a channel
 	 * @param session
@@ -46,39 +50,44 @@ public class ChannelMessageListener implements ChannelListener, Serializable {
 	 */
 	public final void receivedMessage(final Channel channel,
 			final ClientSession session, final ByteBuffer msg) {
-			
 		try {
+			// Regenerar el objeto mensaje
 			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
-			
+
+			// Crear el procesador asociado al mismo.
 			ServerMsgProcessor processor = 
 				(ServerMsgProcessor) ServerMsgProssesorFactory.getInstance()
 				.createProcessor(iMessage.getType());
-		
 
-			DataManager dataMgr = AppContext.getDataManager();
+			logger.info("Llego mensaje en Channel " + channel.getName() 
+					+ ", tipo " + iMessage.getType());
 			
+			DataManager dataMgr = AppContext.getDataManager();
+
 			//recuperar el jugador desde el DataManager
 			Player player = (Player) dataMgr.getBinding(
 					session.getName() 
 			);
-					
-			//obtener lel mundo actual del jugador
+
+			//obtener el mundo actual del jugador
 			IGridStructure structure = GridManager.getInstance()
-					.getStructure(player.getActualWorld());
-			
+			.getStructure(player.getActualWorld());
+
 			//obtener la celda donde se encuentra el jugador
 			Cell cell = structure.getCell(player.getPosition());
-		
+
+			// Inicialización para ejecutar el proceso asociado al mensaje.
 			processor.setPlayerAssociated(player);
-			
 			processor.setCellAssociated(cell);
-			
+
+			// Ejecución del procesamiento.
 			processor.process(iMessage);
-			
 		} catch (MalformedMessageException e) {
-					e.printStackTrace();
+			logger.warning("Mensaje inconsistente.");		
+			e.printStackTrace();
 		} catch (UnsopportedMessageException e) {
-					e.printStackTrace();
+			logger.warning("Mensaje inexistente.");
+			e.printStackTrace();
 		}		
 	}
 }
