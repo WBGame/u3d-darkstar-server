@@ -22,7 +22,7 @@ import com.sun.sgs.impl.auth.NamePasswordCredentials;
  * informacion correspondiente por medio del método {@link #checkPlayer()}
  * de la clase {@link ModelAccess}.
  * 
- * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
+ * @author Pablo Inchausti &lt;inchausti.pablo at gmail dot com&gt;
  * @encoding UTF-8
  */
 public final class LoginPasswordAuthenticator implements IdentityAuthenticator {
