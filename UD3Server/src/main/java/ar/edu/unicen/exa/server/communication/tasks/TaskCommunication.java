@@ -6,7 +6,6 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import java.io.Serializable;
-import ar.edu.unicen.exa.server.entity.DynamicEntity;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.player.Player;
 
@@ -18,7 +17,7 @@ import common.messages.IMessage;
 /**
  * La clase representa la base de la jerarquia de tareas relacionadas a la
  * ejecucion de acciones correspondientes a comunicacion y mensajeria del
- * servidor.<BR/>
+ * servidor.<br/>
  * Abstrae el comportamiento de las tareas de comunicacion del servidor, al
  * definir una {@link ManagedReference} (a un {@link DynamicEntity}) y una
  * {@link ManagedReference} (a una {@link Cell}) que representan las entidades
@@ -28,17 +27,15 @@ import common.messages.IMessage;
  * 
  * @author lito
  */
-//XXX debe implementar serializable debido a que las tareas se serializan
-//durante el scheduling de la misma.
 public abstract class TaskCommunication implements Task, Serializable {
 	
 	/**
-	 * 
+	 * Serialization value.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * El mensaje relacionado.<BR/>
+	 * El mensaje relacionado.<br/>
 	 * Se declara transient, para obligar a que las sublcalses, declaren campos
 	 * internos relacionados con los datos del mensaje, los cuales deben
 	 * setearse en el constructor (que se invoca con un mensaje), de esta
@@ -46,9 +43,7 @@ public abstract class TaskCommunication implements Task, Serializable {
 	 * que realizar indirecciones a travez del mensaje para obtener los datos
 	 * que necesite ya que los mismos seran campos internos.
 	 */
-	//XXX desabilito la opcion transient debido a que los mensajes en en el 
-	//metodo run() de las tareas llegan con null
-	private /*transient*/ IMessage			message;
+	private IMessage message;
 	
 	/** Referencia al player relacionado al mensaje a procesar. */
 	private ManagedReference<Player>	playerAssociated = null;
