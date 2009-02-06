@@ -18,8 +18,6 @@ import common.messages.notify.MsgRotate;
  * Tarea relacionada al mensaje de movimiento {@link MsgRotate}.<BR/>
  * Debera actualizar el angulo de rotacion de la entidad afectada, y reenviar
  * el mensaje a travez las celdas pertinentes.
- * Deberá actualizar el ángulo de rotación de la entidad afectada, y reenviar
- * el mensaje a través de las celdas pertinentes.
  * 
  * @author lito
  */
@@ -128,6 +126,5 @@ public final class TRotate extends TaskCommunication {
 			adyacentes[i].joinToChannel(session);
 		}
 		
-
 	}		
 }
