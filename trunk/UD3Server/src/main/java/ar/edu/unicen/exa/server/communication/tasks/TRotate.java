@@ -1,3 +1,5 @@
+
+
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import com.sun.sgs.app.AppContext;
@@ -9,10 +11,13 @@ import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
+//import common.messages.notify.MsgMove;
 import common.messages.notify.MsgRotate;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgRotate}.<BR/>
+ * Debera actualizar el angulo de rotacion de la entidad afectada, y reenviar
+ * el mensaje a travez las celdas pertinentes.
  * Deberá actualizar el ángulo de rotación de la entidad afectada, y reenviar
  * el mensaje a través de las celdas pertinentes.
  * 
@@ -20,92 +25,109 @@ import common.messages.notify.MsgRotate;
  */
 public final class TRotate extends TaskCommunication {
 
-    /**
-	 * 
-	 */
+	/**  Para cumplir con la version de la clase Serializable. */
+	
 	private static final long serialVersionUID = 1L;
+	
 	/**
-     * Class Constructor.
+     * Constructor.
      * 
-     * @param msg the msg
+     * @param msg El mensaje de la instancia.
      */
 	public TRotate(final IMessage msg) {
 		super(msg);
 	}
 
+
 	/**
-	 * This method allow to create a  new Task Communication.
+	 * Este método permite crear un nuevo Grupo de Comunicación.
 	 * 
-	 * @param msg the msg
+	 * @param msg El mensaje con el que trabaja la tarea.
 	 * 
-	 * @return  new Msg.
+	 * @return Retorna el mensaje.
 	 */
-	@Override
+	
 	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TRotate(msg);
 	}
+	
 	/**
-	 * 
+	 * Actualizar el angulo de rotacion de la entidad afectada, y reenviar
+	 * el mensaje a travez las celdas pertinentes.
 	 */
+	
 	public void run() {
 		String msgReport;
 		msgReport = new String();
-		//FIXME handle exception and common errors
+
+		//Ver si el mensaje recibido sea el correspondiente para esta tarea.
 		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
-			//throw El mensaje no me sirve para esta tarea!
-			msgReport = "Message Usseless for this taks!";
-			System.err.println(msgReport);
+
+			throw new Error("Mensaje no valido para esta tarea");
 		}
-
-		//if is a MsgMove
+        
+		
+		//Castear al mensage que corresponda.
+		//En este caso casteamos a MsgRotate.
 		MsgRotate msg = (MsgRotate) getMessage();
-
+		
+		//El identificador de la entidad que realiza la rotacion.
 		String userId = msg.getIdDynamicEntity();
+		
+		
 		Player player = null;
+		
 		try {
 			player = (Player) AppContext.getDataManager()
 			.getBinding(userId);
 		} catch (Exception e) {
-			//TODO Create exception if player {@link userId} cannot be found
-			msgReport = "User <" + userId + "> Cannot be found";
+			//Crea excepcion si el jugador {@link userId} no se puede encontrar.
+			msgReport = "Usuario <" + userId + "> no se puede encontar";
 			System.err.println(msgReport);
 		}
-		//Obtain the IIGridStructure for the player
+		
+		//Obtener el IGridStructure para el jugador.
 		IGridStructure structure = GridManager.getInstance()
 		.getStructure(player.getActualWorld());
 
-		//Obtain the actual player cell
+		//Obtener la celda del mundo actual.
 		Cell current = structure.getCell(player.getPosition());
 		if (current == null) {
-			//TODO Create exception if detect player outside the board \
+			//TODO Create exception if detect player outside the board.
 			msgReport = "Player outside the board";
 			System.err.println(msgReport);
 		}
-		//Hold Client Session
+		//Mantener la sesion del cliente.
 		ClientSession session = player.getSession();		
-		//Unsuscribe player adjacents cells
+
+		//Desinscribir al jugador de las celdas adyacentes.
 		Cell[] adyacentes = structure
 		.getAdjacents(current, player.getPosition());
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].leaveFromChannel(session);
 		}
-		//Hold the new adjacent after rotate
+
+		//Mantiene los nuevos adyacentes despues de la rotacion.
 		current.send(msg, session);
 		adyacentes = structure
 		.getAdjacents(current, msg.getAngle());
 
-		//verify the adjacent
+		//Verificar los adyacentes
 		if (adyacentes == null) {
 			return;
 		}
 		if (adyacentes.length == 0) {
 			return;
 		} 
-		//Set Player new angle
+
+	    //Establece el angulo del jugador.
 		player.setAngle(msg.getAngle());
-		//and join his channels
+
+		//Y se une a sus canales.
 		for (int i = 0; i < adyacentes.length; i++) {
 			adyacentes[i].joinToChannel(session);
 		}
+		
+
 	}		
 }
