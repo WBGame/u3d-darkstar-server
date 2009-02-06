@@ -124,9 +124,12 @@ public final class Player extends DynamicEntity {
 	/**
 	 * Retorna las propiedades del jugador que no estan presentes en
 	 * ModelAccess.
+	 * En la tabla de hash se guarda el par,
+	 * identificador de la propiedad, con su correspondiente Valor.
 	 * 
 	 * @return properties propiedades del jugador
 	 */
+	
 	public Hashtable<String, IPlayerProperty> getProperties() {
 		return properties;
 	}
