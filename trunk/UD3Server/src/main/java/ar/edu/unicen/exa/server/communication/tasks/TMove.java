@@ -63,7 +63,6 @@ public final class TMove extends TaskCommunication {
 		
 		//recuperar la celda actual
 		Cell actualCell = getCellAssociated();
-  	    //Cell cell = getCellAssociated();
 		
 		//Castear al mensage que corresponda
 		MsgMove msg = (MsgMove) getMessage();
