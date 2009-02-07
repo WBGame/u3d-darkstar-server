@@ -77,9 +77,4 @@ public interface IGridStructure extends Serializable, ManagedObject {
 	 * @param z coord eje z
 	 */
 	void setSpawnPosition(float x, float y, float z);
-
-	//XXX eliminacion del metodo. No es necesario ya que la ceda spawn se
-	//calcula cada vez que se setea una nueva poscion inicial del jugador
-	
-	//void setSpawnCell(Cell spawnCell);
 }
