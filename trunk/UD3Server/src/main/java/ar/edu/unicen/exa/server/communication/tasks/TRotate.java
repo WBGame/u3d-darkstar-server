@@ -1,9 +1,9 @@
 
-
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import com.sun.sgs.app.ClientSession;
 import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
@@ -46,9 +46,7 @@ public final class TRotate extends TaskCommunication {
 	
 	/**
 	 * Actualizar el angulo de rotacion de la entidad afectada, y reenviar
-	 * el mensaje a la celda actual del jugador. No es necesario enviar el 
-	 * mensaje a las celdas adyacentes ya que nunca cambia de celda cuando
-	 * el jugador rota.
+	 * el mensaje a travez las celdas pertinentes.
 	 */
 	
 	public void run() {
@@ -72,5 +70,20 @@ public final class TRotate extends TaskCommunication {
 		
 		//reenviar el mendaje de rotacion a la celda actual del jugador 
 		cell.send(msg, session);
-	}		
+		
+		//obtener la estructura del mundo actual
+		IGridStructure structure = cell.getStructure();
+		
+		Cell[] adyacentes = structure.getAdjacents(
+				cell, 
+				player.getPosition()
+			);
+		
+		if (adyacentes != null) {
+			//notificar a las celdas adyacentes
+			for (int i = 0; i < adyacentes.length; i++) {
+				adyacentes[i].send(msg, session);
+			}
+		}		
+	}
 }
