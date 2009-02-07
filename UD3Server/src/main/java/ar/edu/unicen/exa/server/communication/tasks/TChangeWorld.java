@@ -78,11 +78,6 @@ public final class TChangeWorld extends TaskCommunication {
 	 * 
 	 */
 	public void run() {
-
-		// ver si el mensaje recibido sea el correspondiente para esta tarea
-		if (!MsgTypes.MSG_CHANGE_WORLD_TYPE.equals(getMsgType())) {
-			throw new Error("Tipo de mensaje no válido para esta tarea");
-		}
 		// instancia del jugador
 		Player player = getPlayerAssociated();
 		// crear el mensaje de partida del jugador
@@ -96,18 +91,14 @@ public final class TChangeWorld extends TaskCommunication {
 			e1.printStackTrace();
 		}
 
-		// obtener la estructura del mundo actual
-		IGridStructure structure = GridManager.getInstance().getStructure(
-				player.getActualWorld());
-
 		// recuperar la celda actual
-		Cell cell = structure.getCell(player.getPosition());
-		// Cell cell = getCellAssociated();
-
+		Cell cell = getCellAssociated();
 		// obtener la sesion del jugador
 		ClientSession session = player.getSession();
 		// notificar a la celda actual que la entidad dinamica ha salido
 		cell.send(msgLeft, session);
+		// obtener la estructura del mundo actual		
+		IGridStructure structure = cell.getStructure();
 		// obtener los adyacentes de la celda actual
 		/*
 		 * Cell[] adyacentes = structure .getAdjacents(cell,
