@@ -58,12 +58,8 @@ public final class PTaskDelegator extends ServerMsgProcessor {
 				msg);
 		
 		comT.setPlayerAssociated(super.getPlayerAssociated());
-		
-		//XXX desabilito esta linea debido a que genera una excepcion cuando
-		//se crea la referencia a la celda porque no la celda no implementa
-		//ManagedObject
 
-		//comT.setCellAsociete(super.getCellAsociete());
+		comT.setCellAssociated(super.getCellAssociated());
 		
 		AppContext.getTaskManager().scheduleTask(comT);
 	}
