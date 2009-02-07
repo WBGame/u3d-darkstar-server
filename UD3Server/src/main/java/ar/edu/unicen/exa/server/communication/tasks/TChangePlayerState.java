@@ -49,12 +49,6 @@ public final class TChangePlayerState extends TaskCommunication {
 	 * 
 	 */
 	public void run() {
-		
-		//ver si el mensaje recibido sea el correspondiente para esta tarea
-		if (!MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE.equals(getMsgType())) {
-			throw new Error("Tipo de mensaje no válido para esta tarea");
-		}
-		
 		//instancia del jugador
 		Player player = getPlayerAssociated();
 		
@@ -63,19 +57,19 @@ public final class TChangePlayerState extends TaskCommunication {
 		
 		player.setState(msg.getNewState());
 		
-		//obtener la estructura del mundo actual
-		IGridStructure structure = GridManager.getInstance()
-				.getStructure(player.getActualWorld());
 		
 		//recuperar la celda actual
-		Cell actualCell = structure.getCell(player.getPosition());
-		
+		Cell actualCell = getCellAssociated();
+
 		//crear el mensaje de notificación cambio de estado
 		msg.setType(MsgTypes.MSG_CHANGE_PLAYER_STATE_NOTIFY_TYPE);
 		
 		ClientSession session = player.getSession();
 		//notificar a la misma celda que el jugador se movió
 		actualCell.send(msg, session);
+		
+		//obtener la estructura del mundo actual
+		IGridStructure structure = actualCell.getStructure();
 		
 		Cell[] adyacentes = structure.getAdjacents(
 				actualCell, 
