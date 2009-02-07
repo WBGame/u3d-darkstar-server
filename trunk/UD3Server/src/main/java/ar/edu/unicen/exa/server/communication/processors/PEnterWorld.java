@@ -59,11 +59,6 @@ public final class PEnterWorld extends ServerMsgProcessor {
 	 * @param msg mensaje a procesar
 	 */
 	public void process(final IMessage msg) {
-
-		//ver si el mensaje recibido sea el correspondiente para esta tarea
-		if (!MsgTypes.MSG_ENTER_WORLD_TYPE.equals(getMsgType())) {
-			throw new Error("Tipo de mensaje no válido para esta tarea");
-		}
 		//casting al tipo de mensaje correspondiente
 		MsgPlainText imsg = (MsgPlainText) msg;
 		//recuperar el id del nuevo mundo desde el mensaje recibido
