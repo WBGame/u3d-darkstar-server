@@ -93,15 +93,14 @@ public final class TMove extends TaskCommunication {
 		//notificar a la misma celda que el jugador se movió
 		destino.send(msg, session);
 		
-		/*Cell[] adyacentes = structure.getAdjacents(destino,
+		Cell[] adyacentes = structure.getAdjacents(destino,
 				player.getPosition());
 		
-		//las siguientes líneas podrían formar una tarea por sí solas
 		if (adyacentes != null) {
 			//notificar a las celdas visibles que el jugador se movió
 			for (int i = 0; i < adyacentes.length; i++) {
 				adyacentes[i].send(msg, session);
 			}
-		}*/
+		}
 	}
 }
