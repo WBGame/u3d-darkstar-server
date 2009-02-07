@@ -7,7 +7,6 @@ import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
 import com.sun.sgs.app.ObjectNotFoundException;
-import com.sun.sgs.app.TransactionException;
 
 //TODO Uniformizar el codigo para el tratamiento de las excepciones porque en
 //todos los casos es distinto.
@@ -54,8 +53,8 @@ public final class GridManager implements Serializable, ManagedObject {
 		try {
 			String name = IGridStructure.class.getName() + "_" + id;
 			grid = (IGridStructure) dataManager.getBinding(name);
-		} catch (Exception e) {
-			return null;
+		} catch (ObjectNotFoundException e) {
+			e.printStackTrace();
 		}
 
 		return grid;
@@ -84,12 +83,8 @@ public final class GridManager implements Serializable, ManagedObject {
 			logger.info("Agregando estructura dentro del GridManager. Id de "
 					+ "mundo: " + worldID);
 			dataManager.setBinding(name, structure);
-		} catch (IllegalArgumentException iae) {
-			iae.printStackTrace();
-		} catch (ObjectNotFoundException onfe) {
-			onfe.printStackTrace();
-		} catch (TransactionException te) {
-			te.printStackTrace();
+		} catch (ObjectNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -109,7 +104,7 @@ public final class GridManager implements Serializable, ManagedObject {
 			try {	
 				instance = (GridManager) d.getBinding(name);
 				logger.info("Se ha recuperado la instancia de GridManager");
-			} catch (Exception e) {
+			} catch (ObjectNotFoundException e) {
 				// creo un GridManager 
 				instance = new GridManager();
 				// registro la instancia dentro del Object Store.
