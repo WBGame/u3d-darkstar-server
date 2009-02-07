@@ -12,6 +12,8 @@ import ar.edu.unicen.exa.server.player.Player;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
+import com.sun.sgs.app.util.ManagedSerializable;
+
 import common.messages.IMessage;
 
 /**
@@ -49,7 +51,7 @@ public abstract class TaskCommunication implements Task, Serializable {
 	private ManagedReference<Player>	playerAssociated = null;
 	
 	/** Referencia a la celda relacionada al mensaje a procesar. */
-	private ManagedReference<Cell>	cellAssociated = null;
+	private ManagedReference<ManagedSerializable<Cell>>	cellAssociated = null;
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
 	private String	msgType;
@@ -128,7 +130,7 @@ public abstract class TaskCommunication implements Task, Serializable {
 	 * @return Referencia a la celda relacionada al mensaje a procesar.
 	 */
 	public final Cell getCellAssociated() {
-		return cellAssociated.get();
+		return cellAssociated.get().get();
 	}
 	
 	/**
@@ -137,8 +139,11 @@ public abstract class TaskCommunication implements Task, Serializable {
 	 *        procesar.
 	 */
 	public final void setCellAssociated(final Cell associated) {
+		
+		ManagedSerializable<Cell> cell = new ManagedSerializable<Cell>(
+				associated);
+		
 		this.cellAssociated = AppContext.getDataManager().createReference(
-				associated
-		);
+				cell);
 	}
 }
