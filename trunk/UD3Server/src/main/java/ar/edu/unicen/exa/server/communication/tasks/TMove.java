@@ -1,7 +1,6 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import ar.edu.unicen.exa.server.grid.Cell;
-import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import com.sun.sgs.app.ClientSession;
@@ -59,20 +58,11 @@ public final class TMove extends TaskCommunication {
 	 * @encoding UTF-8
 	 */
 	public void run() {
-
-		//ver si el mensaje recibido sea el correspondiente para esta tarea
-		if (!MsgTypes.MSG_MOVE_SEND_TYPE.equals(getMsgType())) {
-			throw new Error("Tipo de mensaje no válido para esta tarea");
-		}
 		//instancia del jugador
 		Player player = getPlayerAssociated();
 		
-		//obtener la estructura del mundo actual
-		IGridStructure structure = GridManager.getInstance()
-				.getStructure(player.getActualWorld());
-		
 		//recuperar la celda actual
-		Cell actualCell = structure.getCell(player.getPosition());
+		Cell actualCell = getCellAssociated();
   	    //Cell cell = getCellAssociated();
 		
 		//Castear al mensage que corresponda
@@ -80,7 +70,11 @@ public final class TMove extends TaskCommunication {
 
 		//Actualizamos la posicion del player
 		player.setPosition(msg.getPosDestino());
-		
+
+		//obtener la estructura del mundo actual
+		IGridStructure structure = actualCell.getStructure();
+
+		//obtner la celda destino
 		Cell destino = structure.getCell(msg.getPosDestino());
 		
 		ClientSession session = player.getSession();
