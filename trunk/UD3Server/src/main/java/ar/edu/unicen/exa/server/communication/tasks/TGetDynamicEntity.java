@@ -3,6 +3,8 @@ package ar.edu.unicen.exa.server.communication.tasks;
 import ar.edu.unicen.exa.server.entity.DynamicEntity;
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
 import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.ObjectNotFoundException;
+
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
@@ -65,9 +67,14 @@ public final class TGetDynamicEntity extends TaskCommunication {
 		//obtener el id de la entidad dinamica
 		String idDynamicEntity = msg.getMsg();
 		
+		DynamicEntity dinamicEntity = null;
+		try {
 		//Obtener la entidad dinámica a partir del DataManager
-		DynamicEntity dinamicEntity = (DynamicEntity) 
-			AppContext.getDataManager().getBinding(idDynamicEntity);
+		dinamicEntity = (DynamicEntity) AppContext.getDataManager()
+			.getBinding(idDynamicEntity);
+		} catch (ObjectNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		//crear el mensaje de respuesta
 		MsgGetDynamicEntityResponse msgGDER = null;
