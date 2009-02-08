@@ -327,7 +327,8 @@ public final class ClientMsgGetDynamicEntity implements SimpleClientListener {
 	/**
 	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
 	 * estableciendo el id del mundo al que se desea ingresar. Dicho mensaje
-	 * se codifica en un {@link ByteBuffer} para ser enviado a travez del canal 
+	 * se codifica en un {@link ByteBuffer} para ser enviado directamente
+	 * al servidor. 
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 * @param idMundo mundo al que se desa ingresar
