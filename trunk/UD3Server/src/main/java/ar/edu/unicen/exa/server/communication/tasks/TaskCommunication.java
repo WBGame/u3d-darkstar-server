@@ -6,14 +6,14 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import java.io.Serializable;
+
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ManagedReference;
 import com.sun.sgs.app.Task;
-import com.sun.sgs.app.util.ManagedSerializable;
-
+import com.sun.sgs.impl.util.ManagedSerializable;
 import common.messages.IMessage;
 
 /**
