@@ -300,9 +300,10 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje para entrar a un mundo con el tipo
-	 * de mensaje {@link MsgPlainText}. 
-	 * 
+	 * Contruye un mensaje con el id del mundo al que se desea ingresar
+	 * utilizando el el tipo de mensaje {@link MsgPlainText} para ser 
+	 * luego enviado directamente al servidor.
+	 *
 	 * @param idMundo identificador del mundo al que desea entrar.
 	 * 
 	 * @return mensaje de entrada al mundo.
