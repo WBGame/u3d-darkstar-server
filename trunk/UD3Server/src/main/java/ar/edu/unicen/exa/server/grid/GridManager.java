@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
+import com.sun.sgs.app.NameNotBoundException;
 import com.sun.sgs.app.ObjectNotFoundException;
 
 //TODO Uniformizar el codigo para el tratamiento de las excepciones porque en
@@ -53,7 +54,7 @@ public final class GridManager implements Serializable, ManagedObject {
 		try {
 			String name = IGridStructure.class.getName() + "_" + id;
 			grid = (IGridStructure) dataManager.getBinding(name);
-		} catch (ObjectNotFoundException e) {
+		} catch (NameNotBoundException e) {
 			e.printStackTrace();
 		}
 
@@ -104,7 +105,7 @@ public final class GridManager implements Serializable, ManagedObject {
 			try {	
 				instance = (GridManager) d.getBinding(name);
 				logger.info("Se ha recuperado la instancia de GridManager");
-			} catch (ObjectNotFoundException e) {
+			} catch (NameNotBoundException e) {
 				// creo un GridManager 
 				instance = new GridManager();
 				// registro la instancia dentro del Object Store.
