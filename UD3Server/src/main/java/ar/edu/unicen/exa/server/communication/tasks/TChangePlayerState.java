@@ -1,7 +1,6 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import ar.edu.unicen.exa.server.grid.Cell;
-import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 
