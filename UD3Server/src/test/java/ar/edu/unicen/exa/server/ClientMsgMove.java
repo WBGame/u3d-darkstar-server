@@ -299,13 +299,14 @@ public final class ClientMsgMove implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje para entrar a un mundo {@link MsgMove} simulando la 
-	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
+	 * estableciendo el id del mundo al que se desea ingresar. Dicho mensaje
+	 * se codifica en un {@link ByteBuffer} para ser enviado a travez del canal 
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
+	 * @param idMundo mundo al que se desa ingresar
 	 */
-	private IMessage buildMessageEnterWorld(String idMundo) {
+	private IMessage buildMessageEnterWorld(final String idMundo) {
 		
 		MsgPlainText msg = null;
 		try {
