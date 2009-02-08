@@ -301,7 +301,7 @@ public final class ClientMsgRotate implements SimpleClientListener {
 	/**
 	 * Contruye un mensaje para entrar a un mundo {@link MsgMove} simulando la 
 	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * en un {@link ByteBuffer} para ser enviado directamente al servidor. 
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 * @param idMundo mundo al que desea ingresar
