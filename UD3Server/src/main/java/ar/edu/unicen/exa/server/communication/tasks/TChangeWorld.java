@@ -1,11 +1,9 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-import ar.edu.unicen.exa.server.communication
-		 .processors.ServerMsgProssesorFactory;
+import ar.edu.unicen.exa.server.communication.processors
+         .ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.grid.Cell;
-import ar.edu.unicen.exa.server.grid.GridManager;
-import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.sun.sgs.app.ClientSession;
@@ -93,25 +91,17 @@ public final class TChangeWorld extends TaskCommunication {
 
 		// recuperar la celda actual
 		Cell cell = getCellAssociated();
+		
 		// obtener la sesion del jugador
 		ClientSession session = player.getSession();
+		
 		// notificar a la celda actual que la entidad dinamica ha salido
 		cell.send(msgLeft, session);
-		// obtener la estructura del mundo actual		
-		IGridStructure structure = cell.getStructure();
-		// obtener los adyacentes de la celda actual
-		/*
-		 * Cell[] adyacentes = structure .getAdjacents(cell,
-		 * player.getPosition()); //notificar a las celdas adyacentes que el
-		 * jugador no se encuntra en //la celda if (adyacentes != null) { for
-		 * (int i = 0; i < adyacentes.length; i++) adyacentes[i].send(msgLeft,
-		 * session); }
-		 */
+
 		// desuscribir al jugador de la celda del viejo mundo
 		cell.leaveFromChannel(session);
 
 		// entrar al nuevo mundo
-
 		IMessage iMsg = getMessage();
 		iMsg.setType(MsgTypes.MSG_ENTER_WORLD_TYPE);
 
