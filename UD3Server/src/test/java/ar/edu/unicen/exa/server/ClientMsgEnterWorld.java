@@ -41,7 +41,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	/** Creamos un logger para esta clase. */
 	private static final  Logger LOGGER =
 		Logger.getLogger(ClientMsgEnterWorld.class.getName());
-	
+
 	/**  Para cumplir con la version de la clase Serializable. */
 	private static final long serialVersionUID = 1L;
 
@@ -50,18 +50,18 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 
 	/** Instancia {@link SimpleClient} para este cliente. */
 	private final SimpleClient simpleClient;
-	
+
 	/** Login del usuario. */
 	private String login;
-	
+
 	/** Password del usuario. */
 	private String password;
-	
+
 	/**
 	 * El canal al que esta subscrito el jugador.
 	 */
 	private ClientChannel channel;
-	
+
 	/**
 	 * Corre el test para un mesaje de movimiento.
 	 *
@@ -72,22 +72,22 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader flujo = new BufferedReader(isr);		
-		
+
 		try {
-			
+
 			System.out.print("Name: ");
 			cmm.setLogin(flujo.readLine());
-			
+
 			System.out.print("Password: ");
 			cmm.setPassword(flujo.readLine());
-			
+
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 
 		cmm.login();
-		
+
 		try {
 			System.out.print("Id del mundo al que desea ingresar: ");
 			String idMundo = flujo.readLine();
@@ -97,7 +97,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		String opcion = null;
 		do {
 			System.out.print("Cambiar al mundo: ");
@@ -235,22 +235,21 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	 * Codifica el texto y lo envía directamente al servidor.
 	 * 
 	 */
-	
+
 	protected void send(final IMessage message) {
 		// Convierto Mensaje a ByteBuffer
 		ByteBuffer msg = message.toByteBuffer();
-    	
-        try {
-        		simpleClient.send(msg);
-                MsgPlainText iMsg = (MsgPlainText) message;
 
-                LOGGER.info("Se ha enviado el tipo de mensaje " 
-                		+ iMsg.getType() 
-                		+ " con el mensaje mundo: " + iMsg.getMsg());
-                
-        	} catch (Exception e) {
-                e.printStackTrace();
-        	}
+		try {
+			simpleClient.send(msg);
+			MsgPlainText iMsg = (MsgPlainText) message;
+
+			LOGGER.info("Se ha enviado el tipo de mensaje " + iMsg.getType() 
+					+ " con el mensaje mundo: " + iMsg.getMsg());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -271,7 +270,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	public String getLogin() {
 		return login;
 	}
-	
+
 	/**
 	 * Setter.
 	 * 
@@ -280,7 +279,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	public void setLogin(final String name) {
 		this.login = name;
 	}
-	
+
 	/**
 	 * Getter.
 	 * 
@@ -295,97 +294,100 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	 * 
 	 * @param pass contraseña del usuario.
 	 */
-	
+
 	public void setPassword(final String pass) {
 		this.password = pass;
 	}
-	
+
 	/**
 	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
 	 * estableciendo el identificador del mundo al que se desea ingresar. 
 	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
 	 * directamente al servidor. 
 	 * 
+	 * @param idMundo identificador del mundo
+	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 */
-	
-	private IMessage buildMessageEnterWorld(String idMundo) {
-		
+	private IMessage buildMessageEnterWorld(final String idMundo) {
+
 		MsgPlainText msg = null;
 		try {
 			msg = (MsgPlainText) MessageFactory.getInstance()
-					.createMessage(MsgTypes.MSG_ENTER_WORLD_TYPE);
-			
+			.createMessage(MsgTypes.MSG_ENTER_WORLD_TYPE);
+
 			msg.setMsg(idMundo);
-			
+
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
 
 		return msg;
 	}
-	
+
 	/**
 	 * Contruye un mensaje para cambiar de mundo {@link MsgChangeWorld} 
 	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
 	 * a travez del canal. 
 	 * 
+	 * @param idMundo identificador del mundo
+	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 */
-	private IMessage buildMessageChangeWorld(String idMundo) {
-		
+	private IMessage buildMessageChangeWorld(final String idMundo) {
+
 		MsgPlainText msg = null;
 		try {
 			msg = (MsgPlainText) MessageFactory.getInstance()
-					.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
-			
+			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+
 			msg.setMsg(idMundo);
-			
+
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
 
 		return msg;
 	}
-	
-	/**
-     * Envia un mensaje a travez del canal suscripto al cliente.
-     * 
-     * @param message mensaje a enviar.
-     */
-	public void sendToChannel(final IMessage message) {
-    	
-    	// Convierto Mensaje a ByteBuffer
-		ByteBuffer msj = message.toByteBuffer();
-    	
-        try {
-                this.channel.send(msj);
-                MsgPlainText iMsg = (MsgPlainText) message;
 
-                LOGGER.info("Se ha enviado el tipo de mensaje " 
-                		+ iMsg.getType() 
-                		+ " con el mensaje " 
-                		+ iMsg.getMsg() 
-                		+ " a travez del canal "  
-                		+ this.channel.getName());
-                
-        	} catch (Exception e) {
-                e.printStackTrace();
-        	}
-    }
-	
+	/**
+	 * Envia un mensaje a travez del canal suscripto al cliente.
+	 * 
+	 * @param message mensaje a enviar.
+	 */
+	public void sendToChannel(final IMessage message) {
+
+		// Convierto Mensaje a ByteBuffer
+		ByteBuffer msj = message.toByteBuffer();
+
+		try {
+			this.channel.send(msj);
+			MsgPlainText iMsg = (MsgPlainText) message;
+
+			LOGGER.info("Se ha enviado el tipo de mensaje " 
+					+ iMsg.getType() 
+					+ " con el mensaje " 
+					+ iMsg.getMsg() 
+					+ " a travez del canal "  
+					+ this.channel.getName());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Imprime el mensaje correspondiente al movimiento del jugador.
 	 * 
 	 * @param message el mensaje ha imprimir.
 	 */
-	
+
 	public void printMessage(final IMessage message) {
 		MsgEmpty iMsg = (MsgEmpty) message;
 		LOGGER.info("Tipo de Mensaje : " + iMsg.getType()
-		+ " Mundo: " /*+ iMsg.getMsg()*/);
+				+ " Mundo: " /*+ iMsg.getMsg()*/);
 	}
-	
+
 	/**
 	 * Clase que permite capturar los eventos que ocurren sobre un canal.
 	 * Define los métodos para recibir mensajes y para para capturar el
@@ -394,32 +396,32 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	 */
 	public final class ChannelListener implements ClientChannelListener {
 
-	    /**
-	     * Constructora de la clase.
-	     */
-	    public ChannelListener() { }
-	    
-	    /**
-	     * Este método es invocado cuando el servidor desuscribe al usuario del
-	     * canal channel al cual esta asociado. 
-	     * 
-	     * @param ch el canal que fue quitado el usuario.
-	     */
-	    public void leftChannel(final ClientChannel ch) {
-	    	LOGGER.info("El usuario fue quitado del canal "
-	    			+ ch.getName());
-	    }
-	    
-	    /**
-	     * Este método es invocado cada vez que el servidor envia un mensaje al
-	     * canal channel.
-	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
-	     */
-	    public void receivedMessage(final ClientChannel ch, 
-	    		final ByteBuffer msg) {
-	    	IMessage iMessage = null;
+		/**
+		 * Constructora de la clase.
+		 */
+		public ChannelListener() { }
+
+		/**
+		 * Este método es invocado cuando el servidor desuscribe al usuario del
+		 * canal channel al cual esta asociado. 
+		 * 
+		 * @param ch el canal que fue quitado el usuario.
+		 */
+		public void leftChannel(final ClientChannel ch) {
+			LOGGER.info("El usuario fue quitado del canal "
+					+ ch.getName());
+		}
+
+		/**
+		 * Este método es invocado cada vez que el servidor envia un mensaje al
+		 * canal channel.
+		 * 
+		 * @param ch el canal por el cual se recivió el mensaje.
+		 * @param msg mensaje que se recivió.
+		 */
+		public void receivedMessage(final ClientChannel ch, 
+				final ByteBuffer msg) {
+			IMessage iMessage = null;
 			try {
 				iMessage = MessageFactory.getInstance().createMessage(msg);
 			} catch (MalformedMessageException e) {
@@ -427,11 +429,11 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 			} catch (UnsopportedMessageException e) {
 				e.printStackTrace();
 			}
-			
+
 			MsgPlainText iMsg = (MsgPlainText) iMessage;
-			LOGGER.info("Se ha recivido del canal "
-	    			+ ch.getName()+ " el tipo de mensaje: " + iMsg.getType() + 
-					" con el mensaje id jugador: " + iMsg.getMsg());
-	    }
+			LOGGER.info("Se ha recivido del canal " + ch.getName() 
+					+ " el tipo de mensaje: " + iMsg.getType() 
+					+ " con el mensaje id jugador: " + iMsg.getMsg());
+		}
 	}
 }
