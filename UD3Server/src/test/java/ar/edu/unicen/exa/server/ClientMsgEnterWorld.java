@@ -23,15 +23,15 @@ import common.messages.MessageFactory;
 import common.messages.MsgEmpty;
 import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
-import common.messages.notify.MsgMove;
+
 
 /**
- * Test para mensajes de movimiento (MsgMove).
+ * Test para mensajes de entrada y cambio de mundo.
  * 
  * Esta clase es utilizada para testear el envío y recepcion de mensajes del
- * tipo MsgMove. Este mensaje es enviado al servidor el cual procesará el 
- * mismo mensaje enviandolo a los correspondientes clientes y mostrando el 
- * mensaje recivido por pantalla. 
+ * tipo MsgEnterWorld y MsgChangeWorld. Estos mensajes son enviados al servidor
+ * el cual los procesará enviando los mensajes de respuesta correspondientes a
+ * los restantes clientes. 
  * 
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
@@ -244,7 +244,8 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
         		simpleClient.send(msg);
                 MsgPlainText iMsg = (MsgPlainText) message;
 
-                LOGGER.info("Se ha enviado el tipo de mensaje " + iMsg.getType() 
+                LOGGER.info("Se ha enviado el tipo de mensaje " 
+                		+ iMsg.getType() 
                 		+ " con el mensaje mundo: " + iMsg.getMsg());
                 
         	} catch (Exception e) {
@@ -300,9 +301,10 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	}
 	
 	/**
-	 * Contruye un mensaje para entrar a un mundo {@link MsgMove} simulando la 
-	 * posicion actual y destino del jugador. Dicho mensaje se codifica
-	 * en un {@link ByteBuffer} para ser enviado a travez del canal. 
+	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
+	 * estableciendo el identificador del mundo al que se desea ingresar. 
+	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
+	 * directamente al servidor. 
 	 * 
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 */
@@ -360,8 +362,11 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
                 this.channel.send(msj);
                 MsgPlainText iMsg = (MsgPlainText) message;
 
-                LOGGER.info("Se ha enviado el tipo de mensaje " + iMsg.getType() 
-                		+ " con el mensaje " + iMsg.getMsg() + " a travez del canal "  
+                LOGGER.info("Se ha enviado el tipo de mensaje " 
+                		+ iMsg.getType() 
+                		+ " con el mensaje " 
+                		+ iMsg.getMsg() 
+                		+ " a travez del canal "  
                 		+ this.channel.getName());
                 
         	} catch (Exception e) {
