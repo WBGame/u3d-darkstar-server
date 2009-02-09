@@ -10,38 +10,40 @@ import com.sun.sgs.app.AppContext;
  * @encoding UTF-8 
  */
 public class DynamicEntity extends Entity {
-	
+
 	/**  Para cumplir con la version de la clase Serializable. */
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** 
 	 *  Mundo donde se encuentra el jugador o personaje.
 	 */
 
-	private String actualWorld;
+	private String actualWorld = null;
 
 	/** 
 	 *  Angulo donde se encuentra el jugador o personaje. 
 	 */
-	
+
 	private Vector3f angle = null;
 
 	/** 
 	 *  Posicion donde se encuentra el jugador o personaje.
 	 */
-	
+
 	private Vector3f position = null;
 
 	/**
-	 * @return actualWorld donde se encuentra el jugador
+	 *  Recuperación del mundo actual.
 	 * 
+	 *  @return String con el id del mundo actual donde se encuentra la entidad 
+	 *  o null en caso de no haber sido inicializado.
+	 *         
+	 *  @see GridManager#getStructure(String) permite recuperar el mundo dado 
+	 *       este identificador.
 	 */
-	
 	public final String getActualWorld() {
-	
 		return this.actualWorld;
-	
 	}
 
 	/**
@@ -49,7 +51,6 @@ public class DynamicEntity extends Entity {
 	 * 
 	 */
 	public final Vector3f getAngle() {
-
 		return this.angle;
 	}
 
@@ -60,7 +61,7 @@ public class DynamicEntity extends Entity {
 	public final Vector3f getPosition() {
 
 		return this.position;
-	
+
 	}
 
 	/**
