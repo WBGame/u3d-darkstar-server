@@ -1,16 +1,17 @@
 package ar.edu.unicen.exa.server.communication.processors;
 
-import com.jme.math.Vector3f;
-import com.sun.sgs.app.ClientSession;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
+
+import com.jme.math.Vector3f;
+import com.sun.sgs.app.ClientSession;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
-import common.messages.MsgTypes;
 import common.messages.MsgPlainText;
+import common.messages.MsgTypes;
 import common.processors.IProcessor;
 
 /**
@@ -132,7 +133,7 @@ public final class PEnterWorld extends ServerMsgProcessor {
 		try {
 			msgArrived = MessageFactory.getInstance()
 				.createMessage(MsgTypes.MSG_ARRIVED_TYPE);
-			//seteo el mensaje con el id del jugador
+			// seteo el mensaje con el id del jugador
 			((MsgPlainText) msgArrived).setMsg(player.getIdEntity());			
 		} catch (UnsopportedMessageException e) {
 			e.printStackTrace();
