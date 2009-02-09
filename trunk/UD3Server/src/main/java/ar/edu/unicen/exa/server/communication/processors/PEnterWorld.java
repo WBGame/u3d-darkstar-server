@@ -57,33 +57,77 @@ public final class PEnterWorld extends ServerMsgProcessor {
 	 * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
 	 * 
 	 * @param msg mensaje a procesar
+	 * 
+	 * TODO verificar correcta implementación y acomodar JAVADOC en caso de 
+	 *      aprovación del cambio.
 	 */
 	public void process(final IMessage msg) {
-		//casting al tipo de mensaje correspondiente
-		MsgPlainText imsg = (MsgPlainText) msg;
-		//recuperar el id del nuevo mundo desde el mensaje recibido
-		String newWorldID = imsg.getMsg();
-		//instancia del jugador
+		// instancia del jugador
 		Player player = getPlayerAssociated();
+		// obtener la sesion del jugador
+		ClientSession session = player.getSession();		
+		
+		if (session == null) {
+			throw new NullPointerException(
+					"Player inexistente. Accion Abortada" 
+			);
+		}		
+		
+		// está suscripto a algún mundo => necesito salir del mismo. 
+		if (player.getActualWorld() != null) {
+			// recuperar la celda actual
+			Cell actualCell = getCellAssociated();
+			
+			// crear el mensaje de partida del jugador
+			IMessage msgLeft = null;
+			try {
+				msgLeft = MessageFactory.getInstance().createMessage(
+						MsgTypes.MSG_LEFT_TYPE);
+				// seteo el id del jugador como mensaje del mismo
+				((MsgPlainText) msgLeft).setMsg(player.getIdEntity());
+			} catch (UnsopportedMessageException e1) {
+				e1.printStackTrace();
+			}
+			
+			// notificar a la celda actual que la entidad dinamica ha salido
+			actualCell.send(msgLeft, session);
+
+			// desuscribir al jugador de la celda del viejo mundo
+			actualCell.leaveFromChannel(session);			
+		}
+		
+		// A partir de aca el player no pertenece a ningún mundo.
+		
+		// casting al tipo de mensaje correspondiente
+		MsgPlainText imsg = (MsgPlainText) msg;
+		// recuperar el id del nuevo mundo desde el mensaje recibido
+		String newWorldID = imsg.getMsg();
+		
+		//TODO FIX si falla algo de lo de mas abajo esto queda inconsisten no?
+		//     hay que buscar metodos de rollback de las acciones para asegurar
+		//     el correcto estado del player.
+		
 		// actualizar el jugador con el id del nuevo mundo
 		player.setActualWorld(newWorldID);
-		//definicion del angulo por defecto
+		
+		//TODO FIX este angulo tiene que ser definido con aprobación de la gente
+		// del cliente.
 		player.setAngle(new Vector3f(1, 1, 1));
+
 		// obtener la estructura del nuevo mundo
-		IGridStructure structure = GridManager.getInstance()
+		IGridStructure world = GridManager.getInstance()
 				.getStructure(newWorldID);
-		//establecer la posicion inicial del jugador dentro del mundo
-		player.setPosition(structure.getSpawnPosition());
+		
+		// establecer la posicion inicial del jugador dentro del mundo
+		player.setPosition(world.getSpawnPosition());
+		
 		// obtener la celda por defecto a partir del nuevo mundo
-		Cell cell = structure.getSpawnCell();
-		//inicializo la posible sesion
-		ClientSession session = null;
-		//obtener la sesion del jugador
-		session = player.getSession();
+		Cell cell = world.getSpawnCell();
+		
 		// suscribir al jugador a la nueva celda
 		cell.joinToChannel(session);
 		
-		//crear el mensaje de llegada del jugador al nuevo mundo
+		// crear el mensaje de llegada del jugador al nuevo mundo
 		IMessage msgArrived = null;
 		try {
 			msgArrived = MessageFactory.getInstance()
@@ -93,17 +137,17 @@ public final class PEnterWorld extends ServerMsgProcessor {
 		} catch (UnsopportedMessageException e) {
 			e.printStackTrace();
 		}
-		//notificar a la celda por defecto que ingresó el jugador
+		// notificar a la celda por defecto que ingresó el jugador
 		cell.send(msgArrived, session);
-		//obtener los adyacentes de la nueva celda
-		/*Cell[] adyacentes = structure
-			.getAdjacents(cell, player.getPosition());
-		//notificar a las celdas adyacentes que ingresó el jugador
+		
+		// obtener los adyacentes de la nueva celda
+		Cell[] adyacentes = world.getAdjacents(cell, player.getPosition());
+		
+		// notificar a las celdas adyacentes que ingresó el jugador
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
 				adyacentes[i].send(msgArrived, session);
 			}
 		}
-		*/
 	}
 }
