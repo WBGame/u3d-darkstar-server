@@ -2,6 +2,10 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
+import java.util.logging.Logger;
+
+//import ar.edu.unicen.exa.server.player.Player;
+
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
@@ -24,6 +28,10 @@ public class Cell implements Serializable {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1301727798124952702L;
 
+	
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(Cell.class.getName());
 	/**
 	 * Es una referencia {@code ManagedReference} a la {@link IGridStructure}
 	 * contenedora de la celda.
@@ -61,9 +69,9 @@ public class Cell implements Serializable {
 		//XXX parte de la inicializacion del sistema. 
 		//generador de nuevos ids unicos para cada celda
 		this.id = CellIDGenerator.getNextID();
-		System.out.println("idcell = " + id);
+		logger.info("idcell = " + id);
 		this.bounds = cellBunds;
-		System.out.println("x= " + bounds.getX() + " y= " + bounds.getY());
+		logger.info("x= " + bounds.getX() + " y= " + bounds.getY());
 		if (parent != null) {
 			refStructure = AppContext.getDataManager().createReference(parent);
 		}
