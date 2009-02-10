@@ -3,6 +3,9 @@
  */
 package ar.edu.unicen.exa.server.communication.processors;
 
+import java.util.logging.Logger;
+
+//import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.player.Player;
 
 import common.datatypes.IPlayerProperty;
@@ -20,10 +23,19 @@ import common.processors.IProcessor;
  */
 public final class PSetPlayerProperty extends ServerMsgProcessor {
 	
+	
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(PSetPlayerProperty.class.getName());
+	
+	
+	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
+	
+	
 	public PSetPlayerProperty() {
 		
 	}
@@ -67,7 +79,7 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 			player.getProperty(prop.getId()).setValue(prop.getValue());
 		} catch (NullPointerException e) {
 			// Si la propiedad no existe en el player, no se hace nada.
-			System.out.println("");
+			logger.info("No existe la propiedad en el player");
 		}
 	}
 }
