@@ -39,6 +39,16 @@ public final class Player extends DynamicEntity {
     /**
 	 * Conjunto de propiedades del jugador que no estan presentes en
 	 * ModelAccess.
+	 * Las propiedades que se guardan en este HahsTable, son las propiedades
+	 * dinamicas, como puede ser la velocidad.
+	 * 
+	 * TODO El HashTable no es necesario, ya que IPlayerProperty contiene un
+	 * identificador con su correspondiente valor. Por otro lado se podria 
+	 * considerar la utilizacion de un HashTable por un tema de performance,
+	 * pero tampoco es necesario, ya que no tiene una gran cantidad de 
+	 * propidades. 
+	 *   
+	 * 
 	 */
 	private Hashtable<String, IPlayerProperty>	properties;
 	
@@ -101,9 +111,10 @@ public final class Player extends DynamicEntity {
 			state.setState(PlayerState.STATE_QUIET);
 			player.setState(state);
 			
-			//TODO falta setear las propiedades de jugador. Creo que se
-			//hace accediando al model access.
-			//player.setProperties(pproperties);
+			//Se setea las propiedades del jugador.
+			Hashtable<String, IPlayerProperty> propiedades = 
+				                     new Hashtable<String, IPlayerProperty>();
+			player.setProperties(propiedades);
 
 			//TODO falta setear el mundo por defecto y dentro del mismo la 
 			//     posicion y el angulo. (Ver DinamycEntity).
