@@ -88,16 +88,6 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 
 		cmm.login();
 
-		try {
-			System.out.print("Id del mundo al que desea ingresar: ");
-			String idMundo = flujo.readLine();
-			IMessage message = cmm.buildMessageEnterWorld(idMundo);
-			cmm.send(message);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
-			e.printStackTrace();
-		}
-
 		String opcion = null;
 		do {
 			System.out.print("Cambiar al mundo: ");
@@ -105,7 +95,6 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 				String idMundo = flujo.readLine();
 				IMessage message = cmm.buildMessageChangeWorld(idMundo);
 				cmm.sendToChannel(message);
-				System.out.print("Cambiar de mundo? (s/n): ");
 				opcion = flujo.readLine();
 
 			} catch (IOException e) {
@@ -300,32 +289,6 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 	}
 
 	/**
-	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
-	 * estableciendo el identificador del mundo al que se desea ingresar. 
-	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
-	 * directamente al servidor. 
-	 * 
-	 * @param idMundo identificador del mundo
-	 * 
-	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
-	 */
-	private IMessage buildMessageEnterWorld(final String idMundo) {
-
-		MsgPlainText msg = null;
-		try {
-			msg = (MsgPlainText) MessageFactory.getInstance()
-			.createMessage(MsgTypes.MSG_ENTER_WORLD_TYPE);
-
-			msg.setMsg(idMundo);
-
-		} catch (UnsopportedMessageException e1) {
-			e1.printStackTrace();
-		}
-
-		return msg;
-	}
-
-	/**
 	 * Contruye un mensaje para cambiar de mundo {@link MsgChangeWorld} 
 	 * Dicho mensaje se codifica en un {@link ByteBuffer} para ser enviado
 	 * a travez del canal. 
@@ -339,7 +302,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 		MsgPlainText msg = null;
 		try {
 			msg = (MsgPlainText) MessageFactory.getInstance()
-			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+			.createMessage(MsgTypes.MSG_ENTER_WORLD_TYPE);
 
 			msg.setMsg(idMundo);
 
