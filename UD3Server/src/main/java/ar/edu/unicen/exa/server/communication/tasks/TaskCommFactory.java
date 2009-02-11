@@ -36,12 +36,10 @@ public final class TaskCommFactory {
 		comTaskForMsgType = new Hashtable<String, TaskCommunication>();
 		
 		try {
-			//XXX cambie enterWorld por changeWorld ya que EnterWorld es ahora
-			//un proceso
-			IMessage changeWorld = MessageFactory.getInstance().createMessage(
-					MsgTypes.MSG_CHANGE_WORLD_TYPE);
-			TChangeWorld tChangeWorld = new TChangeWorld(changeWorld);
-			addComTask(tChangeWorld);
+			IMessage enterWorld = MessageFactory.getInstance().createMessage(
+					MsgTypes.MSG_ENTER_WORLD_TYPE);
+			TEnterWorld tEnterWorld = new TEnterWorld(enterWorld);
+			addComTask(tEnterWorld);
 			
 			IMessage getDynamicEntity = MessageFactory.getInstance()
 					.createMessage(MsgTypes.MSG_GET_DYNAMIC_ENTITY_TYPE);
@@ -55,14 +53,10 @@ public final class TaskCommFactory {
 			addComTask(tMove);
 			
 			IMessage rotate = MessageFactory.getInstance().createMessage(
-					//XXX habia un error en vez de MSG_ROTATE_SEND_TYPE estaba
-					//MSG_MOVE_SEND_TYPE
 					MsgTypes.MSG_ROTATE_SEND_TYPE);
 			TRotate tRotate = new TRotate(rotate);
 			addComTask(tRotate);
 			
-			//XXX faltaba la creacion de la tarea correspondiente al mensaje
-			//de cambio de estado del jugador
 			IMessage changePlayerState = MessageFactory.getInstance()
 				.createMessage(
 					MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE);
