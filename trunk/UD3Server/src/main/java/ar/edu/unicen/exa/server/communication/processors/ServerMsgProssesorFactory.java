@@ -78,7 +78,7 @@ public final class ServerMsgProssesorFactory {
 				MsgTypes.MSG_GET_DYNAMIC_ENTITY_TYPE, new PTaskDelegator());
 
 		MsgProcessorFactory.getInstance().addProcessor(
-				MsgTypes.MSG_ENTER_WORLD_TYPE, new PEnterWorld());
+				MsgTypes.MSG_ENTER_WORLD_TYPE, new PTaskDelegator());
 
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_MOVE_SEND_TYPE, new PTaskDelegator());
@@ -89,8 +89,5 @@ public final class ServerMsgProssesorFactory {
 		MsgProcessorFactory.getInstance().addProcessor(
 				MsgTypes.MSG_CHANGE_PLAYER_STATE_SEND_TYPE,
 				new PTaskDelegator());
-
-		MsgProcessorFactory.getInstance().addProcessor(
-				MsgTypes.MSG_CHANGE_WORLD_TYPE, new PTaskDelegator());
 	}
 }
