@@ -1,10 +1,14 @@
 package ar.edu.unicen.exa.server;
 
+import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.grid.MatrixGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import ar.edu.unicen.exa.server.player.UserSessionListener;
+
+
+import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppListener;
 import java.io.Serializable;
 import java.util.Properties;
@@ -12,12 +16,16 @@ import java.util.logging.Logger;
 
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.ClientSession;
-
+import common.exceptions.UnsopportedMessageException;
+import common.messages.IMessage;
+import common.messages.MessageFactory;
+import common.messages.MsgPlainText;
+import common.messages.MsgTypes;
 
 /**
  * Esta clase captura los eventos correspondiente al loggedIn de un usuario.
  * Basicamente se encarga de inicializar el servidor y recuperar o crear
- * el jugador para la debida sesión.
+ * el jugador para la debida sesiï¿½n.
  *
  * @author Pablo Inchausti &lt;inchausti.pablo at gmail dot com&gt;
  * @encoding UTF-8
@@ -37,25 +45,25 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	/** Alto de la grilla. */
 	private static final int GRID_HEIGHT	= 10;
 	
-	/** Tamaño de la celda. Cuadrada (100x100). */
+	/** TamaÃ±o de la celda. Cuadrada (100x100). */
 	private static final int CELL_SIZE = 100;
 
-	/** Posición original X del primer mundo. */
+	/** PosiciÃ³n original X del primer mundo. */
 	private static final float SPAWN_POSITION_WORLD1_X = 100;
-	/** Posición original Y del primer mundo. */
+	/** PosiciÃ³n original Y del primer mundo. */
 	private static final float SPAWN_POSITION_WORLD1_Y = 0;
-	/** Posición original Z del primer mundo. */
+	/** PosiciÃ³n original Z del primer mundo. */
 	private static final float SPAWN_POSITION_WORLD1_Z = 100;
 	
-	/** Posición original X del segundo mundo. */
+	/** PosiciÃ³n original X del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_X = 150;
-	/** Posición original Y del segundo mundo. */
+	/** PosiciÃ³n original Y del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_Y = 0;
-	/** Posición original Z del segundo mundo. */
+	/** PosiciÃ³n original Z del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_Z = 150;
 	
 	/**
-	 * Este método es invocado cuando el servidor se ejecuta por primera 
+	 * Este mï¿½todo es invocado cuando el servidor se ejecuta por primera 
 	 * vez. Crea los mundos en los cuales una entidad dinamica pueda 
 	 * interactuar y se agregan al {@link GridManager}. Finalmente se 
 	 * configura la fabrica de procesadores para el manejo de los mensajes
@@ -72,7 +80,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		//crear la grilla a partir de los datos definidos anteriormente
 		IGridStructure world1 = new MatrixGridStructure(
 				GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-		//definir cual será la posicion inicial del jugador dentro del mundo
+		//definir cual serï¿½ la posicion inicial del jugador dentro del mundo
 		world1.setSpawnPosition(
 				SPAWN_POSITION_WORLD1_X,
 				SPAWN_POSITION_WORLD1_Y,
@@ -81,7 +89,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		//agregamos el nuevo mundo al GridManager
 		gridManager.addStructure(world1);
 		
-		//creación del segundo mundo con las mismas caracteristicas que el
+		//creaciÃ³n del segundo mundo con las mismas caracteristicas que el
 		//primero, salvo la posicion inicial del jugador dentro de este mundo
 		IGridStructure world2 = new MatrixGridStructure(
 				GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
@@ -95,7 +103,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	}
 
 	/** 
-	 * Este método es invocado cada vez que un usuario se logea en el sistema.
+	 * Este mï¿½todo es invocado cada vez que un usuario se logea en el sistema.
 	 *  
 	 * Por medio de la sesion se obtiene el Player. En caso de que sea null,
 	 * significa que existe un jugador con el mismo nobre de usuario conectado
@@ -117,11 +125,62 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		if (player != null) {
 			// para capturar los eventos asociados a este jugador
 			user = new UserSessionListener();
-			// asigno la nueva sesión al jugador
+			// asigno la nueva sesiÃ³n al jugador
 			player.setSession(session);
 			user.setPlayer(player);
+			//ingresar el jugador al mundo
+			enterWorld(player);
 			return user;
 		}
 		return null;
+	}
+	
+	/**
+	 * Este metodo ingresa al jugador al mundo por defecto. ingreso de un 
+	 * jugador a un mundo. Se obtiene el mundo por medio del mensaje recivido 
+	 * el mundo al que desea ingresar, actualizando el mundo del jugador como
+	 * asi tambien la celda y posicion inicial, suscribirlo al canal y 
+	 * finalmente enviar el mensaje {@link MsgArrived} a las celdas 
+	 * correspondientes. 
+	 *  
+	 * @param player jugador que ingresa al mundo  
+	 */
+	public void enterWorld(final Player player) {
+		//obtener el mundo por defecto
+		IGridStructure structure = GridManager.getInstance()
+			.getDefaultStructure();
+		// actualizar el jugador con el id del mundo
+		player.setActualWorld(structure.getIdWorld());
+		//definicion del angulo por defecto
+		player.setAngle(new Vector3f(1, 1, 1));
+		//establecer la posicion inicial del jugador dentro del mundo
+		player.setPosition(structure.getSpawnPosition());
+		// obtener la celda por defecto a partir del nuevo mundo
+		Cell cell = structure.getSpawnCell();
+		//obtener la sesion del jugador
+		ClientSession session = player.getSession();
+		// suscribir al jugador a la nueva celda
+		cell.joinToChannel(session);
+		//crear el mensaje de ingreso al mundo por defecto
+		IMessage msgArrived = null;
+		try {
+			msgArrived = MessageFactory.getInstance()
+				.createMessage(MsgTypes.MSG_ARRIVED_TYPE);
+			//seteo el mensaje con el id del jugador
+			((MsgPlainText) msgArrived).setMsg(player.getIdEntity());
+		} catch (UnsopportedMessageException e) {
+			e.printStackTrace();
+		}
+		//notificar a la celda por defecto que ingresÃ³ el jugador
+		cell.send(msgArrived, session);
+		//obtener los adyacentes de la nueva celda
+		Cell[] adyacentes = structure
+			.getAdjacents(cell, player.getPosition());
+		//notificar a las celdas adyacentes que ingresÃ³ el jugador
+		if (adyacentes != null) {
+			for (int i = 0; i < adyacentes.length; i++) {
+				adyacentes[i].send(msgArrived, session);
+			}
+		}
 	}
 }
