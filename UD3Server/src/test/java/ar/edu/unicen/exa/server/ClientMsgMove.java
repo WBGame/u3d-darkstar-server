@@ -61,6 +61,21 @@ public final class ClientMsgMove implements SimpleClientListener {
 	 */
 	private ClientChannel channel;
 	
+	
+	/** Variables para poder cumplir con checkstyle. */
+	/** Posicion origen del jugador. */
+	private static final int X1 = 10;
+	/** Posicion origen del jugador. */
+	private static final int Y1 = 15;
+	/** Posicion origen del jugador. */
+	private static final int Z1 = 20;
+	/** Posicion destino del jugador. */
+	private static final int X2 = 0;
+	/** Posicion destino del jugador. */
+	private static final int Y2 = 10;
+	/** Posicion destino del jugador. */
+	private static final int Z2 = 10;
+	
 	/**
 	 * Corre el test para un mesaje de movimiento.
 	 *
@@ -335,6 +350,8 @@ public final class ClientMsgMove implements SimpleClientListener {
 		
 		MsgMove iMsg = null;
 		
+
+		
 		try {
 			//	Creo un mensaje
 			iMsg = (MsgMove) MessageFactory.getInstance()
@@ -346,15 +363,20 @@ public final class ClientMsgMove implements SimpleClientListener {
 
 		// Creo origen
 		Vector3f origen =  new Vector3f();
+		
 		// 10, 15, 20
-		origen.set(10, 15, 20);
+		origen.set(X1, Y1, Z1);
+
+
 				
 		// Seteo el origen
 		iMsg.setPosOrigen(origen);
 		
 		// Creo Destino
 		Vector3f destino =  new Vector3f();
-		destino.set(0, 10, 10);
+		// 0, 10, 10
+		destino.set(X2, Y2, Z2);
+
 		
 		// Seteo el destino
 		iMsg.setPosDestino(destino);

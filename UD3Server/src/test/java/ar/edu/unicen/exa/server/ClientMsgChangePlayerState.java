@@ -100,7 +100,8 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 		
 		String opcion = null;
 		do {
-			System.out.print("Presione Enter para cambiar el estado del jugador");
+			System.out.print("Presione Enter para cambiar el estado " 
+							+ "del jugador");
 			try {
 				flujo.readLine();
 				IMessage message = cmm.buildMessageChangePlayerState();

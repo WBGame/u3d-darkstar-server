@@ -61,6 +61,15 @@ public final class ClientMsgRotate implements SimpleClientListener {
 	 */
 	private ClientChannel channel;
 	
+	
+	/** Variables para poder cumplir con checkstyle. */
+	/** Angulo del jugador. */
+	private static final int X = 10;
+	/** Angulo del jugador. */
+	private static final int Y = 15;
+	/** Angulo del jugador. */
+	private static final int Z = 20;
+	
 	/**
 	 * Corre el test para un mesaje de movimiento.
 	 *
@@ -344,7 +353,8 @@ public final class ClientMsgRotate implements SimpleClientListener {
 		}
 
 		// Creo el angulo
-		Vector3f angulo =  new Vector3f(10, 15, 20);
+		// 10, 15, 20
+		Vector3f angulo =  new Vector3f(X, Y, Z);
 		
 		// Seteo el angulo
 		iMsg.setAngle(angulo);
