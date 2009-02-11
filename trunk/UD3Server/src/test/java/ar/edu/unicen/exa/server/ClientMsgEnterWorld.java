@@ -222,6 +222,7 @@ public final class ClientMsgEnterWorld implements SimpleClientListener {
 
 	/**
 	 * Codifica el texto y lo envía directamente al servidor.
+	 * @param message el mensaje.
 	 * 
 	 */
 

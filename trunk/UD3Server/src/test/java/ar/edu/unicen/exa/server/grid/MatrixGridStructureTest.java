@@ -32,6 +32,15 @@ public class MatrixGridStructureTest {
 	@SuppressWarnings("unused")
 	private static final int BOUND_HEIGHT = 100;
 	
+	
+	/** Variables para poder cumplir con checkstyle. */
+	/** Ancho de la grilla. */
+	private static final int X = 1;
+	/** Alto de la grilla. */
+	private static final int Y = 1;
+	/** Tamaño de la grilla. */
+	private static final int Z = 100;
+	
 	/**
 	 * Crea una única instancia de MatrixGridStructure para los propósitos
 	 * del test.
@@ -40,7 +49,8 @@ public class MatrixGridStructureTest {
 	 */
 	private MatrixGridStructure getInstance() {
 		if (instance == null) {
-			instance = new MatrixGridStructure(1,1,100);
+			// X = 1, Y = 1, Z = 100.
+			instance = new MatrixGridStructure(X, Y, Z);
 		}
 		return instance;
 	}
