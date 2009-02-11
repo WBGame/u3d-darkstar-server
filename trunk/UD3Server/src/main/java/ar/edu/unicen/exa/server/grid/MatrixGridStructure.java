@@ -160,7 +160,7 @@ public class MatrixGridStructure implements IGridStructure {
 		int heightIterator = -1;
 		for (int i = 0; i < structure.length; i++) {
 			for (int j = 0; j < structure[i].length; j++) {
-				if (cell.getId().equals(structure[i][j].getId())) {
+				if (cell.equals(structure[i][j])) {
 					//obtengo la ubicacion de la celda actual
 					widthIterator = i;
 					heightIterator = j;
@@ -268,6 +268,23 @@ public class MatrixGridStructure implements IGridStructure {
 	 */
 	public final Vector3f getSpawnPosition() {
 		return spawnPosPlayer;
+	}
+
+	/**
+	 * Retorna el identificador de la estructura.
+	 * @return el identificador de esta instancia de estructura.
+	 */
+	@Override
+	public final long getId() {
+		return Long.parseLong(this.getIdWorld());
+	}
+	/**
+	 * Setea el identificador de la estructura.
+	 * @param anId el identificador de esta instancia de estructura.
+	 */
+	@Override
+	public final void setId(final long anId) {
+		this.setIdWorld(Long.toString(anId));
 	}
 
 }

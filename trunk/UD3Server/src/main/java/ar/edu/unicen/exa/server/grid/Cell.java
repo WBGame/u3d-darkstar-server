@@ -4,7 +4,8 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-//import ar.edu.unicen.exa.server.player.Player;
+import ar.edu.unicen.exa.server.grid.id.IBindingID;
+import ar.edu.unicen.exa.server.grid.id.IDManager;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
@@ -24,7 +25,7 @@ import common.messages.IMessage;
  */
 
 
-public class Cell implements Serializable {
+public class Cell implements Serializable, IBindingID {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1301727798124952702L;
 
@@ -66,10 +67,9 @@ public class Cell implements Serializable {
 	 */
 	public Cell(final Rectangle cellBunds, 
 			final IGridStructure parent) {
-		//XXX parte de la inicializacion del sistema. 
-		//generador de nuevos ids unicos para cada celda
-		this.id = CellIDGenerator.getNextID();
-		logger.info("idcell = " + id);
+
+		IDManager.setNewID(this);
+
 		this.bounds = cellBunds;
 		logger.info("x= " + bounds.getX() + " y= " + bounds.getY());
 		if (parent != null) {
@@ -95,10 +95,18 @@ public class Cell implements Serializable {
 	 * 
 	 * @return el identificador de esta instancia de celda.
 	 */
-	public final String getId() {
-		return id;
+	@Override
+	public final long getId() {
+		return Long.parseLong(id);
 	}
-
+	/**
+	 * Setea el identificador de la celda.
+	 * @param anId el identificador de esta instancia de celda.
+	 */
+	@Override
+	public final void setId(final long anId) {
+		this.id = Long.toString(anId);
+	}
 	/**
 	 * Retorna la referencia {@code ManagedReference} del canal asociado a la
 	 * celda.
@@ -195,4 +203,36 @@ public class Cell implements Serializable {
 	public final void send(final IMessage msg, final ClientSession player) {
 		getChannel().send(player, msg.toByteBuffer());
 	}
+
+	/**
+	 * Indica si este objeto es igual que el objeto recibido por
+	 * parámetro.
+	 * 
+	 * @param obj Objeto a comparar con este objeto.
+	 * @return true si el objeto obj es igual que este objeto, 
+	 * 		false en otro caso.
+	 */
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Cell) {
+			Cell other = (Cell) obj;
+			return this.getId() == other.getId();
+		}
+		return false;
+	}
+	
+	/**
+	 * Retorna un valor <i>hash code</i> para este objeto.
+	 * @return un valor <i>hash code</i> para este objeto.
+	 * @see Object#hashCode()
+	 */
+	@Override
+	public final int hashCode() {
+		// para satisfacer al checkstyle cuando redefiní el equals.
+		return super.hashCode();
+	}
+	
 }
