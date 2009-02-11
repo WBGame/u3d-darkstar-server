@@ -21,6 +21,9 @@ import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+import common.messages.MsgPlainText;
+import common.messages.MsgTypes;
+
 
 
 /** 
@@ -99,21 +102,18 @@ implements ClientSessionListener, Serializable {
 
 			LOGGER.info("Llego mensaje directo al servidor tipo " 
 					+ iMessage.getType());
-
-			// obtener el mundo actual del jugador
-			String actualWorld = getPlayer().getActualWorld();
-
-			// si estoy suscripto a algún mundo => recupero la celda para 
-			// inicializar el proceso
-			if (actualWorld != null) {
-				IGridStructure world = GridManager.getInstance()
-					.getStructure(getPlayer().getActualWorld());
-				Cell cell = world.getCell(getPlayer().getPosition());
-				processor.setCellAssociated(cell);
-			}
 			
+			//obtener el mundo actual del jugador
+			IGridStructure structure = GridManager.getInstance()
+				.getStructure(getPlayer().getActualWorld());
+			
+			//obtener la celda donde se encuentra el jugador
+			Cell cell = structure.getCell(getPlayer().getPosition());
+
 			// inicialización del player
 			processor.setPlayerAssociated(getPlayer());
+
+			processor.setCellAssociated(cell);
 			
 			// ejecutar el procesador/tarea asociado/a al mensaje recivido.
 			processor.process(iMessage);
@@ -133,7 +133,8 @@ implements ClientSessionListener, Serializable {
 	 *        correctamente.
 	 */
 	public void disconnected(final boolean graceful) {
-		ClientSession session = getPlayer().getSession();
+		Player player = getPlayer();
+		ClientSession session = player.getSession();
 
 		String grace = null; 
 		if (graceful) {
@@ -148,7 +149,57 @@ implements ClientSessionListener, Serializable {
 				new Object[] { session.getName(), grace } 
 		);
 
-		// la sesión es inutilizada para un usuario desconectado. 
-		getPlayer().setSession(null);
+		//salir del mundo actual
+		exitWorld(player);
+		
+		//la sesión es inutilizada para un usuario desconectado. 
+		player.setSession(null);
+
+	}
+	
+	/**
+	 * Este metodo se encarga de desuscribir el jugador del canal al que
+	 * esta asociado y enviar el mensaje {@link MsgLeft} a los jugadores
+	 * que estan en las celdas adyacentes.
+	 * 
+	 * @param player jugador que sale del mundo
+	 */
+	public void exitWorld(final Player player) {
+		// crear el mensaje de partida del jugador
+		IMessage msgLeft = null;
+		try {
+			msgLeft = MessageFactory.getInstance().createMessage(
+					MsgTypes.MSG_LEFT_TYPE);
+			// seteo el id del jugador como mensaje del mismo
+			((MsgPlainText) msgLeft).setMsg(player.getIdEntity());
+		} catch (UnsopportedMessageException e1) {
+			e1.printStackTrace();
+		}
+
+		//obtener el mundo actual del jugador
+		IGridStructure structure = GridManager.getInstance()
+			.getStructure(player.getActualWorld());
+		
+		//obtener la celda donde se encuentra el jugador
+		Cell cell = structure.getCell(player.getPosition());
+		
+		// obtener la sesion del jugador
+		ClientSession session = player.getSession();
+		
+		// notificar a la celda actual que la entidad dinamica ha salido
+		cell.send(msgLeft, session);
+		
+		//obtener los adyacentes de la celda actual
+		Cell[] adyacentes = structure
+				.getAdjacents(cell, player.getPosition());
+		//notificar a las celdas adyacentes que el jugador no se encuntra en
+		//la celda
+		if (adyacentes != null) {
+			for (int i = 0; i < adyacentes.length; i++) {
+					adyacentes[i].send(msgLeft, session);
+			}
+		} 
+		//desuscribir al jugador de la celda del viejo mundo
+		cell.leaveFromChannel(session);
 	}
 }
