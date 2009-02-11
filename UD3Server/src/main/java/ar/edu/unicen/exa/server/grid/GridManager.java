@@ -36,6 +36,9 @@ public final class GridManager implements Serializable, ManagedObject {
 	/** Almacena el proximo identificador de mundo a generar. */
 	private long nextWorldID = 0L;
 
+	/** */
+	private static final String DEFAULT_WORLD = "1"; 
+	
 	/** Metodo privado para implementar un singleton. */
 	private GridManager() { }
 
@@ -126,5 +129,15 @@ public final class GridManager implements Serializable, ManagedObject {
 		String name = IGridStructure.class.getName() + "_" + id;
 		DataManager dataManager = AppContext.getDataManager();
 		dataManager.removeBinding(name);
+	}
+	
+	/**
+	 * Retorna la estructura por defecto dependiendo del identificador
+	 * definido en el atributo DEFAULT_WORLD.
+	 * 
+	 * @return el mundo por defecto
+	 */
+	public IGridStructure getDefaultStructure() {
+		return this.getStructure(DEFAULT_WORLD);
 	}
 }
