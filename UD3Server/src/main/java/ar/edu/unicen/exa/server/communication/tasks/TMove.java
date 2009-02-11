@@ -78,7 +78,7 @@ public final class TMove extends TaskCommunication {
 		
 		ClientSession session = player.getSession();
 		//si el jugador cambio de celda
-		if (!actualCell.getId().equals(destino.getId())) {
+		if (!actualCell.equals(destino)) {
 			//no habria que avisarle por medio de un mensaje a los restantes 
 			//jugadores que se encuentran en la misma celda que el jugador? 
 			//ya que no va a estar mas porque se cambio de celda o el jugador

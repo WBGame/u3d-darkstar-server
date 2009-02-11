@@ -3,6 +3,8 @@ package ar.edu.unicen.exa.server.grid;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
+import ar.edu.unicen.exa.server.grid.id.IDManager;
+
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
@@ -33,11 +35,8 @@ public final class GridManager implements Serializable, ManagedObject {
 	/** Instancia unica singleton de la clase. */
 	private static GridManager instance = null; 
 
-	/** Almacena el proximo identificador de mundo a generar. */
-	private long nextWorldID = 0L;
-
 	/** */
-	private static final String DEFAULT_WORLD = "1"; 
+	private static String defaultWorld = null; 
 	
 	/** Metodo privado para implementar un singleton. */
 	private GridManager() { }
@@ -55,7 +54,10 @@ public final class GridManager implements Serializable, ManagedObject {
 		DataManager dataManager = AppContext.getDataManager();
 		IGridStructure grid = null;
 		try {
-			String name = IGridStructure.class.getName() + "_" + id;
+			String name = IDManager.getBindingName(
+					IGridStructure.class, 
+					id
+				);
 			grid = (IGridStructure) dataManager.getBinding(name);
 		} catch (NameNotBoundException e) {
 			e.printStackTrace();
@@ -77,18 +79,17 @@ public final class GridManager implements Serializable, ManagedObject {
 		DataManager dataManager = AppContext.getDataManager();
 		dataManager.markForUpdate(this);
 
-		//TODO fix it. ID generation must be in another place.
-		nextWorldID++;
-		String worldID = String.valueOf(nextWorldID);
-		structure.setIdWorld(worldID);
-		String name = IGridStructure.class.getName() + "_" + worldID;
-
+		IDManager.setNewID(structure);
+		String name = IDManager.getBindingName(structure);
 		try {
 			logger.info("Agregando estructura dentro del GridManager. Id de "
-					+ "mundo: " + worldID);
+					+ "mundo: " + name);
 			dataManager.setBinding(name, structure);
 		} catch (ObjectNotFoundException e) {
 			e.printStackTrace();
+		}
+		if (defaultWorld == null) {
+			defaultWorld = structure.getIdWorld();
 		}
 	}
 
@@ -125,8 +126,10 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * @param id identificador de la estructura a eliminar.
 	 */
 	public void removeStructure(final String id) {
-		//TODO fix it. ID generation must be in another place.
-		String name = IGridStructure.class.getName() + "_" + id;
+		String name = IDManager.getBindingName(
+				IGridStructure.class, 
+				id
+			);
 		DataManager dataManager = AppContext.getDataManager();
 		dataManager.removeBinding(name);
 	}
@@ -138,6 +141,6 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * @return el mundo por defecto
 	 */
 	public IGridStructure getDefaultStructure() {
-		return this.getStructure(DEFAULT_WORLD);
+		return this.getStructure(defaultWorld);
 	}
 }

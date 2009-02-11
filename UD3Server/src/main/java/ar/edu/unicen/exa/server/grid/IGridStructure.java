@@ -1,8 +1,11 @@
 package ar.edu.unicen.exa.server.grid;
 
 import java.io.Serializable;
-import com.sun.sgs.app.ManagedObject;
+
+import ar.edu.unicen.exa.server.grid.id.IBindingID;
+
 import com.jme.math.Vector3f;
+import com.sun.sgs.app.ManagedObject;
 
 /** 
  *  Es una coleccion de celdas dispuestas de alguna manera con el objetivo de
@@ -11,7 +14,8 @@ import com.jme.math.Vector3f;
  *  identificador del  {@code IGameState} del cliente. Es decir, representa
  *  a un objeto  {@code IGameState} del cliente en el servidor.
  */
-public interface IGridStructure extends Serializable, ManagedObject {
+public interface IGridStructure 
+		extends Serializable, ManagedObject, IBindingID {
 	/**
 	 * Retorna el identificador del mundo.
 	 * 
