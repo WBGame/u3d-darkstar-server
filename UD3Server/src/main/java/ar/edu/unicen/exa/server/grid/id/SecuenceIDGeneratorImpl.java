@@ -7,6 +7,7 @@ import java.util.logging.Logger;
  * Esta implementación genera ID consecutivos (1, 2, 3, 4, ...).
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
+ * @encoding UTF-8.
  */
 
 public class SecuenceIDGeneratorImpl implements IIDGenerator {
@@ -14,7 +15,7 @@ public class SecuenceIDGeneratorImpl implements IIDGenerator {
 	private static Logger logger = 
 		Logger.getLogger(SecuenceIDGeneratorImpl.class.getName());
 
-	/** The version of the serialized form of this class. */
+	/**  Para cumplir con la version de la clase Serializable. */
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -42,7 +43,7 @@ public class SecuenceIDGeneratorImpl implements IIDGenerator {
 	 * {@link IBindingID}. 
 	 * El ID es generado secuencialmente (1, 2, 3, 4, ...).
 	 * 
-	 * @param o Objecto al que se le seteará el nuevo ID
+	 * @param o Objecto al que se le seteará el nuevo ID.
 	 */
 	@Override
 	public final void setNewID(final IBindingID o) {
@@ -56,7 +57,7 @@ public class SecuenceIDGeneratorImpl implements IIDGenerator {
 	 * El nombre se arma concatenando el nombre de la clase del objeto,
 	 * un separador (normalmente _ ) y el ID del objeto.
 	 * 
-	 * @param o instancia a la que se debe generar el nombre
+	 * @param o instancia a la que se debe generar el nombre.
 	 * @return el nombre que se debe usar para hacer el store del objeto.
 	 */
 	@Override
@@ -93,9 +94,9 @@ public class SecuenceIDGeneratorImpl implements IIDGenerator {
 		return result.toString();
 	}
 	/**
-	 * Se resuelven herarquias estáticamente.
-	 * @param className Clase a evaluar
-	 * @return una super clase si es necesario
+	 * Se resuelven jerarquias estáticamente.
+	 * @param className Clase a evaluar.
+	 * @return una super clase si es necesario.
 	 */
 	private static String resolveAbstraction(final String className) {
 		if ("ar.edu.unicen.exa.server.grid.MatrixGridStructure"
