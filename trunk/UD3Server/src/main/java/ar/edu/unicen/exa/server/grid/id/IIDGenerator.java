@@ -8,6 +8,8 @@ import com.sun.sgs.app.ManagedObject;
  * clase que genere ID.
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
+ * @encoding UTF-8.
+ * 
  */
 public interface IIDGenerator extends Serializable, ManagedObject {
 	
@@ -15,13 +17,13 @@ public interface IIDGenerator extends Serializable, ManagedObject {
 	 * Este método genera un nuevo ID y se lo setea al objeto que está
 	 * recibiendo por parámetro, gracias a que este objeto implementa
 	 * {@link IBindingID}.
-	 * @param o Objecto al que se le seteará el nuevo ID
+	 * @param o Objecto al que se le seteará el nuevo ID.
 	 */
 	void setNewID(IBindingID o);
 	/**
 	 * Este método recibe una instancia y genera el nombre que se utilizará
 	 * para hacer el binding con el {@link com.sun.sgs.app.DataManager}.
-	 * @param o instancia a la que se debe generar el nombre
+	 * @param o instancia a la que se debe generar el nombre.
 	 * @return el nombre que se debe usar para hacer el store del objeto.
 	 */
 	String getBindingName(IBindingID o);

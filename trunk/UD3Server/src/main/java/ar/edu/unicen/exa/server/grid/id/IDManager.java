@@ -11,7 +11,7 @@ import com.sun.sgs.app.NameNotBoundException;
  * que no se pierda el conteo de ID.
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
- * @encoding UTF-8
+ * @encoding UTF-8.
  */
 public class IDManager {
 	/**
@@ -52,7 +52,7 @@ public class IDManager {
 	/**
 	 * Este método recibe una instancia y genera el nombre que se utilizará
 	 * para hacer el binding con el {@link com.sun.sgs.app.DataManager}.
-	 * @param o instancia a la que se debe generar el nombre
+	 * @param o instancia a la que se debe generar el nombre.
 	 * @return el nombre que se debe usar para hacer el store del objeto.
 	 */
 	public static String getBindingName(final IBindingID o) {
@@ -120,7 +120,7 @@ public class IDManager {
 	 * Este método crea la instancia del {@link IIDGenerator}
 	 * que se utilizará.
 	 * 
-	 * @return instancia de {@link IIDGenerator}
+	 * @return instancia de {@link IIDGenerator}.
 	 */
 	private static IIDGenerator newInstance() {
 		return new SecuenceIDGeneratorImpl(0L);
