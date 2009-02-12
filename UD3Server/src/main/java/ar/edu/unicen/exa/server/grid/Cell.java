@@ -15,24 +15,24 @@ import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.Delivery;
 import com.sun.sgs.app.ManagedReference;
 import common.messages.IMessage;
-
-
+import common.util.ChannelNameParser;
 
 /**
  * Representa una zona fisica del mundo. Esta zona esta delimitada por los
  * bounds. Ademas, esta zona esta asociada a un unico {@code Channel} , es decir
  * hay una correspondencia uno a uno entre celdas y canales.
+ * 
+ * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
+ * @encoding UTF-8
  */
-
-
 public class Cell implements Serializable, IBindingID {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1301727798124952702L;
-
 	
 	/** Logger. */
 	private static Logger logger = 
 		Logger.getLogger(Cell.class.getName());
+	
 	/**
 	 * Es una referencia {@code ManagedReference} a la {@link IGridStructure}
 	 * contenedora de la celda.
@@ -78,12 +78,11 @@ public class Cell implements Serializable, IBindingID {
     	
 		ChannelManager channelMgr = AppContext.getChannelManager();
         
-        //se crea el canal con nombre de channel + el id de la celda 
-		//corresponiente, además se indica qué la clase ChannelMessageListener
-		//será la encargada de recibir los mensajes que se envian a dicho canal
-    	
-    	String channelName = "channel_" + id; 
-    	
+		//TODO implementar un channel manager para poder tener varios tipos de 
+		//     canales según el mecanismo de tipos de canales implementado en
+		//     el common.
+		String channelName = ChannelNameParser.MOVE_CHANNEL_IDENTIFIER 
+							 + '_' + id;
         Channel channel = channelMgr.createChannel(channelName, 
         									  new ChannelMessageListener(), 
                                               Delivery.RELIABLE);
@@ -99,6 +98,7 @@ public class Cell implements Serializable, IBindingID {
 	public final long getId() {
 		return Long.parseLong(id);
 	}
+	
 	/**
 	 * Setea el identificador de la celda.
 	 * @param anId el identificador de esta instancia de celda.
@@ -107,6 +107,7 @@ public class Cell implements Serializable, IBindingID {
 	public final void setId(final long anId) {
 		this.id = Long.toString(anId);
 	}
+	
 	/**
 	 * Retorna la referencia {@code ManagedReference} del canal asociado a la
 	 * celda.
