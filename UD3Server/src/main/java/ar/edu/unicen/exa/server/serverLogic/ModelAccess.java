@@ -48,12 +48,12 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Retorna el Skin relacionado al identificador de jugador pasado como
-	 * parametro.
+	 * Retorna el {@link Skin} relacionado al identificador del {@link Player}
+	 * pasado como parametro.
 	 * 
-	 * @param idPlayer El identificador del jugador para el que se desea obtener
-	 *        el skin.
-	 * @return El Skin relacionado al identificador del jugador.
+	 * @param idPlayer El identificador del {@link Player} para el que se desea
+	 *                 obtener el {@link Skin}.
+	 * @return El {@link Skin} relacionado al identificador del {@link Player}.
 	 */
 	public Skin getSkin(final String idPlayer) {
 		// begin-user-code
@@ -64,12 +64,12 @@ public final class ModelAccess {
 	
 	/**
 	 * Retorna el conjunto de identificadores de juegos 2D que estan disponibles
-	 * para el identificador del jugador pasado como parametro.
+	 * para el identificador del {@link Player} pasado como parametro.
 	 * 
-	 * @param idPlayer El identificador del jugador para el cual se desea
+	 * @param idPlayer El identificador del {@link Player} para el cual se desea
 	 *        conocer los juegos disponibles.
 	 * @return Un conjunto con los identificadores de juegos 2D disponibles para
-	 *         el jugador.
+	 *         el {@link Player}.
 	 */
 	public Set<String> getAvailableGames(final String idPlayer) {
 		// begin-user-code
@@ -80,10 +80,10 @@ public final class ModelAccess {
 	
 	/**
 	 * Realiza las acciones correspondientes para marcar como "comprado" el
-	 * juego para el jugador.
+	 * juego para el {@link Player}.
 	 * 
 	 * @param id2DGame El identificador del juego a comprar.
-	 * @param idPlayer El identificador del jugado que compra el juego.
+	 * @param idPlayer El identificador del {@link Player} que compra el juego.
 	 */
 	public void buy2DGame(final String id2DGame, final String idPlayer) {
 		// begin-user-code
@@ -93,11 +93,11 @@ public final class ModelAccess {
 	
 	/**
 	 * Construye una instancia de la clase en base a la informacion almacenada
-	 * par el identificador de Quest pasado.
+	 * par el identificador de {@link Quest} pasado.
 	 * 
-	 * @param idQuest El identificador de la quest que se desea obtener.
-	 * @return una instancia de la clase en base a la informacion almacenada par
-	 *         el identificador de Quest pasado.
+	 * @param idQuest El identificador de la {@link Quest} que se desea obtener.
+	 * @return una instancia de la clase en base a la informacion almacenada 
+	 *         para el identificador del {@link Quest} pasado.
 	 */
 	public Quest getQuest(final String idQuest) {
 		// begin-user-code
@@ -107,10 +107,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Obtiene el conjunto de Quests disponibles par ael jugador pasado.
+	 * Obtiene el conjunto de {@link Quest}s disponibles para el jugador pasado.
 	 * 
-	 * @param idPlayer El identificador del jugador.
-	 * @return El conjunto de Quests disponibles par ael jugador pasado.
+	 * @param idPlayer El identificador del {@link Player}.
+	 * @return El conjunto de {@link Quest}s disponibles para el {@link Player}
+	 *         pasado.
 	 */
 	public Set<Quest> getAvailableQuests(final String idPlayer) {
 		// begin-user-code
@@ -120,6 +121,8 @@ public final class ModelAccess {
 	}
 	
 	/**
+	 * Devuelve el conjunto de identificadores de los juegos 2D que se pueden 
+	 * comprar.
 	 * 
 	 * @return Un conjunto con los identificadores de los juegos 2D de todos
 	 *         aquellos juegos que se puedan comprar.
@@ -134,8 +137,9 @@ public final class ModelAccess {
 	/**
 	 * 
 	 * @param id2DGame Identificador del juego 2D
-	 * @param idPlayer Identificador del juegador.
-	 * @return La cantidad de veces que el juegador ah jugado el juego 2D.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @return La cantidad de veces que el {@link Player}, 
+	 *         ah jugado al juego 2D.
 	 */
 	public int getPlayedTimes(final String id2DGame, final String idPlayer) {
 		// begin-user-code
@@ -145,8 +149,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * @param idPlayer Identificador del jugador.
-	 * @return La puntuacion global del jugador pasado como parametro.
+	 * Este metodo devuelve la puntuacion global del {@link Player}
+	 * pasado como parametro.
+	 * 
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @return La puntuacion global del {@link Player} pasado como parametro.
 	 */
 	public int getGlobalScore(final String idPlayer) {
 		// begin-user-code
@@ -156,8 +163,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * @param idPlayer Identificador del jugador
-	 * @return Conjunto de quests que esta haciendo actualmente el jugador.
+	 * 
+	 * 
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @return Conjunto de {@link Quest}s que esta haciendo actualmente
+	 *         el {@link Player}.
 	 */
 	public Set<Quest> getCurrentQuests(final String idPlayer) {
 		// begin-user-code
@@ -167,10 +177,10 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Dummy implementation. Check always if login == password.  
+	 * Controla siempre que nombre de usuario se igual a la contraseña.  
 	 * 
 	 * @param password La contraseña.
-	 * @param idPlayer El identificador del jugador
+	 * @param idPlayer El identificador del {@link Player}.
 	 * 
 	 * @return {@code true} si la contraseña suministrada para el usuario es la
 	 *         que se tiene almancenada. {@code false} en caso contrario.
@@ -182,10 +192,9 @@ public final class ModelAccess {
 	/**
 	 * Agrega el puntaje pasado como parametro al modelo, realizando todas las
 	 * acciones corresponidentes.<BR/>
-	 * Estas acciones consiten en actualizar los stats para el jugador 
-	 * dueño del puntaje, asi como tmb el historial de puntajes para el
-	 * minijuego asociado
-	 * y chequear si es el puntaje mas alto.
+	 * Estas acciones consiten en actualizar los stats para el {@link Player} 
+	 * dueño del puntaje, asi como tambien el historial de puntajes para el
+	 * minijuego asociado y chequear si es el puntaje mas alto.
 	 * 
 	 * @param score El puntaje a agregar al modelo.
 	 */
@@ -197,10 +206,10 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Cambia el puntaje global asociado al jugador por el pasado como
+	 * Cambia el puntaje global asociado al {@link Player} por el pasado como
 	 * parametro.
 	 * 
-	 * @param idPlayer Identificador del jugador.
+	 * @param idPlayer Identificador del {@link player}.
 	 * @param globalScore el puntaje global.
 	 */
 	public void setGlobalScore(final String idPlayer, final int globalScore) {
@@ -211,6 +220,9 @@ public final class ModelAccess {
 	}
 	
 	/**
+	 * Devuelve el ranking de un juego 2D, pasandole el identificador del
+	 * juego como parametro.
+	 * 
 	 * @param id2DGame Identificador del juego2D
 	 * @return El ranking para el juego 2D pasado como parametro.
 	 */
@@ -222,11 +234,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Agrega la quest al conjunto de quest que estan siendo jugadas por el
-	 * jugador actualmente.
+	 * Agrega la {@link Quest} al conjunto de {@link Quest} que estan siendo 
+	 * jugadas por el {@link Player} actualmente.
 	 * 
-	 * @param idPlayer Identificador del jugador.
-	 * @param idQuest Identificador de la quest.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @param idQuest Identificador de la {@link Quest}.
 	 */
 	public void startQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
@@ -236,11 +248,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Agrega la quest al conjunto de quest que ya han sido terminadas por el
-	 * jugador.
+	 * Agrega la {@link Quest} al conjunto de {@link Quest} que ya han sido 
+	 * terminadas por el {@link Player}.
 	 * 
-	 * @param idPlayer Identificador del jugador.
-	 * @param idQuest Identificador de la quest.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @param idQuest Identificador de la {@link Quest}.
 	 */
 	public void finishQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
@@ -250,11 +262,11 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Saca la quest al conjunto de quest que estan siendo jugadas por el
-	 * jugador actualmente.
+	 * Saca la {@link Quest} al conjunto de {@link Quest} que estan siendo 
+	 * jugadas por el {@link Player} actualmente.
 	 * 
-	 * @param idPlayer Identificador del jugador.
-	 * @param idQuest Identificador de la quest.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @param idQuest Identificador de la {@link Quest}.
 	 */
 	public void abortQuest(final String idPlayer, final String idQuest) {
 		// begin-user-code
@@ -264,12 +276,12 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Cambia el estado de la quest en curso pasada como parametro indicandole
-	 * que avance al siguiente estado de la misma.
+	 * Cambia el estado de la {@link Quest} en curso pasada como parametro 
+	 * indicandole que avance al siguiente estado de la misma.
 	 * 
-	 * @param idPlayer Identificador del jugador.
-	 * @param idQuest Identificador de la quest.
-	 * @param idQuestState El proximo estado de la quest.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @param idQuest Identificador de la {@link Quest}.
+	 * @param idQuestState El proximo estado de la {@link Quest}.
 	 */
 	public void nextQuestState(final String idPlayer, final String idQuest,
 			final String idQuestState) {
@@ -280,9 +292,12 @@ public final class ModelAccess {
 	}
 	
 	/**
+	 * Pasando el identificador de un {@link Player} por parametro devuelve
+	 * el conjunto de {@link PlayerStat}s.
 	 * 
-	 * @param idPlayer Identificador del jugador.
-	 * @return el conjunto de PlayerStats del jugador pasado como parametro.
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @return el conjunto de {@link PlayerStat}s del {@link Player} pasado 
+	 *         como parametro.
 	 */
 	public Set<PlayerStat> getPlayerStats(final String idPlayer) {
 		// begin-user-code
@@ -292,8 +307,10 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * @param idPlayer Identificador del jugador.
-	 * @return El dinero del jugador pasado como parametro.
+	 * Dado el identificador de un {@link Player} devuelve el dinero del mismo.
+	 * 
+	 * @param idPlayer Identificador del {@link Player}.
+	 * @return El dinero del {@link Player} pasado como parametro.
 	 */
 	public float getMoney(final String idPlayer) {
 		// begin-user-code
@@ -303,9 +320,9 @@ public final class ModelAccess {
 	}
 	
 	/**
-	 * Setea el dinero del jugador y lo perciste en el modelo.
+	 * Setea el dinero del {@link Player}.
 	 * 
-	 * @param idPlayer Identificador del jugador.
+	 * @param idPlayer Identificador del {@link Player}.
 	 * @param money El dinero a setear.
 	 */
 	public void setMoney(final String idPlayer, final float money) {
