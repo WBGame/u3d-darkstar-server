@@ -14,9 +14,9 @@ import common.datatypes.IPlayerProperty;
 import common.messages.IMessage;
 
 /**
- * Esta clase proveer información a cerca del jugador como por ejemplo el
- * estado y sus propiedades. Además permite enviar mensajes por medio 
- * de la sessión.
+ * Esta clase proveer informacion a cerca del jugador como por ejemplo el 
+ * estado y sus propiedades. Ademas permite enviar mensajes por medio de la
+ * sesion.
  * 
  * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8
@@ -31,7 +31,7 @@ public final class Player extends DynamicEntity {
 		Logger.getLogger(Player.class.getName());	
 	
 	/**
-	 * Referencia a la sesion actual del player.
+	 * Referencia a la sesion actual del {@link Player}.
 	 */
 	private ManagedReference<ClientSession>	refSession = null;
 
@@ -42,59 +42,58 @@ public final class Player extends DynamicEntity {
 	 * Las propiedades que se guardan en este HahsTable, son las propiedades
 	 * dinamicas, como puede ser la velocidad.
 	 * 
-	 * TODO El HashTable no es necesario, ya que IPlayerProperty contiene un
-	 * identificador con su correspondiente valor. Por otro lado se podria 
-	 * considerar la utilizacion de un HashTable por un tema de performance,
-	 * pero tampoco es necesario, ya que no tiene una gran cantidad de 
-	 * propidades. 
-	 *   
+	 * TODO El HashTable no es necesario, ya que {@link IPlayerProperty} 
+	 * contiene un identificador con su correspondiente valor. Por otro lado se
+	 * podria considerar la utilizacion de un HashTable por un tema de 
+	 * performance, pero tampoco es necesario, ya que no tiene una gran 
+	 * cantidad de propidades. 
 	 * 
 	 */
 	private Hashtable<String, IPlayerProperty>	properties;
 	
 	/**
-	 * El estado actual del jugador.
+	 * El estado actual del {@link Player}.
 	 */
 	private PlayerState	state;
 	
 	/**
-	 * Este método es invocado para crear/recuperar un {@link Player} cuando un
+	 * Este metodo es invocado para crear/recuperar un {@link Player} cuando un
 	 * usuario se logea en el sistema.
 	 * 
-	 * Si el usuario entra al sistema por primera vez, se producirá una 
-	 * excepcion debido a que que no se encuentra almacenado el {@link Player} 
-	 * asociado a dicho jugador. Esta excepcion es capturada para crear al 
-	 * nuevo Player y setear su id de entidad utilizando el método 
-	 * {@link #getName()} de la clase {@link ClientSession}. Una vez 
-	 * inicializado el Player, se lo almacena con {@link #setBinding()} para 
-	 * posterior recuperación. 
+	 * Si el usuario entra al sistema por primera vez, se producira una 
+	 * excepcion debido a que que no se encuentra almacenado el {@link Player}. 
+	 * Esta excepcion es capturada para crear al nuevo Player y setear su id de
+	 * entidad utilizando el metodo {@link #getName()} de la clase 
+	 * {@link ClientSession}. Una vez inicializado el Player, se lo almacena 
+	 * con {@link #setBinding()} para su posterior recuperacion. 
 	 * Por otro lado, si ya se ha registrado en el Object Store, entonces no
-	 * se producirá la excepcion y se obtiene directamente el {@link Player} a
-	 * travéz de la clase {@link DataManager} utilizando el método 
+	 * se producira la excepcion y se obtiene directamente el {@link Player} a
+	 * travez de la clase {@link DataManager} utilizando el metodo 
 	 * {@link #getBinding()).
 	 * 
-	 * Además se chequea que un jugador no pueda logearse si el mismo ya se
+	 * Ademas se chequea que un jugador no pueda logearse si el mismo ya se
 	 * encuentra logeado en el sistema. Esto es para evitar que uno o mas 
-     * jugadores no esten simultaneamente logeados en el sistema. 
+     * jugadores no esten simultaneamente logeados en el sistema con el mismo
+     * usuario. 
 	 * 
-	 * @param session sesión correspondiente al juagdor.
-	 * @return Player una instancia para el jugador.
+	 * @param session sesion correspondiente al {@link Player}.
+	 * @return Player una instancia para el {@link Player}.
 	 */
 	public static Player create(final ClientSession session) {
-		// Data manager del sistema
+		// Data manager del sistema.
 		DataManager d = AppContext.getDataManager();
-		// Jugador
+		// Jugador.
 		Player player = null;
-		//el nombre de la sesion define el id del jugador
+		// El nombre de la sesion define el id del jugador.
 		String idPlayer = session.getName();
 		
 		try {	
 			logger.info("Intentando recuperar una instancia del Object Store " 
 					+ "para " + idPlayer);
-			// recupero el Player a partir del nombre de la sesión utilizando
+			// Recupero el Player a partir del nombre de la sesion utilizando
 			// el dataManager.
 			player = (Player) d.getBinding(idPlayer);
-			// chequeo que uno o mas jugadores no esten simultaneamente 
+			// Chequeo que uno o mas jugadores no esten simultaneamente 
 			// logeados en el sistema.
 			if (player.isConnected()) {
 				return null;
@@ -102,11 +101,11 @@ public final class Player extends DynamicEntity {
 		} catch (Exception e) {
 			logger.info("No existe ninguna instancia dentro del Object " 
 					+ "Store para " + idPlayer);
-			// creo un nuevo jugador 
+			// Creo un nuevo jugador 
 			player = new Player();
-			// seteo su id de entidad
+			// Seteo su id de entidad
 			player.setIdEntity(idPlayer);
-			// estado inicial del jugador
+			// Estado inicial del jugador
 			PlayerState state = new PlayerState();
 			state.setState(PlayerState.STATE_QUIET);
 			player.setState(state);
@@ -119,7 +118,7 @@ public final class Player extends DynamicEntity {
 			//TODO falta setear el mundo por defecto y dentro del mismo la 
 			//     posicion y el angulo. (Ver DinamycEntity).
 			
-			// registro el Player dentro del Object Store.
+			// Registro el Player dentro del Object Store.
 			d.setBinding(idPlayer , player);
 		}
 		
@@ -127,10 +126,10 @@ public final class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * Getter.
+	 * Dado el identificador de una propiedad, retorna dicha propiedad.
 	 * 
 	 * @param playerproperty identificador de la propiedad.
-	 * @return property propiedad del jugador
+	 * @return property propiedad del {@link Player}.
 	 */
 	public IPlayerProperty getProperty(final String playerproperty) {
 		return this.properties.get(playerproperty);
@@ -142,7 +141,7 @@ public final class Player extends DynamicEntity {
 	 * En la tabla de hash se guarda el par,
 	 * identificador de la propiedad, con su correspondiente Valor.
 	 * 
-	 * @return properties propiedades del jugador
+	 * @return properties propiedades del {@link Player}.
 	 */
 	
 	public Hashtable<String, IPlayerProperty> getProperties() {
@@ -150,10 +149,10 @@ public final class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * Se setea las propiedades del jugador que no estan presentes en
-	 * ModelAccess.
+	 * Se setea las propiedades del {@link Player} que no estan presentes en
+	 * {@link ModelAccess}.
 	 * 
-	 * @param pproperties propiedades del jugador
+	 * @param pproperties propiedades del {@link Player}.
 	 */
 	public void setProperties(
 			final Hashtable<String, IPlayerProperty> pproperties) {
@@ -161,27 +160,27 @@ public final class Player extends DynamicEntity {
 	}
 	
 	/**
-	 * Devuelve el estado del jugador.
+	 * Devuelve el {@link PlayerState}(estado) del {@link Player}.
 	 * 
-	 * @return state estado del jugador
+	 * @return state estado del {@link Player}.
 	 */
 	public PlayerState getState() {
 		return state;
 	}
 	
 	/**
-	 * Se setea el estado del jugador.
+	 * Se setea el {@link PlayerState}(estado) del {@link Player}.
 	 * 
-	 * @param pstate el estado del jugador
+	 * @param pstate el {@link PlayerState}(estado) {@link Player}.
 	 */
 	public void setState(final PlayerState pstate) {
 		this.state = pstate;
 	}
 	
 	/**
-	 * Getter.
+	 * Retorna el objeto {@link ClientSession} asociado al {@link Player}.
 	 * 
-	 * @return session el objeto sesion asociado al player. 
+	 * @return session el objeto sesion asociado al {@link Player}. 
 	 */
 	public ClientSession getSession() {
 		if (refSession != null) {
@@ -193,7 +192,7 @@ public final class Player extends DynamicEntity {
 	/**
 	 * Se crea una referencia {@link ManagedReference} a la sesion del usuario
 	 * {@link ClientSession} por medio del DataManager e indicando que el 
-	 * Player se actualizara para establecer la referencia.
+	 * {@link Player} se actualizara para establecer la referencia.
 	 * 
 	 * @param session sesion correspondiente al loggedIn del usuario. Si es el 
 	 * valor de la sesion es null se producira una excepsion la cual es 
@@ -213,8 +212,9 @@ public final class Player extends DynamicEntity {
 		}
 	}
 	
-	/**
-	 * Send a IMessage directly to the player using client/server scheme.
+	/** 
+	 * Enviar un {@link IMessage} directamente al {@link Player} a traves del 
+	 * cliente/servidor.
 	 * 
 	 * @param message mensaje que se envia al usuario.
 	 * 
@@ -224,9 +224,8 @@ public final class Player extends DynamicEntity {
 		getSession().send(message.toByteBuffer());
 	}
 	/**
-	 * Por medio de la referencia a la secion, se obtiene el objeto 
-	 * clientSession y con este se invoca al metodo isConnected para conocer el
-	 * estado de coneccion (true/false) del jugador.
+	 * Este metodo indica el estado de la conexion de un {@link Player}},
+	 * devolviendo True/False.
 	 * 
 	 * @return boolean si {@code true}, significa que el usuario esta conectado
 	 *  al servidor.
