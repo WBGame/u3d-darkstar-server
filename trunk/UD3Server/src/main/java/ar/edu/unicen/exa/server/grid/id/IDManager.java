@@ -11,6 +11,7 @@ import com.sun.sgs.app.NameNotBoundException;
  * que no se pierda el conteo de ID.
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
+ * @encoding UTF-8
  */
 public class IDManager {
 	/**
