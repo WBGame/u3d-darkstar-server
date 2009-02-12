@@ -11,32 +11,32 @@ import com.sun.sgs.app.AppContext;
  */
 public class DynamicEntity extends Entity {
 
-	/**  Para cumplir con la version de la clase Serializable. */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 
 	private static final long serialVersionUID = 1L;
 
 	/** 
-	 *  Mundo donde se encuentra el jugador o personaje.
+	 *  Mundo donde se encuentra el {@link Player}.
 	 */
 
 	private String actualWorld = null;
 
 	/** 
-	 *  Angulo donde se encuentra el jugador o personaje. 
+	 *  Angulo donde se encuentra el {@link Player}. 
 	 */
 
 	private Vector3f angle = null;
 
 	/** 
-	 *  Posicion donde se encuentra el jugador o personaje.
+	 *  Posicion donde se encuentra el {@link Player}.
 	 */
 
 	private Vector3f position = null;
 
 	/**
-	 *  Recuperación del mundo actual.
+	 *  Recuperacion del mundo actual.
 	 * 
-	 *  @return String con el id del mundo actual donde se encuentra la entidad 
+	 *  @return String Con el id del mundo actual donde se encuentra la entidad 
 	 *  o null en caso de no haber sido inicializado.
 	 *         
 	 *  @see GridManager#getStructure(String) permite recuperar el mundo dado 
@@ -47,7 +47,7 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * @return Vector3f donde se encuentra el jugador
+	 * @return Vector3f Angulo donde se encuentra el {@link Player}.
 	 * 
 	 */
 	public final Vector3f getAngle() {
@@ -55,7 +55,7 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * @return Vector3f donde se encuentra el jugador. 
+	 * @return Vector3f Posision donde se encuentra el {@link Player}. 
 	 * 
 	 */
 	public final Vector3f getPosition() {
@@ -65,7 +65,7 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * @param world donde se encuentra el jugador
+	 * @param world Mundo donde se encuentra el {@link Player}.
 	 * 
 	 */
 	public final void setActualWorld(final String world) {
@@ -74,8 +74,8 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * Se setea el angulo donde se encuentra el jugador.
-	 * @param jangle donde se encuentra el jugador
+	 * Se setea el angulo donde se encuentra el {@link Player}.
+	 * @param jangle donde se encuentra el {@link Player}.
 	 * 
 	 */
 	public final void setAngle(final Vector3f jangle) {
@@ -84,8 +84,9 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * Se setea la posicion donde se encuentra el jugador.
-	 * @param jposition donde se encuentra el jugador
+	 * 
+	 * Se setea la posicion donde se encuentra el {@link Player}.
+	 * @param jposition Posicion donde se encuentra el {@link Player}.
 	 * 
 	 */
 	public final void setPosition(final Vector3f jposition) {
