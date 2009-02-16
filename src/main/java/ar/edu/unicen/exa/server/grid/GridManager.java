@@ -35,12 +35,31 @@ public final class GridManager implements Serializable, ManagedObject {
 	/** Instancia unica singleton de la clase. */
 	private static GridManager instance = null; 
 
-	/** */
-	private static String defaultWorld = null; 
-	
+	/** Binding name del mundo por defecto. */
+	private String defaultWorld = null; 
+
+	/**
+	 * Getter para recuperar el binding name del mundo por defecto.
+	 * 
+	 * @return binding names
+	 */
+	public String getDefaultWorld() {
+		return defaultWorld;
+	}
+
+	/**
+	 * Setter para inicializar el mundo por defecto.
+	 * 
+	 * @param name binding name
+	 */
+	public void setDefaultWorld(final String name) {
+		AppContext.getDataManager().markForUpdate(this);
+		this.defaultWorld = name;
+	}
+
 	/** Metodo privado para implementar un singleton. */
 	private GridManager() { }
-
+	
 	/**
 	 * Retorna la estructura que se corresponde con el identificador pasado por 
 	 * parametro.
@@ -50,7 +69,7 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * @return IGridStructure estructura asociada al parametro.
 	 */
 	public IGridStructure getStructure(final String id) {
-
+	
 		DataManager dataManager = AppContext.getDataManager();
 		IGridStructure grid = null;
 		try {
@@ -88,8 +107,9 @@ public final class GridManager implements Serializable, ManagedObject {
 		} catch (ObjectNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		if (defaultWorld == null) {
-			defaultWorld = structure.getIdWorld();
+			setDefaultWorld(structure.getIdWorld());
 		}
 	}
 
