@@ -64,7 +64,6 @@ public class IDManager {
         	AppContext.getDataManager()
         			.setBinding(INSTANCE_BINDING_NAME, instance);
         }
-        AppContext.getDataManager().markForUpdate(instance);
         return instance.getBindingName(o);
 	}
 
@@ -87,7 +86,6 @@ public class IDManager {
         	AppContext.getDataManager()
         			.setBinding(INSTANCE_BINDING_NAME, instance);
         }
-        AppContext.getDataManager().markForUpdate(instance);
         return instance.getBindingName(class1, id);
 	}
 	
@@ -112,7 +110,6 @@ public class IDManager {
         	AppContext.getDataManager()
         			.setBinding(INSTANCE_BINDING_NAME, instance);
         }
-        AppContext.getDataManager().markForUpdate(instance);
         return instance.getBindingName(class1, idOrName);
 	}
 	
