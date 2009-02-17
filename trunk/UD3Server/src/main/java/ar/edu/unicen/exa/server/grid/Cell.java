@@ -2,19 +2,29 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
+import ar.edu.unicen.exa.server.communication.processors.ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.grid.id.IBindingID;
 import ar.edu.unicen.exa.server.grid.id.IDManager;
+import ar.edu.unicen.exa.server.player.Player;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.Channel;
+import com.sun.sgs.app.ChannelListener;
 import com.sun.sgs.app.ChannelManager;
 import com.sun.sgs.app.ClientSession;
+import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.Delivery;
 import com.sun.sgs.app.ManagedReference;
+
+import common.exceptions.MalformedMessageException;
+import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
+import common.messages.MessageFactory;
 import common.util.ChannelNameParser;
 
 /**
@@ -25,7 +35,8 @@ import common.util.ChannelNameParser;
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
  * @encoding UTF-8
  */
-public class Cell implements Serializable, IBindingID {
+public class Cell implements 
+		Serializable, IBindingID, ChannelListener {
 	/** The version of the serialized form of this class. */
 	private static final long serialVersionUID = 1301727798124952702L;
 	
@@ -84,7 +95,7 @@ public class Cell implements Serializable, IBindingID {
 		String channelName = ChannelNameParser.MOVE_CHANNEL_IDENTIFIER 
 							 + '_' + id;
         Channel channel = channelMgr.createChannel(channelName, 
-        									  new ChannelMessageListener(), 
+        									  this, 
                                               Delivery.RELIABLE);
         this.setChannel(channel);
 	}
@@ -234,6 +245,55 @@ public class Cell implements Serializable, IBindingID {
 	public final int hashCode() {
 		// para satisfacer al checkstyle cuando redefiní el equals.
 		return super.hashCode();
+	}
+
+	
+	/**
+	 * Procesa los mensajes que llegan por los canales. Para esto debe generar
+	 * un {@code IMessage} dado los datos recibidos y generar un 
+	 * {@code IProcessor} que procese el mensaje. 
+	 * 
+	 * @param channel a channel
+	 * @param session the sending client session
+	 * @param msg a message
+	 * 
+	 * @encoding UTF-8
+	 */
+	@Override
+	public final void receivedMessage(final Channel channel,
+			final ClientSession session, final ByteBuffer msg) {
+		try {
+			// Regenerar el objeto mensaje
+			IMessage iMessage = MessageFactory.getInstance().createMessage(msg);
+
+			// Crear el procesador asociado al mismo.
+			ServerMsgProcessor processor = 
+				(ServerMsgProcessor) ServerMsgProssesorFactory.getInstance()
+				.createProcessor(iMessage.getType());
+
+			logger.info("Llego mensaje en Channel " + channel.getName() 
+					+ ", tipo " + iMessage.getType());
+			
+			DataManager dataMgr = AppContext.getDataManager();
+
+			//recuperar el jugador desde el DataManager
+			Player player = (Player) dataMgr.getBinding(
+					session.getName() 
+			);
+
+			// Inicialización para ejecutar el proceso asociado al mensaje.
+			processor.setPlayerAssociated(player);
+			processor.setCellAssociated(this);
+
+			// Ejecución del procesamiento.
+			processor.process(iMessage);
+		} catch (MalformedMessageException e) {
+			logger.warning("Mensaje inconsistente.");		
+			e.printStackTrace();
+		} catch (UnsopportedMessageException e) {
+			logger.warning("Mensaje inexistente.");
+			e.printStackTrace();
+		}		
 	}
 	
 }
