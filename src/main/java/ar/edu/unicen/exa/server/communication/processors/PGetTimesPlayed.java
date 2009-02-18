@@ -19,6 +19,7 @@ import common.processors.IProcessor;
  * mensajes que solicitan el número de veces que se ha jugado a un juego 2D.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PGetTimesPlayed extends ServerMsgProcessor {
@@ -35,7 +36,7 @@ public final class PGetTimesPlayed extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
