@@ -21,6 +21,7 @@ import common.processors.IProcessor;
  * ranking de un juego 2D.
  * 
  * @author fede
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PGetRanking extends ServerMsgProcessor {
@@ -49,8 +50,8 @@ public final class PGetRanking extends ServerMsgProcessor {
 	 * identificador del minijuego para el que se pretende obtener el ranking,
 	 * Posteriormente solicita mediane el metodo
 	 * {@link ModelAccess#getRanking(String)} el ranking a devolver, construye
-	 * un mensaje {@link MsgGetRankingResponse} y lo envia al player seteado en
-	 * esta instancia de procesador.
+	 * un mensaje {@link MsgGetRankingResponse} y lo envia al {@link Player} 
+	 * seteado en esta instancia de procesador.
 	 * 
 	 * @param msg Es casteado a {@link MsgPlainText} y se interpreta que el
 	 * texto representa el identificador del minijuego del cual se quiere
@@ -75,7 +76,7 @@ public final class PGetRanking extends ServerMsgProcessor {
 			
 			msgGRR.setRanking(rankingToReturn);
 			
-			// Envio el mensaje con la respuesta. al Player que solicito
+			// Envio el mensaje con la respuesta. al Player que solicito.
 			getPlayerAssociated().send(msgGRR);
 			
 		} catch (UnsopportedMessageException e) {
