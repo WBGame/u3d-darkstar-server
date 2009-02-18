@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ar.edu.unicen.exa.server.communication.processors;
 
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
@@ -11,9 +9,10 @@ import common.processors.IProcessor;
 // TODO: Auto-generated Javadoc
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
- * comenzar una quest.
+ * comenzar una {@link Quest}.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PStartQuest extends ServerMsgProcessor {
@@ -28,7 +27,7 @@ public final class PStartQuest extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
