@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ar.edu.unicen.exa.server.communication.processors;
 
 import com.sun.sgs.app.AppContext;
@@ -14,29 +12,31 @@ import common.processors.IProcessor;
  * Este Porcesador de mensajes, delega las acciones a tomar a tareas de
  * comunicacion de darkstar ({@link TaskCommunication}).<BR/>
  * Internamente, al momento de procesar un mensaje, crea la tarea
- * correspondiente mediante la fabrica de tareas ({@link TaskCommFactory}),
+ * correspondiente mediante el fartory de tareas ({@link TaskCommFactory}),
  * luego le setea los campos necesarios, y la submitea al task manager para ser
  * ejecutada.
  * 
  * @author lito
+ * @encoding UTF-8.
+ * 
  * @see #process(IMessage)
  */
 public final class PTaskDelegator extends ServerMsgProcessor {
 	
 	/**
-	 * Crea una nueva instancia de la clase, setendo sus variables internas en
+	 * Crea una nueva instancia de la clase, seteando sus variables internas en
 	 * {@code null}.
 	 */
 	public PTaskDelegator() { }
 	
 	/**
-	 * Crea una nueva instancia de la clase, setendo sus variables internas en
+	 * Crea una nueva instancia de la clase, seteando sus variables internas en
 	 * {@code null}.<BR/>
 	 * Luego de invocar este metodo, el invocador debera setear los campos
 	 * internos mediante los setters de la clase antes de invocar el metodo
 	 * {@link PTaskDelegator#process(IMessage)}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
