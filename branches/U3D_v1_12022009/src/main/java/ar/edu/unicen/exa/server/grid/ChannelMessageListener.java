@@ -27,11 +27,11 @@ import common.messages.MessageFactory;
  * Channel, por ejemplo se puede asociar el mismo ChannelMessageListener a todos
  * los canales.
  * 
- * @encoding UTF-8
+ * @encoding UTF-8.
  */
 public class ChannelMessageListener implements ChannelListener, Serializable {
 
-	/** Serialization id. */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1L;
 
 	/** Logger. */
@@ -39,14 +39,21 @@ public class ChannelMessageListener implements ChannelListener, Serializable {
 		Logger.getLogger(ChannelMessageListener.class.getName());
 
 	/**
+	 * 
+	 * <ol>
+     * <li>Regenera el mensaje.</li>
+     * <li>Crea el procesador asociado al mismo.</li>
+     * <li>Recupera el {@link Player}.</li> 
+     * <li>Ejecuta el proceso asociado al mensaje.</li> 
+     * </ol>
 	 * {@inheritDoc}
 	 * 
 	 * @param channel
-	 *            a channel
+	 *            Un {@link Channel}.
 	 * @param session
-	 *            the sending client session
+	 *            Envio de {@link ClientSession}.
 	 * @param msg
-	 *            a message
+	 *            Un mensaje.
 	 */
 	public final void receivedMessage(final Channel channel,
 			final ClientSession session, final ByteBuffer msg) {
@@ -64,16 +71,16 @@ public class ChannelMessageListener implements ChannelListener, Serializable {
 			
 			DataManager dataMgr = AppContext.getDataManager();
 
-			//recuperar el jugador desde el DataManager
+			// Recuperar el jugador desde el DataManager.
 			Player player = (Player) dataMgr.getBinding(
 					session.getName() 
 			);
 
-			//obtener el mundo actual del jugador
+			// Obtener el mundo actual del jugador
 			IGridStructure structure = GridManager.getInstance()
 			.getStructure(player.getActualWorld());
 
-			//obtener la celda donde se encuentra el jugador
+			// Obtener la celda donde se encuentra el jugador
 			Cell cell = structure.getCell(player.getPosition());
 
 			// Inicialización para ejecutar el proceso asociado al mensaje.
