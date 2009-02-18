@@ -20,21 +20,21 @@ import common.messages.responses.MsgGetDynamicEntityResponse;
  * Los pasos a seguir son: <br/>
  * * Obtener la entidad dinámica a partir del DataManager. <br/>
  * * Construir un mensaje del tipo {@link MsgGetDynamicEntityResponse} y
- * setearle la entidad dynamica. <br/>
- * * Enviarle el mensaje construido de vuelta al jugador que solicitó la
- * información.
+ * setearle la entidad dinamica. <br/>
+ * * Enviarle el mensaje construido de vuelta al {@link Player} que solicitó
+ * la información.
+ * 
+ * @encoding UTF-8.
  * 
  */
 public final class TGetDynamicEntity extends TaskCommunication {
 	
-	/**
-	 * 
-	 */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 8571194487175360055L;
 	/**
-	 * The Constructor.
+	 * El constructor.
 	 * 
-	 * @param msg the msg
+	 * @param msg El mensaje.
 	 */
 	public TGetDynamicEntity(final IMessage msg) {
 		super(msg);
@@ -44,7 +44,7 @@ public final class TGetDynamicEntity extends TaskCommunication {
 	 * Crear y devuelve una instancia de la clase.
 	 * 
 	 * @param msg El mensaje con el que trabajará la tarea internamente.
-	 * @return Una instancia de esta clase
+	 * @return Una instancia de esta clase.
 	 */
 	@Override
 	public TaskCommunication factoryMethod(final IMessage msg) {
@@ -54,36 +54,36 @@ public final class TGetDynamicEntity extends TaskCommunication {
 	/**
 	 * Este metodo obtiene una entidad dinamica a partir de su identificador 
 	 * contenido en el mensaje recibido. Ademas crea un mensaje de respuesta
-	 * con la informacion de dicha entidad para luego ser enviada al jugador
-	 * que la solicito.
+	 * con la informacion de dicha entidad para luego ser enviada al {@link
+	 * Player} que la solicito.
 	 * 
-	 * @encoding UTF-8
+	 * 
 	 */
 	public void run() {
 				
-		//castear al mensage plano
+		// Castear al mensage plano.
 		MsgPlainText msg = (MsgPlainText) getMessage();
 
-		//obtener el id de la entidad dinamica
+		// Obtener el id de la entidad dinamica.
 		String idDynamicEntity = msg.getMsg();
 		
 		DynamicEntity dinamicEntity = null;
 		try {
-		//Obtener la entidad dinámica a partir del DataManager
+		// Obtener la entidad dinámica a partir del DataManager.
 		dinamicEntity = (DynamicEntity) AppContext.getDataManager()
 			.getBinding(idDynamicEntity);
 		} catch (ObjectNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		//crear el mensaje de respuesta
+		// Crear el mensaje de respuesta.
 		MsgGetDynamicEntityResponse msgGDER = null;
 		try {
 			msgGDER = (MsgGetDynamicEntityResponse)
 				MessageFactory.getInstance().createMessage(
 				MsgTypes.MSG_GET_DYNAMIC_ENTITY_RESPONSE_TYPE);
 			
-			//seteo el mensaje con la informacion correspondiente
+			// Seteo el mensaje con la informacion correspondiente.
 			msgGDER.setActualWorld(dinamicEntity.getActualWorld());
 			msgGDER.setAngle(dinamicEntity.getAngle());
 			msgGDER.setIdDynamicEntity(dinamicEntity.getIdEntity());
@@ -95,7 +95,7 @@ public final class TGetDynamicEntity extends TaskCommunication {
 			e.printStackTrace();
 		}
 		
-		//enviar el mensaje con la respuesta al Player que solicito
+		// Enviar el mensaje con la respuesta al Player que solicito.
 		getPlayerAssociated().send(msgGDER);
 	}
 	
