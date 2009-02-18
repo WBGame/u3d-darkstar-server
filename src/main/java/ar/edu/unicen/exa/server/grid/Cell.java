@@ -18,15 +18,16 @@ import common.messages.IMessage;
 import common.util.ChannelNameParser;
 
 /**
- * Representa una zona fisica del mundo. Esta zona esta delimitada por los
- * bounds. Ademas, esta zona esta asociada a un unico {@code Channel} , es decir
- * hay una correspondencia uno a uno entre celdas y canales.
+ * Representa una zona fisica del mundo({@link IGridStructure}). Esta zona esta
+ * delimitada por los bounds. Ademas, esta zona esta asociada a un unico
+ * {@code Channel} , es decir hay una correspondencia uno a uno entre celdas
+ * y canales({@link Channel}).
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
  * @encoding UTF-8
  */
 public class Cell implements Serializable, IBindingID {
-	/** The version of the serialized form of this class. */
+	/**  Para cumplir con la version de la clase Serializable. */
 	private static final long serialVersionUID = 1301727798124952702L;
 	
 	/** Logger. */
@@ -55,7 +56,7 @@ public class Cell implements Serializable, IBindingID {
 
 	/**
 	 * Determina el espacio circundado por la celda en el espacio fisico del
-	 * mundo.
+	 * mundo({@link IGridStructure}).
 	 */
 	private Rectangle bounds;
 
@@ -76,13 +77,15 @@ public class Cell implements Serializable, IBindingID {
 			refStructure = AppContext.getDataManager().createReference(parent);
 		}
     	
-		ChannelManager channelMgr = AppContext.getChannelManager();
-        
+		ChannelManager channelMgr = AppContext.getChannelManager(); 
+    	
+
 		//TODO implementar un channel manager para poder tener varios tipos de 
 		//     canales según el mecanismo de tipos de canales implementado en
 		//     el common.
 		String channelName = ChannelNameParser.MOVE_CHANNEL_IDENTIFIER 
 							 + '_' + id;
+
         Channel channel = channelMgr.createChannel(channelName, 
         									  new ChannelMessageListener(), 
                                               Delivery.RELIABLE);
@@ -119,10 +122,10 @@ public class Cell implements Serializable, IBindingID {
 	}
 
 	/**
-	 * Asocia un canal a la celda. Dado que el canal es un objeto {@code
-	 * ManagedObject} se debe crear la referencia {@code ManagedReference} a ese
-	 * canal invocando al metodo {@code createReference()} del {@code
-	 * DataManager} .
+	 * Asocia un canal({@link Channel}) a la celda. Dado que el canal es un
+	 * objeto {@code ManagedObject} se debe crear la referencia {@code 
+	 * ManagedReference} a ese canal invocando al metodo {@code 
+	 * createReference()} del {@code DataManager} .
 	 * 
 	 * @param cellChannel canal que se debe asociar a la celda.
 	 */
@@ -161,20 +164,20 @@ public class Cell implements Serializable, IBindingID {
 	}
 
 	/**
-	 * Subscribe al jugador pasado por parametro {@code ClientSession} al canal
-	 * contenido por la celda.
+	 * Subscribe al {@link Player} pasado por parametro {@code ClientSession}
+	 * al canal({@link Channel}) contenido por la celda.
 	 * 
-	 * @param client jugador a subscribir.
+	 * @param client {@link Player} a subscribir.
 	 */
 	public final void joinToChannel(final ClientSession client) {
 		getChannel().join(client);
 	}
 
 	/**
-	 * Desubscribe al jugador pasado por parametro {@code ClientSession} del
-	 * canal contenido por la celda.
+	 * Desubscribe al {@link Player} pasado por parametro {@code 
+	 * ClientSession} del canal contenido por la celda.
 	 * 
-	 * @param client jugador a desuscribir.
+	 * @param client {@link Player} a desuscribir.
 	 */
 	public final void leaveFromChannel(final ClientSession client) {
 		getChannel().leave(client);
@@ -195,11 +198,11 @@ public class Cell implements Serializable, IBindingID {
 	}
 
 	/**
-	 * Envia el mensaje {@code IMessage} del jugador dado a todos los jugadores
-	 * asociados al canal contenido por la celda.
+	 * Envia el mensaje {@code IMessage} del jugador dado a todos los {@link 
+	 * Player}s asociados al canal({@link Channel}) contenido por la celda.
 	 * 
 	 * @param msg mensaje a enviar.
-	 * @param player jugador que disparó el mensaje
+	 * @param player {@link Player} que disparó el mensaje.
 	 */
 	public final void send(final IMessage msg, final ClientSession player) {
 		getChannel().send(player, msg.toByteBuffer());
