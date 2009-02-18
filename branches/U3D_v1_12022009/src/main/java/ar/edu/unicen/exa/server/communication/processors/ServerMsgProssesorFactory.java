@@ -7,6 +7,8 @@ import common.processors.MsgProcessorFactory;
  * Intermediario para acceder al Factory de los procesadores.
  * 
  * @author Sebastian Perruolo &lt;sebastian dot perruolo at gmail dot com&gt;
+ * @encoding UTF-8.
+ * 
  */
 public final class ServerMsgProssesorFactory {
 	
@@ -33,7 +35,7 @@ public final class ServerMsgProssesorFactory {
 	}
 	
 	/**
-	 * Configura la fabrica de procesadores {@link MsgProcessorFactory}
+	 * Configura el factory de procesadores {@link MsgProcessorFactory}
 	 * asignado para cada tipo de mensaje del framework que es recibido en el
 	 * servidor, un instancia del procesador correspondiente.
 	 */
@@ -91,3 +93,4 @@ public final class ServerMsgProssesorFactory {
 				new PTaskDelegator());
 	}
 }
+
