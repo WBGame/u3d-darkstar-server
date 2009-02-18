@@ -22,23 +22,22 @@ import common.messages.IMessage;
  * servidor.<br/>
  * Abstrae el comportamiento de las tareas de comunicacion del servidor, al
  * definir una {@link ManagedReference} (a un {@link DynamicEntity}) y una
- * {@link ManagedReference} (a una {@link Cell}) que representan las entidades
- * relacionadas a la recepsion y/o envio de los mensajes resultado de la
- * ejecucion de las acciones correspondientes a las sublcalses de tareas de
+ * {@link ManagedReference} (a una celda({@link Cell})) que representan las 
+ * entidades relacionadas a la recepsion y/o envio de los mensajes resultado de
+ * la ejecucion de las acciones correspondientes a las sublcalses de tareas de
  * comunicacion.
  * 
  * @author lito
+ * @encoding UTF-8.
  */
 public abstract class TaskCommunication implements Task, Serializable {
 	
-	/**
-	 * Serialization value.
-	 */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El mensaje relacionado.<br/>
-	 * Se declara transient, para obligar a que las sublcalses, declaren campos
+	 * Se declara transient, para obligar a que las subclases, declaren campos
 	 * internos relacionados con los datos del mensaje, los cuales deben
 	 * setearse en el constructor (que se invoca con un mensaje), de esta
 	 * manera, sera mas eficiente la ejecucion del metodo run, ya que no tendra
@@ -50,7 +49,9 @@ public abstract class TaskCommunication implements Task, Serializable {
 	/** Referencia al player relacionado al mensaje a procesar. */
 	private ManagedReference<Player>	playerAssociated = null;
 	
-	/** Referencia a la celda relacionada al mensaje a procesar. */
+	/** 
+	 * Referencia a la celda({@link Cell}) relacionada al mensaje a procesar.
+	 */
 	private ManagedReference<ManagedSerializable<Cell>>	cellAssociated = null;
 	
 	/** El tipo de mensaje, dado que el mensaje es transient. */
@@ -61,7 +62,7 @@ public abstract class TaskCommunication implements Task, Serializable {
 	 * mensaje interno con el parámetro y el tipo de mensaje de la tarea con el
 	 * tipo del mensaje pasado.
 	 * 
-	 * @param msg El mensaje de la instancia
+	 * @param msg El mensaje de la instancia.
 	 */
 	public TaskCommunication(final IMessage msg) {
 		this.message = msg;
@@ -134,7 +135,9 @@ public abstract class TaskCommunication implements Task, Serializable {
 	}
 	
 	/**
-	 * This method allow to set the asociate cell.
+	 * 
+	 * Este método permite establecer la celda asociada al mensaje a procesar.
+	 * 
 	 * @param associated Referencia a la celda relacionada al mensaje a
 	 *        procesar.
 	 */
