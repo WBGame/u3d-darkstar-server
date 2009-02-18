@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package ar.edu.unicen.exa.server.communication.processors;
 
 import java.util.logging.Logger;
@@ -19,6 +17,7 @@ import common.processors.IProcessor;
  * mensajes de tipo {@link MsgSetPlayerProperty}.
  * 
  * @author lito
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PSetPlayerProperty extends ServerMsgProcessor {
@@ -37,7 +36,6 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 	
 	
 	public PSetPlayerProperty() {
-		
 	}
 	
 	/**
@@ -48,6 +46,7 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
+	
 	public IProcessor factoryMethod() {
 		return new PSetPlayerProperty();
 	}
@@ -58,8 +57,8 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 	 * procesador.<BR/>
 	 * <BR/>
 	 * NOTA: Todas las propiedades que se desen setear mediante este procesador,
-	 * deben ser propiedades exlusiva del Obejto Player, no deben ser ninguna
-	 * que sea del {@link ModelAccess}.
+	 * deben ser propiedades exlusiva del Objeto {@link Player}, no deben ser 
+	 * ninguna que sea del {@link ModelAccess}.
 	 * 
 	 * @param msg Un mensaje que sera casteado a {@link MsgSetPlayerProperty}
 	 * para poder obtener le identificador de la propiedad y el valor a
@@ -74,7 +73,7 @@ public final class PSetPlayerProperty extends ServerMsgProcessor {
 			Player player = getPlayerAssociated(); 
 			
 			IPlayerProperty prop = msgSPP.getPlaerProperty();
-			// tirara la excepcion al querer seterale el valor a una propiedad
+			// Tirara la excepcion al querer seterale el valor a una propiedad
 			// que no posea el player.
 			player.getProperty(prop.getId()).setValue(prop.getValue());
 		} catch (NullPointerException e) {
