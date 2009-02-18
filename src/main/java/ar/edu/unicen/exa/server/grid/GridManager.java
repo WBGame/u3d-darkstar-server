@@ -18,14 +18,14 @@ import com.sun.sgs.app.ObjectNotFoundException;
 //excepciones que genera el framework.
 /** 
  * Manager de {@link IGridStructure} (Manager de los diferentes mundos). Se 
- * pueden agregar estructuras, remover, como asi tambien obtener una dado el 
+ * pueden agregar estructuras, remover, como tambien asi obtener una, dado el 
  * identificador de la misma.
  * 
- * @encoding UTF-8
+ * @encoding UTF-8.
  */
 public final class GridManager implements Serializable, ManagedObject {
 
-	/** The version of the serialized form of this class. */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = -7374467626346407012L;
 
 	/** Logger. */
@@ -48,7 +48,7 @@ public final class GridManager implements Serializable, ManagedObject {
 	}
 
 	/**
-	 * Setter para inicializar el mundo por defecto.
+	 * Seteador para inicializar el mundo por defecto.
 	 * 
 	 * @param name binding name
 	 */
@@ -91,7 +91,7 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * Para esto debe encargarse de crear una {@code ManagedReference} invocando
 	 * al método {@code createReference()} del {@code DataManager}.
 	 * 
-	 * @param structure estructura a almacenar
+	 * @param structure estructura a almacenar.
 	 */
 	public void addStructure(final IGridStructure structure) {
 
@@ -114,13 +114,13 @@ public final class GridManager implements Serializable, ManagedObject {
 	}
 
 	/**
-	 * Retorna la instancia de la clase. En caso de no existir, 
-	 * se recupera via getBinding y asi recuperar el estado del manager
-	 * con los mundos previamente almacenados. Si no se encuentra almacenado,
-	 * significa que se ejecuta por primera vez, entonces se crea una instancia
-	 * y se guarda con el metodo setBinding.
+	 * Retorna la instancia de la clase. En caso de existir, se recupera via 
+	 * getBinding y asi recuperar el estado del manager con los mundos
+	 * ({@link IGridStructure}) previamente almacenados. Si no se encuentra 
+	 * almacenado, significa que se ejecuta por primera vez, entonces se crea
+	 * una instancia y se guarda con el metodo setBinding.
 	 * 
-	 * @return GridManager
+	 * @return GridManager Retorna la instancia de la clase.
 	 */
 	public static GridManager getInstance() {
 		if (instance == null) {
@@ -130,9 +130,9 @@ public final class GridManager implements Serializable, ManagedObject {
 				instance = (GridManager) d.getBinding(name);
 				logger.info("Se ha recuperado la instancia de GridManager");
 			} catch (NameNotBoundException e) {
-				// creo un GridManager 
+				// Creo un GridManager. 
 				instance = new GridManager();
-				// registro la instancia dentro del Object Store.
+				// Registro la instancia dentro del Object Store.
 				d.setBinding(name , instance);
 				logger.info("Se ha creado una nueva instancia del GridManager");
 			}
