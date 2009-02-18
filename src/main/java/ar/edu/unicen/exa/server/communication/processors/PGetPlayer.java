@@ -23,9 +23,10 @@ import common.processors.IProcessor;
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la devolucion de los datos correspondientes a un
- * jugador.
+ * {@link Player}.
  * 
  * @author lito
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PGetPlayer extends ServerMsgProcessor {
@@ -51,15 +52,15 @@ public final class PGetPlayer extends ServerMsgProcessor {
 	}
 	
 	/**
-	 * Obtiene el identificador del player a retornar del mensaje pasado como
-	 * parametro, luego solicita al {@link DataManager} que devuelva el objeto
-	 * con el biding igual a dicho identificador, por ultimo contruye un mensaje
-	 * {@link MsgGetPlayerResponse} y lo envia a travez de la referencia al
-	 * player de la instancia (el que envio la solicitud).
+	 * Obtiene el identificador del {@link Player} a retornar del mensaje 
+	 * pasado como parametro, luego solicita al {@link DataManager} que 
+	 * devuelva el objeto con el biding igual a dicho identificador, por ultimo
+	 * contruye un mensaje {@link MsgGetPlayerResponse} y lo envia a travez de 
+	 * la referencia al {@link Player} de la instancia 
+	 * (el que envio la solicitud).
 	 * 
 	 * @param msg Es casteado a {@link MsgPlainText} y se interpreta que el
-	 * texto representa el identificador del player que se quiere
-	 * retornar.
+	 * texto representa el identificador del player que se quiere retornar.
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
@@ -79,7 +80,7 @@ public final class PGetPlayer extends ServerMsgProcessor {
 			msgGPR.setPlayerState(playerToReturn.getState());
 			msgGPR.setPosition(playerToReturn.getPosition());
 			
-			// tabla de hash auxiliar para poner las propieddades presentes en
+			// Tabla de hash auxiliar para poner las propieddades presentes en
 			// el objeto Player, y las del ModelAccess.
 			HashMap<String, IPlayerProperty> properties = 
 				new HashMap<String, IPlayerProperty>();
@@ -90,12 +91,12 @@ public final class PGetPlayer extends ServerMsgProcessor {
 				properties.put(prop.getId(), prop);
 			}
 			// Coloco las propiedades del ModelAccess.
-			// Primero coloco los stats
+			// Primero coloco los stats.
 			for (IPlayerProperty prop : ModelAccess.getInstance()
 					.getPlayerStats(playerToReturn.getIdEntity())) {
 				properties.put(prop.getId(), prop);
 			}
-			// ahora coloco los puntos globales y el dinero.
+			// Ahora coloco los puntos globales y el dinero.
 			PlayerProperty globalScore = new PlayerProperty();
 			globalScore.setId(PlayerProperty.PP_GLOBAL_SCORE);
 			globalScore.setValue(ModelAccess.getInstance().getGlobalScore(
@@ -106,13 +107,13 @@ public final class PGetPlayer extends ServerMsgProcessor {
 			money.setValue(ModelAccess.getInstance().getMoney(
 					playerToReturn.getIdEntity()));
 			
-			// seteo las propiedades
+			// Seteo las propiedades.
 			msgGPR.setProperties(properties);
 			
 			msgGPR.setSkin(ModelAccess.getInstance().getSkin(
 					playerToReturn.getIdEntity()));
 			
-			// Envio el mensaje con la respuesta. al Player que solicito
+			// Envio el mensaje con la respuesta. al Player que solicito.
 			getPlayerAssociated().send(msgGPR);
 			
 		} catch (UnsopportedMessageException e) {
