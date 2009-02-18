@@ -15,10 +15,11 @@ import common.messages.notify.MsgRotate;
  * el mensaje a travez las celdas pertinentes.
  * 
  * @author lito
+ * @encoding UTF-8.
  */
 public final class TRotate extends TaskCommunication {
 
-	/**  Para cumplir con la version de la clase Serializable. */
+	/**  Para cumplir con la version de la clase {@link Serializable}. */
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -51,27 +52,27 @@ public final class TRotate extends TaskCommunication {
 	
 	public void run() {
 		
-		//instancia del jugador
+		// Instancia del jugador.
 		Player player = getPlayerAssociated();
 		
-		//recuperar la celda actual
+		// Recuperar la celda actual.
 		Cell cell = getCellAssociated();
   	    		
-		//castear al mensage de rotacion
+		// Castear al mensage de rotacion.
 		MsgRotate msg = (MsgRotate) getMessage();
 
-		//actualizar el angulo del player
+		// Actualizar el angulo del jugador.
 		player.setAngle(msg.getAngle());
 
 		ClientSession session = player.getSession();
 		
-		//crear el mensaje de notificacion
+		// Crear el mensaje de notificacion.
 		msg.setType(MsgTypes.MSG_ROTATE_NOTIFY_TYPE);
 		
-		//reenviar el mendaje de rotacion a la celda actual del jugador 
+		// Reenviar el mensaje de rotacion a la celda actual del jugador. 
 		cell.send(msg, session);
 		
-		//obtener la estructura del mundo actual
+		// Obtener la estructura del mundo actual.
 		IGridStructure structure = cell.getStructure();
 		
 		Cell[] adyacentes = structure.getAdjacents(
@@ -80,7 +81,7 @@ public final class TRotate extends TaskCommunication {
 			);
 		
 		if (adyacentes != null) {
-			//notificar a las celdas adyacentes
+			// Notificar a las celdas adyacentes.
 			for (int i = 0; i < adyacentes.length; i++) {
 				adyacentes[i].send(msg, session);
 			}
