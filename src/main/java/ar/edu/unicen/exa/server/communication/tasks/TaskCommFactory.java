@@ -8,7 +8,7 @@ import common.messages.MessageFactory;
 import common.messages.MsgTypes;
 
 /**
- * Fábrica de tareas de comunicación. Para utilizarla, primero se debe obtener
+ * Factory de task de comunicación. Para utilizarla, primero se debe obtener
  * su única instancia a travez del método {@link #getInstance()} (ya que sigue
  * el patrón <i>singleton</i>). Esta clase permite crear e inicializar una
  * instacia de la tarea apropiada para un mensaje dado. Las asociaciones entre
@@ -16,6 +16,8 @@ import common.messages.MsgTypes;
  * para el que se brindan métodos de manipulación.
  * 
  * @author Diego
+ * @encoding UTF-8.
+ * 
  */
 public final class TaskCommFactory {
 	
@@ -72,11 +74,12 @@ public final class TaskCommFactory {
 	}
 	
 	/**
-	 * Retorna el hash de tipos de mensaje y tarea correspondiente. NOTA: El
-	 * hash retornado es el mismo que el que soporta la estructura interna, por
-	 * lo que cambios al mismoas, afectaran el comporamiento de la instancia.
+	 * Retorna el hash de tipos de mensaje y tarea correspondiente. 
+	 * NOTA: El hash retornado es el mismo que el que soporta la estructura
+	 * interna, por lo que cambios al mismo, afectaran el comporamiento de la
+	 * instancia.
 	 * 
-	 * @return el hash
+	 * @return el hash de tipos de mensaje.
 	 */
 	public Hashtable<String, TaskCommunication> getComTaskForType() {
 		return comTaskForMsgType;
@@ -87,7 +90,7 @@ public final class TaskCommFactory {
 	 * tareas encargadas de tratarlos. Se perderá cualquier otra asociación
 	 * previa.
 	 * 
-	 * @param comTaskForMsgTypeHash el hash a establecer
+	 * @param comTaskForMsgTypeHash el hash a establecer.
 	 */
 	public void setComTaskForType(
 			final Hashtable<String, TaskCommunication> comTaskForMsgTypeHash) {
@@ -109,8 +112,8 @@ public final class TaskCommFactory {
 	 * el tipo del mensaje pasado como parámetro. La tarea de comunicación en
 	 * cuestión estará inicializada con el mensaje dado.
 	 * 
-	 * @param msg el mensaje a usar
-	 * @return la nueva tarea
+	 * @param msg el mensaje a usar.
+	 * @return la nueva tarea.
 	 */
 	public TaskCommunication createComTask(final IMessage msg) {
 		return this.comTaskForMsgType.get(msg.getType()).factoryMethod(msg);
@@ -138,7 +141,7 @@ public final class TaskCommFactory {
 	 * @param msgType tipo de mensaje al que se quitará su asociación
 	 * 
 	 * @return la tarea correspondiente o <code>null</code> si no había alguna
-	 *         mapeada para el tipo de mensaje dado
+	 *         mapeada para el tipo de mensaje dado.
 	 */
 	public TaskCommunication removeComTask(final String msgType) {
 		return this.comTaskForMsgType.remove(msgType);
