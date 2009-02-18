@@ -11,9 +11,10 @@ import common.processors.IProcessor;
 // TODO: Auto-generated Javadoc
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
- * avanzar al siguiente estado en una quest.
+ * avanzar al siguiente estado en una {@link Quest}.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PNextQuestState extends ServerMsgProcessor {
@@ -30,7 +31,7 @@ public final class PNextQuestState extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
@@ -39,11 +40,12 @@ public final class PNextQuestState extends ServerMsgProcessor {
 	}
 	
 	/**
-	 * Toma la petición de pasar al siguiente estado en una quest y la procesa.
+	 * Toma la petición de pasar al siguiente estado en una {@link Quest} y la 
+	 * procesa.
 	 * Toma contenido en el mensaje pasado como paramentro, e invoca el metodo
 	 * {@link ModelAccess#nextQuestState(String, String, String)}.
 	 * 
-	 * @param msg Contiene el id de la quest en cuestión.
+	 * @param msg Contiene el id de la {@link Quest} en cuestión.
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
