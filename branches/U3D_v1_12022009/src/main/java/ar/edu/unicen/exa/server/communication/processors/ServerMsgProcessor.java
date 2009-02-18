@@ -12,6 +12,7 @@ import common.processors.IProcessor;
  * relacionadas a la recepsion y/o envio de los mensajes a procesar.
  * 
  * @author lito
+ * @encoding UTF-8.
  */
 
 public abstract class ServerMsgProcessor implements IProcessor {
@@ -29,7 +30,7 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	private Cell cellAssociated;
 
 	/**
-	 * Gets the msg type.
+	 * Obtiene el tipo de mensaje.
 	 * 
 	 * @return El tipo de mensaje que se procesaran por la instancia del
 	 * procesador.
@@ -39,7 +40,7 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
-	 * Sets the msg type.
+	 * Establece el tipo de mensaje.
 	 * 
 	 * @param type tipo de mensaje que se procesará por la instancia del
 	 * procesador.
@@ -50,25 +51,25 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
-	 * Gets the player asociete.
+	 * Devuelve el {@link Player} asociado.
 	 * 
-	 * @return associated player
+	 * @return associated {@link Player}.
 	 */
 	public final Player getPlayerAssociated() {
 		return playerAssociated;
 	}
 
 	/**
-	 * Sets the player asociete.
+	 * Setea el {@link player} asociado.
 	 * 
-	 * @param associated player relacionado al mensaje a procesar.
+	 * @param associated {@link player} relacionado al mensaje a procesar.
 	 */
 	public final void setPlayerAssociated(final Player associated) {
 		this.playerAssociated = associated;
 	}
 
 	/**
-	 * Gets the cell asociete.
+	 * Obtiene la celda({@Cell}) asociada.
 	 * 
 	 * @return Referencia a la celda relacionada al mensaje a procesar.
 	 */
@@ -77,7 +78,7 @@ public abstract class ServerMsgProcessor implements IProcessor {
 	}
 
 	/**
-	 * Sets the cell asociete.
+	 * Establese la celda({@Cell}) asociada.
 	 * 
 	 * @param associated celda relacionada al mensaje a procesar.
 	 */
