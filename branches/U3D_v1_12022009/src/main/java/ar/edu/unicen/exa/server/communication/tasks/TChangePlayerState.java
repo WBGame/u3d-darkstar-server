@@ -11,20 +11,21 @@ import common.messages.notify.MsgChangePlayerState;
 
 /**
  * Tarea relacionada al mensaje de movimiento {@link MsgChangePlayerState}.<br/>
- * Deberá actualizar el estado de la entidad afectada, y reenviar
- * el mensaje a través las celdas pertinentes.
+ * Deberá actualizar el estado de la entidad afectada, y reenviar el mensaje a
+ * través las celdas ({@link Cell}) pertinentes.
  * 
+ * @encoding UTF-8.
  */
 public final class TChangePlayerState extends TaskCommunication {
 	
-	/** The version of the serialized form of this class. */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = -2534173752248112080L;
 
 	/**
 	 * Constructor que inicializa el estado interno de la tarea con el 
 	 * parámetro.
 	 * 
-	 * @param msg El mensaje de la instancia
+	 * @param msg El mensaje de la instancia.
 	 */
 	public TChangePlayerState(final IMessage msg) {
 		super(msg);
@@ -34,7 +35,7 @@ public final class TChangePlayerState extends TaskCommunication {
 	 * Crear y devuelve una instancia de la clase.
 	 * 
 	 * @param msg El mensaje con el que trabajará la tarea internamente.
-	 * @return Una instancia de esta clase
+	 * @return Una instancia de esta clase.
 	 */
 	@Override
 	public TaskCommunication factoryMethod(final IMessage msg) {
@@ -48,26 +49,26 @@ public final class TChangePlayerState extends TaskCommunication {
 	 * 
 	 */
 	public void run() {
-		//instancia del jugador
+		// Instancia del jugador.
 		Player player = getPlayerAssociated();
 		
-		//Castear al mensage que corresponda
+		// Castear al mensage que corresponda.
 		MsgChangePlayerState msg = (MsgChangePlayerState) getMessage();
 		
 		player.setState(msg.getNewState());
 		
 		
-		//recuperar la celda actual
+		// Recuperar la celda actual.
 		Cell actualCell = getCellAssociated();
 
-		//crear el mensaje de notificación cambio de estado
+		// Crear el mensaje de notificación cambio de estado.
 		msg.setType(MsgTypes.MSG_CHANGE_PLAYER_STATE_NOTIFY_TYPE);
 		
 		ClientSession session = player.getSession();
-		//notificar a la misma celda que el jugador se movió
+		// Notificar a la misma celda que el jugador se movió.
 		actualCell.send(msg, session);
 		
-		//obtener la estructura del mundo actual
+		// Obtener la estructura del mundo actual.
 		IGridStructure structure = actualCell.getStructure();
 		
 		Cell[] adyacentes = structure.getAdjacents(
@@ -76,7 +77,7 @@ public final class TChangePlayerState extends TaskCommunication {
 			);
 		
 		if (adyacentes != null) {
-			//notificar a las celdas adyacentes
+			// Notificar a las celdas adyacentes.
 			for (int i = 0; i < adyacentes.length; i++) {
 				adyacentes[i].send(msg, session);
 			}
