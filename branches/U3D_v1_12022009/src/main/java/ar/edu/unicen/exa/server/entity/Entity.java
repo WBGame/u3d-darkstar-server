@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class Entity implements ManagedObject, Serializable {
 	
-	/**  Para cumplir con la version de la clase Serializable. */
+	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1L;
 	
 	/** Identificador de la entidad. */
