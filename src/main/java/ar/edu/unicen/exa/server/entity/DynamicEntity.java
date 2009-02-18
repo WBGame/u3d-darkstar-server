@@ -4,7 +4,8 @@ import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
 
 /** 
- * Ofrece funcionalidad a las entidades que tienen movimiento dentro del mundo.
+ * Ofrece funcionalidad a las entidades que tienen movimiento dentro del mundo
+ * ({@link IGridStructure}).
  * 
  * @author Kopp Roberto &lt;robertokopp at hotmail dot com&gt;
  * @encoding UTF-8 
@@ -16,7 +17,7 @@ public class DynamicEntity extends Entity {
 	private static final long serialVersionUID = 1L;
 
 	/** 
-	 *  Mundo donde se encuentra el {@link Player}.
+	 *  Mundo ({@link IGridStructure}) donde se encuentra el {@link Player}.
 	 */
 
 	private String actualWorld = null;
@@ -34,10 +35,10 @@ public class DynamicEntity extends Entity {
 	private Vector3f position = null;
 
 	/**
-	 *  Recuperacion del mundo actual.
+	 *  Recuperacion del mundo ({@link IGridStructure})actual.
 	 * 
-	 *  @return String Con el id del mundo actual donde se encuentra la entidad 
-	 *  o null en caso de no haber sido inicializado.
+	 *  @return String Con el id del mundo actual donde  se encuentra la 
+	 *  entidad o null en caso de no haber sido inicializado.
 	 *         
 	 *  @see GridManager#getStructure(String) permite recuperar el mundo dado 
 	 *       este identificador.
@@ -65,7 +66,8 @@ public class DynamicEntity extends Entity {
 	}
 
 	/**
-	 * @param world Mundo donde se encuentra el {@link Player}.
+	 * @param world Mundo({@link IGridStructure}) donde se encuentra el {@link
+	 * Player}.
 	 * 
 	 */
 	public final void setActualWorld(final String world) {
