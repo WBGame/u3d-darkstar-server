@@ -7,9 +7,11 @@ import common.processors.IProcessor;
 
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo pedir
- * finalizar una quest.
+ * finalizar una {@link Quest}.
  * 
  * @author Polo
+ * @encoding UTF-8.
+ * 
  * @see #process(IMessage)
  */
 public final class PFinishQuest extends ServerMsgProcessor {
@@ -24,7 +26,7 @@ public final class PFinishQuest extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
@@ -37,7 +39,7 @@ public final class PFinishQuest extends ServerMsgProcessor {
 	 * el mensaje pasado como paramentro, e invoca el metodo
 	 * {@link ModelAccess#finishQuest(String, String)}.
 	 * 
-	 * @param msg Contiene el id de la quest que se finaliza.
+	 * @param msg Contiene el id de la {@link Quest} que se finaliza.
 	 * 
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
