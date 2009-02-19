@@ -18,9 +18,10 @@ import common.processors.IProcessor;
 /**
  * Este procesador es el encargado de realizar las acciones correspondientes a
  * mensajes que solicitan la lista de juegos 2D que están disponibles para el
- * player seteado en esta instancia de procesador.
+ * {@link Player} seteado en esta instancia de procesador.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PGetAvailable2DGames extends ServerMsgProcessor {
@@ -47,11 +48,12 @@ public final class PGetAvailable2DGames extends ServerMsgProcessor {
 	
 	/**
 	 * Se llama al método {@link ModelAccess#getAvailableGames(String)} para
-	 * obtener la lista de juegos que disponibles para el player en cuestión.
+	 * obtener la lista de juegos que disponibles para el {@link Player} en 
+	 * cuestión.
 	 * Construye un mensaje {@link MsgGetAvailable2DGamesResponse} y lo envia al
-	 * player seteado en esta instancia de procesador.
+	 * {@link Player} seteado en esta instancia de procesador.
 	 * 
-	 * @param msg the msg
+	 * @param msg the msg.
 	 * 
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
