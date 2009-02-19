@@ -77,7 +77,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	 * configura la factory de procesadores para el manejo de los mensajes
 	 * en el servidor.
 	 *  
-	 * @param props Propiedades para configurar la aplicacion
+	 * @param props Propiedades para configurar la aplicacion.
 	 */
 	public void initialize(final Properties props) {
 		logger.info("initialize server state");
@@ -187,7 +187,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		// Obtener los adyacentes de la nueva celda.
 		Cell[] adyacentes = structure
 			.getAdjacents(cell, player.getPosition());
-		// Notificar a las celdas adyacentes que ingresó el jugador.
+		// Notificar a las celdas adyacentes que ingreso el jugador.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
 				adyacentes[i].send(msgArrived, session);
