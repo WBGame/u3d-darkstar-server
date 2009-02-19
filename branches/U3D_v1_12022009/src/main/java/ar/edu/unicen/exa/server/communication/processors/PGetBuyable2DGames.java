@@ -16,6 +16,7 @@ import common.processors.IProcessor;
  * mensajes que solicitan la lista de juegos 2D que se pueden comprar.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PGetBuyable2DGames extends ServerMsgProcessor {
@@ -30,7 +31,7 @@ public final class PGetBuyable2DGames extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
@@ -41,10 +42,10 @@ public final class PGetBuyable2DGames extends ServerMsgProcessor {
 	/**
 	 * Se llama al método {@link ModelAccess#getBuyables2DGames()} para obtener
 	 * la lista de juegos que pueden tienen un costo asociado. Construye un
-	 * mensaje {@link MsgGetBuyable2DGamesResponse} y lo envia al player seteado
-	 * en esta instancia de procesador.
+	 * mensaje {@link MsgGetBuyable2DGamesResponse} y lo envia al 
+	 * {@link Player} seteado en esta instancia de procesador.
 	 * 
-	 * @param msg the msg
+	 * @param msg the msg.
 	 * 
 	 * @author Polo
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
