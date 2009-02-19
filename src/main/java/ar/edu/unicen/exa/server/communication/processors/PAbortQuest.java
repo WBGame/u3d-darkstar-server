@@ -7,15 +7,16 @@ import common.processors.IProcessor;
 
 /**
  * Este procesador se encarga de aquellos mensajes que tienen por objetivo
- * pedir abandonar una quest.
+ * pedir abandonar una {@link Quest}.
  * 
  * @author Polo
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PAbortQuest extends ServerMsgProcessor {
 	
 	/**
-	 * Construcotr por defecto, inicializa las variables internas en {@code
+	 * Constructor por defecto, inicializa las variables internas en {@code
 	 * null}.
 	 */
 	public PAbortQuest() { }
@@ -24,7 +25,7 @@ public final class PAbortQuest extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
@@ -33,11 +34,11 @@ public final class PAbortQuest extends ServerMsgProcessor {
 	}
 	
 	/**
-	 * Toma la petición de abandonar una quest y la procesa. Toma
+	 * Toma la petición de abandonar una {@link Quest} y la procesa. Toma
 	 * contenido en el mensaje pasado como paramentro, e invoca el metodo
 	 * {@link ModelAccess#abortQuest(String, String)}.
 	 * 
-	 * @param msg Contiene el id de la quest que se abandona.
+	 * @param msg Contiene el id de la {@link Quest} que se abandona.
 	 * @see common.processors.IProcessor#process(common.messages.IMessage)
 	 */
 	public void process(final IMessage msg) {
