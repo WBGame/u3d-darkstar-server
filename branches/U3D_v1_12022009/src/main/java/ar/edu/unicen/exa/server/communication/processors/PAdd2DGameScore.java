@@ -12,6 +12,7 @@ import common.processors.IProcessor;
  * agregar un puntaje a un minijuego.
  * 
  * @author fede
+ * @encoding UTF-8.
  * @see #process(IMessage)
  */
 public final class PAdd2DGameScore extends ServerMsgProcessor {
@@ -26,7 +27,7 @@ public final class PAdd2DGameScore extends ServerMsgProcessor {
 	 * Retorna un instancia de la clase, con sus campos internos inicializados
 	 * en {@code null}.
 	 * 
-	 * @return the i processor
+	 * @return the i processor.
 	 * 
 	 * @see common.processors.IProcessor#factoryMethod()
 	 */
@@ -47,10 +48,10 @@ public final class PAdd2DGameScore extends ServerMsgProcessor {
 	 */
 	@Override
 	public void process(final IMessage msg) {
-		// casteo el mensaje paraobtener el scrore.
+		// Casteo el mensaje paraobtener el scrore.
 		MsgAdd2DGameScore msgAddScore = (MsgAdd2DGameScore) msg;
 		
-		// obtengo el score
+		// Obtengo el score.
 		D2GameScore score = msgAddScore.getScore();
 		
 		// Se agrega el score a la modelo.
