@@ -19,6 +19,8 @@ import common.processors.IProcessor;
  * de un juego 2D.
  * 
  * @author Polo
+ * @encoding UTF-8.
+ * 
  * @see #process(IMessage)
  */
 public final class PGet2DGamePrice extends ServerMsgProcessor {
@@ -45,7 +47,7 @@ public final class PGet2DGamePrice extends ServerMsgProcessor {
 	 * Castea el mensaje recibido a {@link MsgPlainText}, y obtiene de este el
 	 * identificador del minijuego para el que se pretende obtener el precio,
 	 * Construye un mensaje {@link MsgGet2DGamePriceResponse} y lo envia al
-	 * player seteado en esta instancia de procesador.
+	 * {@link Player} seteado en esta instancia de procesador.
 	 * 
 	 * @param msg Es casteado a {@link MsgPlainText} y se interpreta que el
 	 * texto representa el identificador del minijuego del cual se quiere
@@ -57,11 +59,11 @@ public final class PGet2DGamePrice extends ServerMsgProcessor {
 	public void process(final IMessage msg) {
 		try {
 			// Este debería ser el id del juego del cual se debe obtener el
-			// precio
+			// precio.
 			MsgPlainText msgGamePrice = (MsgPlainText) msg;
 			
 			String id2DGame = msgGamePrice.getMsg();
-			// obtener el precio del juego
+			// Obtener el precio del juego.
 			float price = ModelAccess.getInstance().get2DGamePrice(id2DGame);
 			
 			// Creo el mensaje a devolver.
@@ -73,7 +75,7 @@ public final class PGet2DGamePrice extends ServerMsgProcessor {
 			msgG2DGPR.setPrice(price);
 			msgG2DGPR.setId2DGame(id2DGame);
 			
-			// Envio el mensaje con la respuesta al Player que solicito
+			// Envio el mensaje con la respuesta al Player que solicito.
 			getPlayerAssociated().send(msgG2DGPR);
 			
 		} catch (UnsopportedMessageException e) {
