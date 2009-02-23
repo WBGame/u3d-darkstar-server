@@ -3,6 +3,8 @@ package ar.edu.unicen.exa.server.communication.tasks;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
+
+import com.jme.math.Vector3f;
 import com.sun.sgs.app.ClientSession;
 import common.messages.IMessage;
 import common.messages.MsgTypes;
@@ -67,33 +69,36 @@ public final class TMove extends TaskCommunication {
 		//Castear al mensage que corresponda
 		MsgMove msg = (MsgMove) getMessage();
 
+		//Obtener la posicion destino
+		Vector3f posDestino = msg.getPosDestino();
+		
 		//Actualizamos la posicion del player
-		player.setPosition(msg.getPosDestino());
+		player.setPosition(posDestino);
 
 		//obtener la estructura del mundo actual
 		IGridStructure structure = actualCell.getStructure();
-
-		//obtner la celda destino
-		Cell destino = structure.getCell(msg.getPosDestino());
 		
 		ClientSession session = player.getSession();
+		
 		//si el jugador cambio de celda
-		if (!actualCell.equals(destino)) {
+		if (!actualCell.isInside(posDestino)) {
+			actualCell.leaveFromChannel(session);
+			//obtner la celda destino
+			actualCell = structure.getCell(posDestino);
 			//no habria que avisarle por medio de un mensaje a los restantes 
 			//jugadores que se encuentran en la misma celda que el jugador? 
 			//ya que no va a estar mas porque se cambio de celda o el jugador
 			//desaparece de la escena por medio del frustum?
-			actualCell.leaveFromChannel(session);
-			destino.joinToChannel(session);
+			actualCell.joinToChannel(session);
 		}
 		
 		//crear el mensaje de llegada del jugador al nuevo mundo
 		msg.setType(MsgTypes.MSG_MOVE_NOTIFY_TYPE);
 		
 		//notificar a la misma celda que el jugador se movió
-		destino.send(msg, session);
+		actualCell.send(msg, session);
 		
-		Cell[] adyacentes = structure.getAdjacents(destino,
+		Cell[] adyacentes = structure.getAdjacents(actualCell,
 				player.getPosition());
 		
 		if (adyacentes != null) {
