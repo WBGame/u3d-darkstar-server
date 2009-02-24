@@ -3,8 +3,14 @@ package ar.edu.unicen.exa.server.communication.tasks;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
+
+import com.jme.math.Vector3f;
 import com.sun.sgs.app.ClientSession;
+
+import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
+import common.messages.MessageFactory;
+import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
 import common.messages.notify.MsgMove;
 
@@ -18,7 +24,7 @@ import common.messages.notify.MsgMove;
  * @encoding UTF-8.
  */
 public final class TMove extends TaskCommunication {
-	
+
 	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1351514003104851241L;
 
@@ -31,7 +37,7 @@ public final class TMove extends TaskCommunication {
 	public TMove(final IMessage msg) {
 		super(msg);
 	}
-	
+
 	/**
 	 * Crear y devuelve una instancia de la clase.
 	 * 
@@ -42,7 +48,7 @@ public final class TMove extends TaskCommunication {
 	public TaskCommunication factoryMethod(final IMessage msg) {
 		return new TMove(msg);
 	}
-	
+
 	/**
 	 * Este método es el encargado de actualizar la posición del {@link 
 	 * player}, como así también enviar a las demás celdas el mensaje de
@@ -54,47 +60,79 @@ public final class TMove extends TaskCommunication {
 	 * @author Sebastian Perruolo <sebastianperruolo at gmail dot com/>
 	 * @author Pablo Inchausti <inchausti.pablo at gmail dot com/>
 	 * 
+	 * TODO review implementation.
+	 * 
 	 * @encoding UTF-8
 	 */
 	public void run() {
 		// Instancia del jugador.
 		Player player = getPlayerAssociated();
-		
+
 		// Recuperar la celda actual.
 		Cell actualCell = getCellAssociated();
-		
+
 		// Castear al mensage que corresponda.
 		MsgMove msg = (MsgMove) getMessage();
 
-		// Actualizamos la posicion del jugador.
-		player.setPosition(msg.getPosDestino());
+		// Obtener la posicion destino
+		Vector3f posDestino = msg.getPosDestino();
+
+		// Actualizamos la posicion del player
+		player.setPosition(posDestino);
 
 		// Obtener la estructura del mundo actual.
 		IGridStructure structure = actualCell.getStructure();
 
-		// Obtner la celda destino.
-		Cell destino = structure.getCell(msg.getPosDestino());
-		
+		// Session del player.
 		ClientSession session = player.getSession();
+
 		// Si el jugador cambio de celda.
-		if (!actualCell.equals(destino)) {
-			// No habria que avisarle por medio de un mensaje a los restantes 
-			// jugadores que se encuentran en la misma celda que el jugador? 
-			// ya que no va a estar mas porque se cambio de celda o el jugador
-			// desaparece de la escena por medio del frustum?
+		if (!actualCell.isInside(posDestino)) {
+			
+			// Crear el mensaje de partida del jugador.
+			IMessage msgLeft = null;
+			try {
+				msgLeft = MessageFactory.getInstance().createMessage(
+						MsgTypes.MSG_LEFT_TYPE);
+				// Seteo el id del jugador como mensaje del mismo
+				((MsgPlainText) msgLeft).setMsg(player.getIdEntity());
+			} catch (UnsopportedMessageException e1) {
+				e1.printStackTrace();
+			}			
+			
+			// lo envio por la celda que ya no ocupo
+			actualCell.send(msgLeft, player.getSession());
+			
+			Cell[] adyacentes = structure.getAdjacents(
+					actualCell, player.getPosition()
+			);
+
+			if (adyacentes != null) {
+				// Notificar a las celdas visibles que el jugador se retiró
+				for (int i = 0; i < adyacentes.length; i++) {
+					adyacentes[i].send(msg, session);
+				}
+			}			
+			
+			// salgo de la celda actual
 			actualCell.leaveFromChannel(session);
-			destino.joinToChannel(session);
+
+			//obtener la celda destino
+			actualCell = structure.getCell(posDestino);
+
+			// cambio de canal al nuevo.
+			actualCell.joinToChannel(session);
 		}
-		
+
 		// Crear el mensaje de llegada del jugador al nuevo mundo.
 		msg.setType(MsgTypes.MSG_MOVE_NOTIFY_TYPE);
-		
+
 		// Notificar a la misma celda que el jugador se movió.
-		destino.send(msg, session);
-		
-		Cell[] adyacentes = structure.getAdjacents(destino,
+		actualCell.send(msg, session);
+
+		Cell[] adyacentes = structure.getAdjacents(actualCell,
 				player.getPosition());
-		
+
 		if (adyacentes != null) {
 			// Notificar a las celdas visibles que el jugador se movió
 			for (int i = 0; i < adyacentes.length; i++) {
