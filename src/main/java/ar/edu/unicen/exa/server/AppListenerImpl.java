@@ -1,5 +1,9 @@
 package ar.edu.unicen.exa.server;
 
+import java.io.Serializable;
+import java.util.Properties;
+import java.util.logging.Logger;
+
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
@@ -7,15 +11,10 @@ import ar.edu.unicen.exa.server.grid.MatrixGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 import ar.edu.unicen.exa.server.player.UserSessionListener;
 
-
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppListener;
-import java.io.Serializable;
-import java.util.Properties;
-import java.util.logging.Logger;
-
-import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.ClientSession;
+import com.sun.sgs.app.ClientSessionListener;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
@@ -53,13 +52,13 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	private static final int CELL_SIZE = 100;
 
 	/** Posición original X del primer mundo. */
-	private static final float SPAWN_POSITION_WORLD1_X = 100;
+	private static final float SPAWN_POSITION_WORLD1_X = 50;
 	
 	/** Posición original Y del primer mundo. */
 	private static final float SPAWN_POSITION_WORLD1_Y = 0;
 	
 	/** Posición original Z del primer mundo. */
-	private static final float SPAWN_POSITION_WORLD1_Z = 100;
+	private static final float SPAWN_POSITION_WORLD1_Z = 50;
 	
 	/** Posición original X del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_X = 150;
@@ -108,7 +107,6 @@ public final class AppListenerImpl implements AppListener, Serializable {
 				SPAWN_POSITION_WORLD2_Z
 			);
 		gridManager.addStructure(world2);
-
 	}
 
 	/** 
@@ -146,7 +144,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		}
 		return null;
 	}
-	
+		
 	/**
 	 * En este metodo el {@link Player} ingresa a un mundo por defecto.
 	 * Luego se coloco al {@link Player} en la posicion inicial y angulo por 
@@ -154,24 +152,34 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	 * y finalmente enviar el mensaje {@link MsgArrived} a las celdas 
 	 * correspondientes.
 	 *  
-	 * @param player {@link Player} que ingresa al mundo. 
+	 * @param player {@link Player} que ingresa al mundo.
+	 * 
+	 * TODO debe ser mas inteligente esto. Si tengo un estado almacenado debe
+	 * reutilizarse el mismo.
 	 */
 	public void enterWorld(final Player player) {
 		// Obtener el mundo por defecto.
 		IGridStructure structure = GridManager.getInstance()
 			.getDefaultStructure();
+		
 		// Actualizar el jugador con el id del mundo.
 		player.setActualWorld(structure.getIdWorld());
+
 		// Definicion del angulo por defecto.
 		player.setAngle(new Vector3f(1, 1, 1));
+		
 		// Establecer la posicion inicial del jugador dentro del mundo.
 		player.setPosition(structure.getSpawnPosition());
+		
 		// Obtener la celda por defecto a partir del nuevo mundo.
 		Cell cell = structure.getSpawnCell();
+		
 		// Obtener la sesion del jugador.
 		ClientSession session = player.getSession();
+		
 		// Suscribir al jugador a la nueva celda.
 		cell.joinToChannel(session);
+		
 		// Crear el mensaje de ingreso al mundo por defecto.
 		IMessage msgArrived = null;
 		try {
@@ -182,8 +190,10 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		} catch (UnsopportedMessageException e) {
 			e.printStackTrace();
 		}
+		
 		// Notificar a la celda por defecto que ingreso el jugador.
 		cell.send(msgArrived, session);
+
 		// Obtener los adyacentes de la nueva celda.
 		Cell[] adyacentes = structure
 			.getAdjacents(cell, player.getPosition());
