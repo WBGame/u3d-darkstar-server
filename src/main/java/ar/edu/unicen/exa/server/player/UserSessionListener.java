@@ -7,13 +7,12 @@ import java.util.logging.Logger;
 
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
 import ar.edu.unicen.exa.server.communication.processors
-.ServerMsgProssesorFactory;
+		 .ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 
 import com.sun.sgs.app.AppContext;
-import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
@@ -70,7 +69,7 @@ implements ClientSessionListener, Serializable {
 	public void setPlayer(final Player player) {
 		if (player == null) {
 			throw new NullPointerException(
-					"No existe una instancia para la clase Player");
+			"No existe una instancia para la clase Player");
 		}
 		DataManager dataMgr = AppContext.getDataManager();
 		try {
@@ -90,8 +89,6 @@ implements ClientSessionListener, Serializable {
 	 * se realiza el procesamiento del mismo.
 	 *  
 	 * @param msg mensaje que se recibe del cliente.
-	 * 
-	 * TODO review code fix.
 	 */
 	public void receivedMessage(final ByteBuffer msg) {
 		try {
@@ -103,39 +100,45 @@ implements ClientSessionListener, Serializable {
 
 			LOGGER.info("Llego mensaje directo al servidor tipo " 
 					+ iMessage.getType());
-			
+
 			// Obtener el mundo actual del jugador.
 			IGridStructure structure = GridManager.getInstance()
-				.getStructure(getPlayer().getActualWorld());
-			
+			.getStructure(getPlayer().getActualWorld());
+
 			// Obtener la celda donde se encuentra el jugador.
 			Cell cell = structure.getCell(getPlayer().getPosition());
 
 			// Inicialización del player.
 			processor.setPlayerAssociated(getPlayer());
-
 			processor.setCellAssociated(cell);
-			
+
 			// Ejecutar el procesador/tarea asociado/a al mensaje recivido.
 			processor.process(iMessage);
-			
 		} catch (MalformedMessageException e) {
 			LOGGER.log(Level.WARNING, "Exception: {0}", e);
 		} catch (UnsopportedMessageException e) {
 			LOGGER.log(Level.WARNING, "Exception: {0}", e);
+		} catch (Exception e) { 
+			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Desconecta al {@link Player} de la sesión que tiene establecida con el 
 	 * servidor. 
+	 * ClientSession a partir de este momento es null porque el usuario ya no 
+	 * está logueado en el sistema.
 	 * 
-	 * @param graceful si {@code true}, el cliente se desconecta
-	 *        correctamente.
+	 * @param graceful {@code true} si el usuario se desconecto utilizando el 
+	 *        método logout presente en el cliente. {@code false} en otro caso.
+	 * 
+	 * @see {@linkplain SimpleClient#logout(boolean) }
 	 */
 	public void disconnected(final boolean graceful) {
 		Player player = getPlayer();
-		ClientSession session = player.getSession();
+
+		// La sesion es inutilizada para un usuario desconectado. 
+		player.setSession(null);
 
 		String grace = null; 
 		if (graceful) {
@@ -147,19 +150,15 @@ implements ClientSessionListener, Serializable {
 		LOGGER.log(
 				Level.INFO,
 				"El usuario {0} se ha desconectado {1}",
-				new Object[] { session.getName(), grace } 
+				new Object[] { player.getIdEntity() , grace } 
 		);
 
 		// Salir del mundo actual.
 		exitWorld(player);
-		
-		// La sesion es inutilizada para un usuario desconectado. 
-		player.setSession(null);
-
 	}
-	
+
 	/**
-	 * Este metodo se encarga de desuscribir el {@link Player} del canal al que
+	 * Este método se encarga de desuscribir el {@link Player} del canal al que
 	 * esta asociado y enviar el mensaje {@link MsgLeft} a los {@link Player}s
 	 * que estan en las celdas adyacentes.
 	 * 
@@ -171,36 +170,34 @@ implements ClientSessionListener, Serializable {
 		try {
 			msgLeft = MessageFactory.getInstance().createMessage(
 					MsgTypes.MSG_LEFT_TYPE);
-			// Seteo el id del jugador como mensaje del mismo.
 			((MsgPlainText) msgLeft).setMsg(player.getIdEntity());
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
 
 		// Obtener el mundo actual del jugador.
-		IGridStructure structure = GridManager.getInstance()
-			.getStructure(player.getActualWorld());
-		
+		IGridStructure structure = 
+			GridManager.getInstance().getStructure(player.getActualWorld());
+
 		// Obtener la celda donde se encuentra el jugador.
 		Cell cell = structure.getCell(player.getPosition());
-		
-		// Obtener la sesion del jugador.
-		ClientSession session = player.getSession();
-		
-		// Notificar a la celda actual que la entidad dinamica ha salido.
-		cell.send(msgLeft, session);
-		
-		// Obtener los adyacentes de la celda actual
-		Cell[] adyacentes = structure
-				.getAdjacents(cell, player.getPosition());
+
+		// Como el player se a desconectado player.getSession() retorna null, lo
+		// cual es totalmente correcto, ya que el usuario al desconectarse deja
+		// de ser válido y debe utilizarse null para poder notificar a los 
+		// restantes players que el player en cuestion ya no esta en la celda.
+		cell.send(msgLeft, player.getSession());
+
 		// Notificar a las celdas adyacentes que el jugador no se encuentra en
 		// la celda.
+		Cell[] adyacentes = structure.getAdjacents(cell, player.getPosition());
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
-					adyacentes[i].send(msgLeft, session);
+				adyacentes[i].send(msgLeft, player.getSession());
 			}
 		} 
+
 		// Desuscribir al jugador de la celda del viejo mundo.
-		cell.leaveFromChannel(session);
+		cell.leaveFromChannel(player.getSession());
 	}
 }
