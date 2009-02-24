@@ -2,6 +2,7 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import ar.edu.unicen.exa.server.grid.id.IBindingID;
@@ -180,7 +181,9 @@ public class Cell implements Serializable, IBindingID {
 	 * @param client {@link Player} a desuscribir.
 	 */
 	public final void leaveFromChannel(final ClientSession client) {
-		getChannel().leave(client);
+		if (client != null) {
+			getChannel().leave(client);
+		}
 	}
 
 	/**
@@ -205,7 +208,16 @@ public class Cell implements Serializable, IBindingID {
 	 * @param player {@link Player} que disparó el mensaje.
 	 */
 	public final void send(final IMessage msg, final ClientSession player) {
-		getChannel().send(player, msg.toByteBuffer());
+		try {
+			Iterator<ClientSession> i = getChannel().getSessions();
+			logger.info("Enviando msg " + msg.getType() + " los usuarios: ");
+			while (i.hasNext()) {
+				logger.info("Username: " + i.next().getName());
+			}
+			getChannel().send(player, msg.toByteBuffer());
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+		}
 	}
 
 	/**
