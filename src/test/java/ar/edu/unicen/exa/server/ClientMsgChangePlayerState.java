@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.jme.math.Vector3f;
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 import com.sun.sgs.client.simple.SimpleClient;
@@ -23,6 +24,7 @@ import common.messages.MessageFactory;
 import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
 import common.messages.notify.MsgChangePlayerState;
+import common.messages.notify.MsgChangeWorld;
 
 
 /**
@@ -311,13 +313,12 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 	 */
 	private IMessage buildMessageEnterWorld(final String idMundo) {
 		
-		MsgPlainText msg = null;
+		MsgChangeWorld msg = null;
 		try {
-			msg = (MsgPlainText) MessageFactory.getInstance()
-					.createMessage(MsgTypes.MSG_ENTER_WORLD_TYPE);
-			
-			msg.setMsg(idMundo);
-			
+			msg = (MsgChangeWorld) MessageFactory.getInstance()
+					.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+			msg.setIdNewWorld(idMundo);
+			msg.setSpownPosition(new Vector3f(1, 1, 1));
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
