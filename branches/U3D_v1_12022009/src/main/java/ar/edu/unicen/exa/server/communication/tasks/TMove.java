@@ -1,12 +1,13 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import java.util.logging.Logger;
+
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.ClientSession;
-
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
@@ -28,6 +29,10 @@ public final class TMove extends TaskCommunication {
 	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1351514003104851241L;
 
+	/** Logger. */
+	private static final Logger LOGGER = Logger.getLogger(
+			TMove.class.getName());
+	
 	/**
 	 * Constructor que inicializa el estado interno de la tarea con el 
 	 * parámetro.
@@ -77,6 +82,16 @@ public final class TMove extends TaskCommunication {
 		// Obtener la posicion destino
 		Vector3f posDestino = msg.getPosDestino();
 
+		LOGGER.info("Posición anterior: (" 
+				+ player.getPosition().getX() + ","
+				+ player.getPosition().getY() + ","
+				+ player.getPosition().getZ() + ")");		
+		
+		LOGGER.info("Posición recibida: (" 
+				+ posDestino.getX() + ","
+				+ posDestino.getY() + ","
+				+ posDestino.getZ() + ")");
+		
 		// Actualizamos la posicion del player
 		player.setPosition(posDestino);
 
@@ -120,6 +135,14 @@ public final class TMove extends TaskCommunication {
 			//obtener la celda destino
 			actualCell = structure.getCell(posDestino);
 
+			if (actualCell == null) {
+				LOGGER.severe("Posición invalida: (" 
+						+ posDestino.getX() + ","
+						+ posDestino.getY() + ","
+						+ posDestino.getZ() + ")");
+				return;
+			} 
+			
 			// cambio de canal al nuevo.
 			actualCell.joinToChannel(session);
 		}
