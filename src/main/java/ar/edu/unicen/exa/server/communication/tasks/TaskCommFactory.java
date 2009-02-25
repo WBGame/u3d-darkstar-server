@@ -39,7 +39,7 @@ public final class TaskCommFactory {
 		
 		try {
 			IMessage enterWorld = MessageFactory.getInstance().createMessage(
-					MsgTypes.MSG_ENTER_WORLD_TYPE);
+					MsgTypes.MSG_CHANGE_WORLD_TYPE);
 			TEnterWorld tEnterWorld = new TEnterWorld(enterWorld);
 			addComTask(tEnterWorld);
 			
