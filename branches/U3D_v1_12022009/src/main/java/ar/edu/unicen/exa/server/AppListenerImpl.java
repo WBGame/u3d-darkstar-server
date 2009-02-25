@@ -176,10 +176,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		
 		// Obtener la sesion del jugador.
 		ClientSession session = player.getSession();
-		
-		// Suscribir al jugador a la nueva celda.
-		cell.joinToChannel(session);
-		
+				
 		// Crear el mensaje de ingreso al mundo por defecto.
 		IMessage msgArrived = null;
 		try {
@@ -192,7 +189,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		}
 		
 		// Notificar a la celda por defecto que ingreso el jugador.
-		cell.send(msgArrived, session);
+		cell.send(msgArrived, null);
 
 		// Obtener los adyacentes de la nueva celda.
 		Cell[] adyacentes = structure
@@ -200,8 +197,13 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		// Notificar a las celdas adyacentes que ingreso el jugador.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
-				adyacentes[i].send(msgArrived, session);
+				adyacentes[i].send(msgArrived, null);
 			}
 		}
+
+		// Suscribir al jugador a la nueva celda.
+		// Lo hacemos al final para que no le llegue el msg de arrived al player
+		// que se esta conectando.
+		cell.joinToChannel(session);
 	}
 }
