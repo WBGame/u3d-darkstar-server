@@ -12,6 +12,7 @@ import common.messages.IMessage;
 import common.messages.MessageFactory;
 import common.messages.MsgPlainText;
 import common.messages.MsgTypes;
+import common.messages.notify.MsgChangeWorld;
 
 /**
  * La tarea se ejecutará al recibir un mensaje por un canal desde un cliente,
@@ -95,17 +96,16 @@ public final class TEnterWorld extends TaskCommunication {
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
-
 		// Obtener la sesion del jugador
 		ClientSession session = player.getSession();
-			// Notificar a la celda actual que la entidad dinamica ha salido
+		// Notificar a la celda actual que la entidad dinamica ha salido
 		cell.send(msgLeft, session);
 		// Obtener la estructura del mundo actual.
 		IGridStructure structure = cell.getStructure();
 		// Obtener los adyacentes de la celda actual.
 		Cell[] adyacentes = structure
 				.getAdjacents(cell, player.getPosition());
-		// Notificar a las celdas adyacentes que el jugador no se encuntra en
+		// Notificar a las celdas adyacentes que el jugador no se encuentra en
 		// la celda.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
@@ -118,9 +118,9 @@ public final class TEnterWorld extends TaskCommunication {
 		// Entrada al nuevo mundo.
 		
 		// Casting al tipo de mensaje correspondiente.
-		MsgPlainText msg = (MsgPlainText) getMessage();
+		MsgChangeWorld msg = (MsgChangeWorld) getMessage();
 		// Recuperar el id del nuevo mundo desde el mensaje recibido.
-		String newWorldID = msg.getMsg();
+		String newWorldID = msg.getIdNewWorld();
 		// Actualizar el jugador con el id del nuevo mundo.
 		player.setActualWorld(newWorldID);
 		// Definicion del angulo por defecto.
@@ -129,9 +129,9 @@ public final class TEnterWorld extends TaskCommunication {
 		structure = GridManager.getInstance()
 				.getStructure(newWorldID);
 		// Establecer la posicion inicial del jugador dentro del mundo.
-		player.setPosition(structure.getSpawnPosition());
+		player.setPosition(msg.getSpownPosition());
 		// Obtener la celda por defecto a partir del nuevo mundo.
-		cell = structure.getSpawnCell();
+		cell = structure.getCell(player.getPosition());
 
 		// Suscribir al jugador a la nueva celda.
 		cell.joinToChannel(session);
