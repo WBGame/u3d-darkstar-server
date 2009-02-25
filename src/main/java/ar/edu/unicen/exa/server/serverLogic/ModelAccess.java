@@ -1,5 +1,6 @@
 package ar.edu.unicen.exa.server.serverLogic;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import common.datatypes.Skin;
@@ -56,10 +57,9 @@ public final class ModelAccess {
 	 * @return El {@link Skin} relacionado al identificador del {@link Player}.
 	 */
 	public Skin getSkin(final String idPlayer) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+		Skin s = new Skin();
+		s.setSkin("skin");
+		return s;
 	}
 	
 	/**
@@ -300,10 +300,7 @@ public final class ModelAccess {
 	 *         como parametro.
 	 */
 	public Set<PlayerStat> getPlayerStats(final String idPlayer) {
-		// begin-user-code
-		// TODO Apéndice de método generado automáticamente
-		return null;
-		// end-user-code
+		return new HashSet<PlayerStat>();
 	}
 	
 	/**
