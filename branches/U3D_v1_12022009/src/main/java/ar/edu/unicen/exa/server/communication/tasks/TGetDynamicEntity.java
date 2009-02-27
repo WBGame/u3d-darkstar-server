@@ -1,10 +1,12 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import java.util.logging.Logger;
+
 import ar.edu.unicen.exa.server.entity.DynamicEntity;
 import ar.edu.unicen.exa.server.serverLogic.ModelAccess;
+
 import com.sun.sgs.app.AppContext;
 import com.sun.sgs.app.ObjectNotFoundException;
-
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
@@ -31,6 +33,11 @@ public final class TGetDynamicEntity extends TaskCommunication {
 	
 	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 8571194487175360055L;
+	
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(TGetDynamicEntity.class.getName());
+	
 	/**
 	 * El constructor.
 	 * 
@@ -57,15 +64,16 @@ public final class TGetDynamicEntity extends TaskCommunication {
 	 * con la informacion de dicha entidad para luego ser enviada al {@link
 	 * Player} que la solicito.
 	 * 
-	 * 
+	 * TODO msgArrived debe ser reemplazado por este mensaje. 
 	 */
 	public void run() {
-				
-		// Castear al mensage plano.
+		// Mensaje plano con el id de la entidad que se desea recuperar.
 		MsgPlainText msg = (MsgPlainText) getMessage();
 
 		// Obtener el id de la entidad dinamica.
 		String idDynamicEntity = msg.getMsg();
+		
+		logger.info("Recuperando el dynamic entity: " + idDynamicEntity);		
 		
 		DynamicEntity dinamicEntity = null;
 		try {
