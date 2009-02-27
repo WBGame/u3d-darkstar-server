@@ -13,6 +13,8 @@ import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 
 import com.sun.sgs.app.AppContext;
+import com.sun.sgs.app.Channel;
+import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
@@ -193,7 +195,10 @@ implements ClientSessionListener, Serializable {
 		Cell[] adyacentes = structure.getAdjacents(cell, player.getPosition());
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
-				adyacentes[i].send(msgLeft, player.getSession());
+				/* Se manda null como ClientSession (ver javadoc 
+				 * de {@link Channel#send(ClientSession, ByteBuffer)})
+				 */
+				adyacentes[i].send(msgLeft, null);
 			}
 		} 
 

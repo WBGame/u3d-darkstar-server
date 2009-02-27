@@ -125,7 +125,7 @@ public final class TMove extends TaskCommunication {
 			if (adyacentes != null) {
 				// Notificar a las celdas visibles que el jugador se retiró
 				for (int i = 0; i < adyacentes.length; i++) {
-					adyacentes[i].send(msg, session);
+					adyacentes[i].send(msg, null);
 				}
 			}			
 			
@@ -159,7 +159,7 @@ public final class TMove extends TaskCommunication {
 		if (adyacentes != null) {
 			// Notificar a las celdas visibles que el jugador se movió
 			for (int i = 0; i < adyacentes.length; i++) {
-				adyacentes[i].send(msg, session);
+				adyacentes[i].send(msg, null);
 			}
 		}
 	}
