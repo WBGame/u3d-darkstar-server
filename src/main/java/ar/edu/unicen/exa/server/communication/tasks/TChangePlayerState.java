@@ -79,7 +79,7 @@ public final class TChangePlayerState extends TaskCommunication {
 		if (adyacentes != null) {
 			// Notificar a las celdas adyacentes.
 			for (int i = 0; i < adyacentes.length; i++) {
-				adyacentes[i].send(msg, session);
+				adyacentes[i].send(msg, null);
 			}
 		}
 	}

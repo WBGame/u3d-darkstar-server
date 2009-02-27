@@ -205,7 +205,9 @@ public class Cell implements Serializable, IBindingID {
 	 * Player}s asociados al canal({@link Channel}) contenido por la celda.
 	 * 
 	 * @param msg mensaje a enviar.
-	 * @param player {@link Player} que disparó el mensaje.
+	 * @param player {@link Player} que disparó el mensaje. null si se desea
+	 * 		que se envíe el mensaje sin comprobar que el emisor pertenezca al 
+	 * 		channel
 	 */
 	public final void send(final IMessage msg, final ClientSession player) {
 		try {

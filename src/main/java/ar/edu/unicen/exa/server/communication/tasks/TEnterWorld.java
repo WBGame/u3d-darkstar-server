@@ -109,7 +109,7 @@ public final class TEnterWorld extends TaskCommunication {
 		// la celda.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
-					adyacentes[i].send(msgLeft, session);
+					adyacentes[i].send(msgLeft, null);
 			}
 		} 
 		// Desuscribir al jugador de la celda del viejo mundo.
@@ -154,7 +154,7 @@ public final class TEnterWorld extends TaskCommunication {
 		// Notificar a las celdas adyacentes que ingresó el jugador.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
-				adyacentes[i].send(msgArrived, session);
+				adyacentes[i].send(msgArrived, null);
 			}
 		}
 	}
