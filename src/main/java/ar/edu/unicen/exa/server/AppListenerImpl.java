@@ -34,41 +34,41 @@ import common.messages.MsgTypes;
  * @encoding UTF-8.
  */
 public final class AppListenerImpl implements AppListener, Serializable {
-	
+
 	/** Para cumplir con la clase serializable. */
 	private static final long serialVersionUID = 1L;
 
 	/** Logger. */
 	private static Logger logger = 
 		Logger.getLogger(AppListenerImpl.class.getName());
-	
-    /** Ancho de la grilla. */
+
+	/** Ancho de la grilla. */
 	private static final int GRID_WIDTH = 10;
-	
+
 	/** Alto de la grilla. */
 	private static final int GRID_HEIGHT	= 10;
-	
+
 	/** Tamaño de la celda. Cuadrada (100x100). */
 	private static final int CELL_SIZE = 100;
 
 	/** Posición original X del primer mundo. */
-	private static final float SPAWN_POSITION_WORLD1_X = 50;
-	
+	private static final float SPAWN_POSITION_WORLD1_X = 300;
+
 	/** Posición original Y del primer mundo. */
-	private static final float SPAWN_POSITION_WORLD1_Y = 0;
-	
+	private static final float SPAWN_POSITION_WORLD1_Y = 100;
+
 	/** Posición original Z del primer mundo. */
-	private static final float SPAWN_POSITION_WORLD1_Z = 50;
-	
+	private static final float SPAWN_POSITION_WORLD1_Z = 300;
+
 	/** Posición original X del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_X = 150;
-	
+
 	/** Posición original Y del segundo mundo. */
-	private static final float SPAWN_POSITION_WORLD2_Y = 0;
-	
+	private static final float SPAWN_POSITION_WORLD2_Y = 100;
+
 	/** Posición original Z del segundo mundo. */
 	private static final float SPAWN_POSITION_WORLD2_Z = 150;
-	
+
 	/**
 	 * Este metodo es invocado cuando el servidor se ejecuta por primera 
 	 * vez. Crea los mundos en los cuales una entidad dinamica pueda 
@@ -82,8 +82,8 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		logger.info("initialize server state");
 		// Obtener la instancia de GridManager.
 		GridManager gridManager = GridManager.getInstance();
-		
-		
+
+
 		// Crear la grilla a partir de los datos definidos anteriormente.
 		IGridStructure world1 = new MatrixGridStructure(
 				GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
@@ -93,10 +93,10 @@ public final class AppListenerImpl implements AppListener, Serializable {
 				SPAWN_POSITION_WORLD1_X,
 				SPAWN_POSITION_WORLD1_Y,
 				SPAWN_POSITION_WORLD1_Z
-			);
+		);
 		// Agregamos el nuevo mundo al GridManager.
 		gridManager.addStructure(world1);
-		
+
 		// Creación del segundo mundo con las mismas caracteristicas que el
 		// primero, salvo la posicion inicial del jugador dentro de este mundo.
 		IGridStructure world2 = new MatrixGridStructure(
@@ -105,7 +105,7 @@ public final class AppListenerImpl implements AppListener, Serializable {
 				SPAWN_POSITION_WORLD2_X,
 				SPAWN_POSITION_WORLD2_Y,
 				SPAWN_POSITION_WORLD2_Z
-			);
+		);
 		gridManager.addStructure(world2);
 	}
 
@@ -138,13 +138,13 @@ public final class AppListenerImpl implements AppListener, Serializable {
 			// Asigno la nueva sesión al jugador.
 			player.setSession(session);
 			user.setPlayer(player);
-			// Ingresar el jugador al mundo.
+				// Ingresar el jugador al mundo.
 			enterWorld(player);
 			return user;
 		}
 		return null;
 	}
-		
+
 	/**
 	 * En este metodo el {@link Player} ingresa a un mundo por defecto.
 	 * Luego se coloco al {@link Player} en la posicion inicial y angulo por 
@@ -156,44 +156,53 @@ public final class AppListenerImpl implements AppListener, Serializable {
 	 * 
 	 * TODO debe ser mas inteligente esto. Si tengo un estado almacenado debe
 	 * reutilizarse el mismo.
+	 * 
+	 * TODO debe agregarse el tratamiento de excepsiones y ademas decidir que 
+	 * hacer si no es posible suscribir al jugador al mundo.
 	 */
 	public void enterWorld(final Player player) {
 		// Obtener el mundo por defecto.
 		IGridStructure structure = GridManager.getInstance()
-			.getDefaultStructure();
-		
+		.getDefaultStructure();
+
 		// Actualizar el jugador con el id del mundo.
 		player.setActualWorld(structure.getIdWorld());
 
 		// Definicion del angulo por defecto.
 		player.setAngle(new Vector3f(1, 1, 1));
-		
+
 		// Establecer la posicion inicial del jugador dentro del mundo.
 		player.setPosition(structure.getSpawnPosition());
-		
+
 		// Obtener la celda por defecto a partir del nuevo mundo.
 		Cell cell = structure.getSpawnCell();
-		
+
 		// Obtener la sesion del jugador.
 		ClientSession session = player.getSession();
-				
+
 		// Crear el mensaje de ingreso al mundo por defecto.
 		IMessage msgArrived = null;
 		try {
 			msgArrived = MessageFactory.getInstance()
-				.createMessage(MsgTypes.MSG_ARRIVED_TYPE);
+			.createMessage(MsgTypes.MSG_ARRIVED_TYPE);
+
 			// Seteo el mensaje con el id del jugador.
 			((MsgPlainText) msgArrived).setMsg(player.getIdEntity());
 		} catch (UnsopportedMessageException e) {
 			e.printStackTrace();
+			
+			logger.severe(
+			"Fallo la creación del mensaje arrived. Abortando EnterWorld.");
+			
+			return;
 		}
-		
+
 		// Notificar a la celda por defecto que ingreso el jugador.
 		cell.send(msgArrived, null);
 
 		// Obtener los adyacentes de la nueva celda.
 		Cell[] adyacentes = structure
-			.getAdjacents(cell, player.getPosition());
+		.getAdjacents(cell, player.getPosition());
 		// Notificar a las celdas adyacentes que ingreso el jugador.
 		if (adyacentes != null) {
 			for (int i = 0; i < adyacentes.length; i++) {
