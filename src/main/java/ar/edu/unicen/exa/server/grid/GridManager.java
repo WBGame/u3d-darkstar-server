@@ -10,6 +10,7 @@ import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedObject;
 import com.sun.sgs.app.NameNotBoundException;
 import com.sun.sgs.app.ObjectNotFoundException;
+import com.sun.sgs.app.TransactionException;
 
 //TODO Uniformizar el codigo para el tratamiento de las excepciones porque en
 //todos los casos es distinto.
@@ -59,7 +60,7 @@ public final class GridManager implements Serializable, ManagedObject {
 
 	/** Metodo privado para implementar un singleton. */
 	private GridManager() { }
-	
+
 	/**
 	 * Retorna la estructura que se corresponde con el identificador pasado por 
 	 * parametro.
@@ -69,17 +70,19 @@ public final class GridManager implements Serializable, ManagedObject {
 	 * @return IGridStructure estructura asociada al parametro.
 	 */
 	public IGridStructure getStructure(final String id) {
-	
+
 		DataManager dataManager = AppContext.getDataManager();
 		IGridStructure grid = null;
 		try {
 			String name = IDManager.getBindingName(
 					IGridStructure.class, 
 					id
-				);
+			);
 			grid = (IGridStructure) dataManager.getBinding(name);
-		} catch (NameNotBoundException e) {
-			e.printStackTrace();
+		} catch (ObjectNotFoundException e) {
+			logger.severe(e.getMessage());
+		} catch (TransactionException e) {
+			logger.severe(e.getMessage());
 		}
 
 		return grid;
@@ -105,9 +108,11 @@ public final class GridManager implements Serializable, ManagedObject {
 					+ "mundo: " + name);
 			dataManager.setBinding(name, structure);
 		} catch (ObjectNotFoundException e) {
-			e.printStackTrace();
+			logger.severe(e.getMessage());
+		} catch (TransactionException e) {
+			logger.severe(e.getMessage());
 		}
-		
+
 		if (defaultWorld == null) {
 			setDefaultWorld(structure.getIdWorld());
 		}
@@ -135,6 +140,11 @@ public final class GridManager implements Serializable, ManagedObject {
 				// Registro la instancia dentro del Object Store.
 				d.setBinding(name , instance);
 				logger.info("Se ha creado una nueva instancia del GridManager");
+			} catch (Exception e) {
+				logger.severe(
+						"No debe fallar la recuperación del GridManager"
+				);
+				instance = null;
 			}
 		}	
 		return instance;
@@ -149,11 +159,19 @@ public final class GridManager implements Serializable, ManagedObject {
 		String name = IDManager.getBindingName(
 				IGridStructure.class, 
 				id
-			);
-		DataManager dataManager = AppContext.getDataManager();
-		dataManager.removeBinding(name);
-	}
+		);
 	
+		DataManager dataManager = AppContext.getDataManager();
+		
+		try {
+			dataManager.removeBinding(name);	
+		} catch (NameNotBoundException e) {
+			logger.warning(e.getMessage());
+		} catch (TransactionException e) {
+			logger.severe(e.getMessage());
+		}
+	}
+
 	/**
 	 * Retorna la estructura por defecto dependiendo del identificador
 	 * definido en el atributo DEFAULT_WORLD.
