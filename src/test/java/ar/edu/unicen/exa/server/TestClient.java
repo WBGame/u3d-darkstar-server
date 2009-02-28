@@ -10,6 +10,9 @@ import java.util.Properties;
 //import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.edu.unicen.exa.server.ClientMsgMove.ChannelListener;
+
+import com.jme.math.Vector3f;
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 import com.sun.sgs.client.simple.SimpleClient;
@@ -23,12 +26,17 @@ import common.messages.MsgEmpty;
 import common.messages.MsgTypes;
 //import common.messages.MsgEmpty;
 import common.messages.MsgPlainText;
+import common.messages.notify.MsgChangeWorld;
+import common.messages.notify.MsgMove;
 
 
 /**
- * Cliente simple para ser usado desde los test scripts
+ * Cliente simple para ser usado desde los test scripts. Contiene la funcionalidad
+ * necesaria para testear login, movimiento, envio de mensajes etc.
+ * Cualquier otra funcionalidad que requiera ser testeada, puede extender esta
+ * clase.
  * 
- * @author GerÛnimo DÌaz <geronimod at gmail dot com>
+ * @author Ger√≥nimo D√≠az <geronimod at gmail dot com>
  * @encoding UTF-8   
  */
 
@@ -57,6 +65,19 @@ public class TestClient implements SimpleClientListener {
 	 */
 	private ClientChannel channel;
 	
+	/** Variables para poder cumplir con checkstyle. */
+	/** Posicion origen del jugador. */
+	private static final int X1 = 10;
+	/** Posicion origen del jugador. */
+	private static final int Y1 = 15;
+	/** Posicion origen del jugador. */
+	private static final int Z1 = 20;
+	/** Posicion destino del jugador. */
+	private static final int X2 = 0;
+	/** Posicion destino del jugador. */
+	private static final int Y2 = 10;
+	/** Posicion destino del jugador. */
+	private static final int Z2 = 10;
 	
 	/**
 	 * Creamos un cliente {@link SimpleClient}.
@@ -146,7 +167,7 @@ public class TestClient implements SimpleClientListener {
 	 * @param reason la razon por la cual el login fallo.
 	 */
 	public final void loginFailed(final String reason) {
-		logger.info("FallÛ el Logeo de usuario, razÛn: " + reason);
+		logger.info("Fall√≥ el Logeo de usuario, raz√≥n: " + reason);
 	}
 
 	/**
@@ -162,17 +183,23 @@ public class TestClient implements SimpleClientListener {
 	}
 
 	/**
-	 * No tiene funcionalidad asociada debido a que no se hace uso de los 
-	 * channels.
+	 * Llamado por el server luego del login, asocia un canal al usuario conectado.
 	 * 
 	 * @param channel el canal por el cual se envian los mensajes.
 	 * 
 	 * @return ClientChannelListener Capturador de eventos que se producen 
 	 * en el canal channel.
 	 */
-	public final ClientChannelListener joinedChannel(
-			final ClientChannel channel) {
-		return null;
+	public ClientChannelListener joinedChannel(
+			final ClientChannel ch) {
+		this.channel = ch;
+		String channelName = ch.getName();
+		logger.info("Suscripto al canal " + channelName);
+		return new ChannelListener();
+	}
+	
+	public ClientChannel channel(){
+		return this.channel;
 	}
 	/**
 	 * 
@@ -216,6 +243,29 @@ public class TestClient implements SimpleClientListener {
 	}
 
 	/**
+	 * Codifica el texto y lo env√≠a directamente al servidor.
+	 * 
+	 * @param message mensaje a enviar directamente al servidor
+	 */
+	
+	protected void sendMessage(final IMessage message) {
+		// Convierto Mensaje a ByteBuffer
+		ByteBuffer msg = message.toByteBuffer();
+    	
+        try {
+        		simpleClient.send(msg);
+                MsgPlainText iMsg = (MsgPlainText) message;
+
+                logger.info("Se ha enviado el tipo de mensaje " 
+                		+ iMsg.getType() 
+                		+ " con el mensaje mundo: " + iMsg.getMsg());
+                
+        	} catch (Exception e) {
+                e.printStackTrace();
+        	}
+	}
+	
+	/**
 	 * Se utiliza la instancia de simpreClient para conocer el estado actual 
 	 * de conexion correspondiente al usuario.
 	 * 
@@ -242,20 +292,64 @@ public class TestClient implements SimpleClientListener {
 		this.password = password;
 	}
 
+	
+	/**
+	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
+	 * estableciendo el id del mundo al que se desea ingresar. Dicho mensaje
+	 * se codifica en un {@link ByteBuffer} para ser enviado directamente al
+	 * servidor.
+	 * 
+	 * Se realiza mediante un cambio de mundo pq semanticamente es lo mismo
+	 * 
+	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
+	 * @param idMundo mundo al que se desa ingresar
+	 */
+	public IMessage buildMessageEnterWorld(final String idMundo) {
+		return buildMessageChangeWorld(idMundo);
+	}
+	
 	public IMessage buildMessageChangeWorld(final String idMundo) {
-
-		MsgPlainText msg = null;
+		MsgChangeWorld msg = null;
 		try {
-			msg = (MsgPlainText) MessageFactory.getInstance()
+			msg = (MsgChangeWorld) MessageFactory.getInstance()
 			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
 
-			msg.setMsg(idMundo);
+			msg.setIdNewWorld(idMundo);
+			msg.setSpownPosition(new Vector3f(1, 1, 1));
 
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
 
 		return msg;
+	}
+	
+	public IMessage buildMessageMove() {
+		MsgMove iMsg = null;
+		try {
+			//	Creo un mensaje
+			iMsg = (MsgMove) MessageFactory.getInstance()
+			.createMessage(MsgTypes.MSG_MOVE_SEND_TYPE);
+
+		} catch (UnsopportedMessageException e) {
+			e.printStackTrace();
+		}
+
+		// Creo origen
+		Vector3f origen =  new Vector3f();
+		// 10, 15, 20
+		origen.set(X1, Y1, Z1);
+		// Seteo el origen
+		iMsg.setPosOrigen(origen);
+		// Creo Destino
+		Vector3f destino =  new Vector3f();
+		// 0, 10, 10
+		destino.set(X2, Y2, Z2);
+		// Seteo el destino
+		iMsg.setPosDestino(destino);
+		// Seteo el id de la Entidad
+		iMsg.setIdDynamicEntity(login);
+		return iMsg;
 	}
 	
 	/**
@@ -270,14 +364,14 @@ public class TestClient implements SimpleClientListener {
 
 		try {
 			this.channel.send(msj);
-			MsgPlainText iMsg = (MsgPlainText) message;
+			/*MsgPlainText iMsg = (MsgPlainText) message;
 
 			logger.info("Se ha enviado el tipo de mensaje " 
 					+ iMsg.getType() 
 					+ " con el mensaje " 
 					+ iMsg.getMsg() 
 					+ " a travez del canal "  
-					+ this.channel.getName());
+					+ this.channel.getName());*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
