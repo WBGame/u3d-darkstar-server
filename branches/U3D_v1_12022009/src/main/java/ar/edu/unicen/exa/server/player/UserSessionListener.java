@@ -6,15 +6,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.edu.unicen.exa.server.communication.processors.ServerMsgProcessor;
-import ar.edu.unicen.exa.server.communication.processors
-		 .ServerMsgProssesorFactory;
+import ar.edu.unicen.exa.server.communication
+		.processors.ServerMsgProssesorFactory;
 import ar.edu.unicen.exa.server.grid.Cell;
 import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 
 import com.sun.sgs.app.AppContext;
-import com.sun.sgs.app.Channel;
-import com.sun.sgs.app.ClientSession;
 import com.sun.sgs.app.ClientSessionListener;
 import com.sun.sgs.app.DataManager;
 import com.sun.sgs.app.ManagedReference;
