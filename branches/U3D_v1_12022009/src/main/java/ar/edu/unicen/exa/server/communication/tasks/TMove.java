@@ -82,15 +82,14 @@ public final class TMove extends TaskCommunication {
 		// Obtener la posicion destino
 		Vector3f posDestino = msg.getPosDestino();
 
-		LOGGER.info("Posición anterior: (" 
+		LOGGER.info("Movimiento: '" + player.getIdEntity() + "' (" 
 				+ player.getPosition().getX() + ","
 				+ player.getPosition().getY() + ","
-				+ player.getPosition().getZ() + ")");		
-		
-		LOGGER.info("Posición recibida: (" 
+				+ player.getPosition().getZ() + ") -> ("
 				+ posDestino.getX() + ","
 				+ posDestino.getY() + ","
-				+ posDestino.getZ() + ")");
+				+ posDestino.getZ() + ")"
+			);
 		
 		// Actualizamos la posicion del player
 		player.setPosition(posDestino);
@@ -159,6 +158,10 @@ public final class TMove extends TaskCommunication {
 		if (adyacentes != null) {
 			// Notificar a las celdas visibles que el jugador se movió
 			for (int i = 0; i < adyacentes.length; i++) {
+				LOGGER.info("Reenviando mensaje a la celda adyacente: '" 
+						+ adyacentes[i].getId() + "' del movimiento de '" 
+						+ player.getIdEntity() + "' en la celda '"
+						+ actualCell.getId() + "'");
 				adyacentes[i].send(msg, null);
 			}
 		}
