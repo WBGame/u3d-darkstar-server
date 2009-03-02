@@ -73,7 +73,10 @@ public class Cell implements Serializable, IBindingID {
 		IDManager.setNewID(this);
 
 		this.bounds = cellBunds;
-		logger.info("x= " + bounds.getX() + " y= " + bounds.getY());
+		logger.info("Celda " + id 
+				+ " -> x= " + bounds.getX() 
+				+ " y= " + bounds.getY());
+
 		if (parent != null) {
 			refStructure = AppContext.getDataManager().createReference(parent);
 		}
@@ -212,10 +215,19 @@ public class Cell implements Serializable, IBindingID {
 	public final void send(final IMessage msg, final ClientSession player) {
 		try {
 			Iterator<ClientSession> i = getChannel().getSessions();
-			logger.info("Enviando msg " + msg.getType() + " los usuarios: ");
+			StringBuffer logMsg = new StringBuffer(this.getChannel().getName());
+			logMsg.append("->Enviando msg ").append(msg.getType())
+					.append(" los usuarios: ");
+			boolean empty = true;
 			while (i.hasNext()) {
-				logger.info("Username: " + i.next().getName());
+				empty = false;
+				logMsg.append(" ");
+				logMsg.append(i.next().getName());
 			}
+			if (empty) {
+				logMsg.append("-nadie-");
+			}
+			logger.info(logMsg.toString());
 			getChannel().send(player, msg.toByteBuffer());
 		} catch (Exception e) {
 			logger.severe(e.getMessage());
