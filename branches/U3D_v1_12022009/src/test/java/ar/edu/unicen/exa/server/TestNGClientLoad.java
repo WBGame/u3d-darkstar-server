@@ -50,7 +50,7 @@ public class TestNGClientLoad {
 				client.setPassword("TestClient" + i);
 				client.login();
 				LOGGER.info("TestClient nº:" + i + " Logged");
-				IMessage message = client.buildMessageEnterWorld("1");
+				IMessage message = client.buildMessageEnterWorld("100");
 				client.sendMessage(message);
 				message = client.buildMessageMove();
 				client.sendToChannel(message);
