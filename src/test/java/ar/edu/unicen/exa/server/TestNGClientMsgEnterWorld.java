@@ -43,11 +43,11 @@ public class TestNGClientMsgEnterWorld {
 	
   	@Test(groups = {"success"})
 	public void TestChangeWorld() {
-		assert changeWorld("1");
+		assert changeWorld("100");
 	}
 	
   	/**
-  	 * Activar este test cuando sepamos que mundos hay disponibles.
+  	 * NOTA: Tenemos los mundos 100 y 201, pero cualquier otro tambien funciona.
   	 * 
   	 */
   	/*@Test(groups = {"failure"})
