@@ -2,6 +2,8 @@ package ar.edu.unicen.exa.server.grid;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.AppContext;
 
@@ -20,6 +22,10 @@ public class MatrixGridStructure implements IGridStructure {
 
 	/** Para cumplir con la version de la clase Serializable. */
 	private static final long serialVersionUID = 3105473591463699480L;
+
+	/** Logger. */
+	private static Logger logger = 
+		Logger.getLogger(GridManager.class.getName());
 	/** 
 	 * Posición X por defecto para cuando el {@link Player} ingresa al mundo 
 	 * ({@link IGridStructure}) por primera vez. 
@@ -163,6 +169,7 @@ public class MatrixGridStructure implements IGridStructure {
 
 	 */
 	public final Cell[] getAdjacents(final Cell cell, final Vector3f position) {
+		long currentTime = System.currentTimeMillis();
 		//Vector result = new Vector();
 		ArrayList<Cell> result = new ArrayList<Cell>();
 		int widthIterator = -1;
@@ -223,7 +230,8 @@ public class MatrixGridStructure implements IGridStructure {
 				structure[widthIterator + vertical][heightIterator + horizontal]
 			);
 		}
-		
+		logger.info("Elapsed time to resolve adjacents: " 
+				+ (System.currentTimeMillis() - currentTime) + " ms");
 		Cell[] array = new Cell[result.size()];
 		return result.toArray(array);
 	}
