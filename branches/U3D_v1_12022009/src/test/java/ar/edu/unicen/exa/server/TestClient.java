@@ -198,6 +198,11 @@ public class TestClient implements SimpleClientListener {
 		return new ChannelListener();
 	}
 	
+	public boolean isJoinedToChannel(){
+		return (this.channel != null);
+		
+	}
+	
 	public ClientChannel channel(){
 		return this.channel;
 	}
@@ -363,6 +368,9 @@ public class TestClient implements SimpleClientListener {
 		ByteBuffer msj = message.toByteBuffer();
 
 		try {
+			while(!isJoinedToChannel())
+				logger.info("No Joined!!");
+			logger.info("Joined to:" + this.channel.getName());
 			this.channel.send(msj);
 			/*MsgPlainText iMsg = (MsgPlainText) message;
 
