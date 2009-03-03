@@ -1,13 +1,15 @@
 package ar.edu.unicen.exa.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 import org.testng.annotations.*;
 
+
 import common.messages.IMessage;
+import common.messages.MessageFactory;
+import common.messages.MsgPlainText;
+import common.messages.MsgTypes;
+import common.messages.notify.MsgChangeWorld;
 
 import ar.edu.unicen.exa.server.TestClient;
 
@@ -32,7 +34,6 @@ public class TestNGClientMsgEnterWorld {
 
 	private TestClient simpleClient;
 
-	
 	@BeforeClass
 	public void setUp() {
 		simpleClient = new TestClient();
@@ -41,11 +42,18 @@ public class TestNGClientMsgEnterWorld {
   		simpleClient.login();
   	}
 	
+	/*@AfterClass
+	 void desconectar(){
+		simpleClient.logout();
+	}*/
+	
   	@Test(groups = {"success"})
 	public void TestChangeWorld() {
-		assert changeWorld("100");
+		assert changeWorld("201");
 	}
 	
+
+
   	/**
   	 * NOTA: Tenemos los mundos 100 y 201, pero cualquier otro tambien funciona.
   	 * 
@@ -59,17 +67,18 @@ public class TestNGClientMsgEnterWorld {
   	 * por el canal suscripto.
   	 * @return boolean
   	 */
+
   	protected final boolean changeWorld(String worldId) {
   		LOGGER.info("Cambiando al mundo: '" + worldId + "' ...");
   		try {
-			IMessage message = simpleClient.buildMessageChangeWorld(worldId);
-			simpleClient.sendToChannel(message);
-		} catch (Exception e) {
+  			IMessage iMsg= simpleClient.buildMessageChangeWorld(worldId);
+  			for(int i=0; i<2000000000;i++);
+  			simpleClient.sendToChannel(iMsg);
+  		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
   		return true;
-		
 	}
 	
 }
