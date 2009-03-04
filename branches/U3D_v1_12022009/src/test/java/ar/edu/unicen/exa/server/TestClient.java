@@ -10,7 +10,7 @@ import java.util.Properties;
 //import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.edu.unicen.exa.server.ClientMsgMove.ChannelListener;
+//import ar.edu.unicen.exa.server.ClientMsgMove.ChannelListener;
 
 import com.jme.math.Vector3f;
 import com.sun.sgs.client.ClientChannel;
@@ -372,14 +372,14 @@ public class TestClient implements SimpleClientListener {
 				logger.info("No Joined!!");
 			logger.info("Joined to:" + this.channel.getName());
 			this.channel.send(msj);
-			/*MsgPlainText iMsg = (MsgPlainText) message;
+			MsgPlainText iMsg = (MsgPlainText) message;
 
 			logger.info("Se ha enviado el tipo de mensaje " 
 					+ iMsg.getType() 
 					+ " con el mensaje " 
 					+ iMsg.getMsg() 
 					+ " a travez del canal "  
-					+ this.channel.getName());*/
+					+ this.channel.getName());
 
 		} catch (Exception e) {
 			e.printStackTrace();
