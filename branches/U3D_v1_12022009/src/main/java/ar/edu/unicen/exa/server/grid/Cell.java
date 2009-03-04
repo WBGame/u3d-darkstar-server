@@ -200,7 +200,7 @@ public class Cell implements Serializable, IBindingID {
 	 */
 	public final boolean isInside(final Vector3f position) {
 		//TODO verificar este metodo ya que Vector3f tiene 3 coordenadas
-		return bounds.contains(position.getX(), position.getY());
+		return bounds.contains(position.getX(), position.getZ());
 	}
 
 	/**
