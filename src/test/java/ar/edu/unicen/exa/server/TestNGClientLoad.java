@@ -3,12 +3,13 @@ package ar.edu.unicen.exa.server;
 import java.util.logging.Logger;
 import org.testng.annotations.*;
 
-import common.messages.IMessage;
-
-import ar.edu.unicen.exa.server.TestClient;
+import ar.edu.unicen.exa.server.ThrdClientLoad;
 
 /**
  * Test de carga para testeo del server usando TestNG
+ * Se lanza un conjunto de {@link TestNGClientLoad} que intentan cargar el server,
+ * cada {@link ThrdClientLoad} corre en un hilo independiente logandose al server
+ * y moviendose entre mundos.
  * 
  * @author Gerónimo Díaz <geronimod at gmail dot com>
  * @encoding UTF-8
@@ -20,7 +21,7 @@ public class TestNGClientLoad {
 			.getLogger(TestNGClientLoad.class.getName());
 
 	private Integer maxClientsSupported;
-	private TestClient[] clients;
+	private ThrdClientLoad[] clients;
 
 	/**
 	 * Seteamos el umbral de clientes posibles que podemos conectar e
@@ -28,10 +29,8 @@ public class TestNGClientLoad {
 	 */
 	@BeforeClass
 	public void setUp() {
-		maxClientsSupported = 1;//00;
-		clients = new TestClient[maxClientsSupported];
-		for (int i = 0; i < maxClientsSupported; i++)
-			clients[i] = new TestClient();
+		maxClientsSupported = 10;//00;
+		clients = new ThrdClientLoad[maxClientsSupported];
 	}
 
 	/**
@@ -44,16 +43,9 @@ public class TestNGClientLoad {
 	public void LoadTest() {
 		try {
 			for (int i = 0; i < clients.length; i++) {
-				TestClient client = null;
-				client = clients[i];
-				client.setLogin("TestClient" + i);
-				client.setPassword("TestClient" + i);
-				client.login();
-				LOGGER.info("TestClient nº:" + i + " Logged");
-				IMessage message = client.buildMessageEnterWorld("100");
-				client.sendMessage(message);
-				message = client.buildMessageMove();
-				client.sendToChannel(message);
+				LOGGER.info("Running client nº: " + i);
+				clients[i] = new ThrdClientLoad();
+				clients[i].run();
 			}
 		} catch (Exception e) {
 			assert false;
@@ -61,4 +53,5 @@ public class TestNGClientLoad {
 		assert true;
 	}
 
+	
 }
