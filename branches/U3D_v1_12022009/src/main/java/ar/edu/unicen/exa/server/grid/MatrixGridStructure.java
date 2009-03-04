@@ -193,7 +193,7 @@ public class MatrixGridStructure implements IGridStructure {
 		 *  -----
 		 */
 		if (cell.getBounds().getCenterX() > position.getX()) { // Izquierda.
-			if (cell.getBounds().getCenterY() > position.getY()) { // Superior.
+			if (cell.getBounds().getCenterY() > position.getZ()) { // Superior.
 				// Posicion 0.
 				horizontal = -1;
 				vertical = -1;
@@ -204,7 +204,7 @@ public class MatrixGridStructure implements IGridStructure {
 				vertical = 1;
 			}
 		} else { // Derecha.
-			if (cell.getBounds().getCenterY() > position.getY()) {
+			if (cell.getBounds().getCenterY() > position.getZ()) {
 				// Superior.
 				// Posicion 1.
 				horizontal = 1;
