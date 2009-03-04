@@ -3,6 +3,7 @@ package ar.edu.unicen.exa.server.communication.tasks;
 import java.util.logging.Logger;
 
 import ar.edu.unicen.exa.server.grid.Cell;
+import ar.edu.unicen.exa.server.grid.GridManager;
 import ar.edu.unicen.exa.server.grid.IGridStructure;
 import ar.edu.unicen.exa.server.player.Player;
 
@@ -72,16 +73,17 @@ public final class TMove extends TaskCommunication {
 	public void run() {
 		// Instancia del jugador.
 		Player player = getPlayerAssociated();
-
-		// Recuperar la celda actual.
-		Cell actualCell = getCellAssociated();
-
 		// Castear al mensage que corresponda.
 		MsgMove msg = (MsgMove) getMessage();
-
 		// Obtener la posicion destino
 		Vector3f posDestino = msg.getPosDestino();
+		if (playerOutOfBounds(player, posDestino)) {
+			return;
+		}
 
+		
+		// Recuperar la celda actual.
+		Cell actualCell = getCellAssociated();
 		LOGGER.info("Movimiento: '" + player.getIdEntity() + "' (" 
 				+ player.getPosition().getX() + ","
 				+ player.getPosition().getY() + ","
@@ -165,5 +167,33 @@ public final class TMove extends TaskCommunication {
 				adyacentes[i].send(msg, null);
 			}
 		}
+	}
+
+	/**
+	 * Evalua si la posición de destino del player se encuentra fuera de la 
+	 * estructura.
+	 * 
+	 * @param player Player que se movió.
+	 * @param posDestino Posición de destino del movimiento.
+	 * @return true si el Player se movió hacia afuera de la estructura.
+	 */
+	private boolean playerOutOfBounds(
+			final Player player, 
+			final Vector3f posDestino) {
+		IGridStructure s = GridManager.getInstance().getStructure(
+				player.getActualWorld()
+			);
+		if (s.getCell(posDestino) == null) {
+			StringBuffer sb = new StringBuffer("Posición invalida: (");
+			sb.append(posDestino.getX())
+				.append(",")
+				.append(posDestino.getY())
+				.append(",")
+				.append(posDestino.getZ())
+				.append(")");
+			LOGGER.severe(sb.toString());
+			return true;
+		}
+		return false;
 	}
 }
