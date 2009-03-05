@@ -26,7 +26,7 @@ import common.messages.notify.MsgMove;
  * Esta clase es utilizada para testear el envío y recepcion de mensajes del
  * tipo MsgMove. Este mensaje es enviado al servidor el cual procesará el 
  * mismo mensaje enviandolo a los correspondientes clientes y mostrando el 
- * mensaje recivido por pantalla. Además, se deberán recibir mensajes
+ * mensaje recibido por pantalla. Además, se deberán recibir mensajes
  * indicando 
  * 
  * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com/&gt;
@@ -81,6 +81,7 @@ public final class ClientMsgMoveAdj implements SimpleClientListener {
 	 * @param args los argumentos de la linea de comando.
 	 */
 	public static void main(final String[] args) {
+
 		ClientMsgMoveAdj cmmPlayer = new ClientMsgMoveAdj();
 		ClientMsgMoveAdj cmmVecino = new ClientMsgMoveAdj();
 		LOGGER.info("====Login de los players====");
@@ -489,8 +490,8 @@ public final class ClientMsgMoveAdj implements SimpleClientListener {
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
+	     * @param ch el canal por el cual se recibió el mensaje.
+	     * @param msg mensaje que se recibió.
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {

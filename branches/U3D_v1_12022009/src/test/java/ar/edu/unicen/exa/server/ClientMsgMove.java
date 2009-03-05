@@ -31,7 +31,7 @@ import common.messages.notify.MsgMove;
  * Esta clase es utilizada para testear el envío y recepcion de mensajes del
  * tipo MsgMove. Este mensaje es enviado al servidor el cual procesará el 
  * mismo mensaje enviandolo a los correspondientes clientes y mostrando el 
- * mensaje recivido por pantalla. 
+ * mensaje recibido por pantalla. 
  * 
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
@@ -453,8 +453,8 @@ public final class ClientMsgMove implements SimpleClientListener {
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
+	     * @param ch el canal por el cual se recibió el mensaje.
+	     * @param msg mensaje que se recibió.
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {
@@ -471,7 +471,7 @@ public final class ClientMsgMove implements SimpleClientListener {
 			if (iMessage.getType().equals(MsgTypes.MSG_ARRIVED_TYPE)) {
 			
 				MsgPlainText msgPlainText = (MsgPlainText) iMessage;
-				LOGGER.info("Se ha recivido del canal "
+				LOGGER.info("Se ha recibido del canal "
 						+ ch.getName() + " el tipo de mensaje: " 
 						+ msgPlainText.getType() 
 						+ " con el mensaje id jugador: "
@@ -480,7 +480,7 @@ public final class ClientMsgMove implements SimpleClientListener {
 			} else {
 				MsgMove iMsg = (MsgMove) iMessage;
 			
-				LOGGER.info("Se ha recivido el mensaje del canal " 
+				LOGGER.info("Se ha recibido el mensaje del canal " 
 						+ ch.getName()
 						+ " Tipo de Mensaje : " + iMsg.getType()
 						+ " Pos Origen: " + iMsg.getPosOrigen()
