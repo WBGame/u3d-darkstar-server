@@ -31,7 +31,7 @@ import common.messages.notify.MsgRotate;
  * Esta clase es utilizada para testear el envío y recepcion de mensajes del
  * tipo MsgRotate. Este mensaje es enviado al servidor el cual procesará el 
  * mismo enviandolo a los correspondientes clientes y mostrando el 
- * mensaje recivido por pantalla. 
+ * mensaje recibido por pantalla. 
  * 
  * @author Pablo Inchausti <pabloinchausti at hotmail dot com/>
  * @encoding UTF-8   
@@ -417,8 +417,8 @@ public final class ClientMsgRotate implements SimpleClientListener {
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
+	     * @param ch el canal por el cual se recibió el mensaje.
+	     * @param msg mensaje que se recibió.
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {

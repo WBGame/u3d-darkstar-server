@@ -427,8 +427,8 @@ public final class ClientMsgGetDynamicEntity implements SimpleClientListener {
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
+	     * @param ch el canal por el cual se recibió el mensaje.
+	     * @param msg mensaje que se recibió.
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {
