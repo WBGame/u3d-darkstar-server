@@ -406,8 +406,8 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 	     * Este método es invocado cada vez que el servidor envia un mensaje al
 	     * canal channel.
 	     * 
-	     * @param ch el canal por el cual se recivió el mensaje.
-	     * @param msg mensaje que se recivió.
+	     * @param ch el canal por el cual se recibió el mensaje.
+	     * @param msg mensaje que se recibió.
 	     */
 	    public void receivedMessage(final ClientChannel ch, 
 	    		final ByteBuffer msg) {
@@ -424,7 +424,7 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 			if (iMessage.getType().equals(MsgTypes.MSG_ARRIVED_TYPE)) {
 			
 				MsgPlainText msgPlainText = (MsgPlainText) iMessage;
-				LOGGER.info("Se ha recivido del canal "
+				LOGGER.info("Se ha recibido del canal "
 						+ ch.getName() + " el tipo de mensaje: " 
 						+ msgPlainText.getType() 
 						+ " con el mensaje id jugador: "
@@ -433,7 +433,7 @@ public final class ClientMsgChangePlayerState implements SimpleClientListener {
 			} else {
 				MsgChangePlayerState iMsg = (MsgChangePlayerState) iMessage;
 			
-				LOGGER.info("Se ha recivido el mensaje del canal " 
+				LOGGER.info("Se ha recibido el mensaje del canal " 
 						+ ch.getName()
 		    			+ " Tipo de Mensaje: " + iMsg.getType()
 		    			+ " Id Player: " + iMsg.getIdPlayer()
