@@ -84,17 +84,20 @@ public class MatrixGridStructure implements IGridStructure {
 		//modificacion de la constructora para la inicializacion de la
 		//de la matriz
 		structure = new Cell[gridWidth][gridHeight];
+		int width = 0;
 		int height = 0;
-		for (int y = 0; y < gridHeight; y++) {
-			int width = 0;
-			for (int x = 0; x < gridWidth; x++) {
+		for (int x = 0; x < gridWidth; x++) {
+			height = 0;
+			for (int y = 0; y < gridHeight; y++) {
 				Rectangle bound = new Rectangle(width, height, cellSize,
 						cellSize);
 				structure[x][y] = new Cell(bound, this);
-				width += cellSize;
+				height += cellSize;
 			}
-			height += cellSize;
+			width += cellSize;
 		}
+		logger.info("Inicializacion de mundo de ancho:" + width 
+				+ " alto:" + height);
 		//posicion del jugador inicial por defecto
 		this.setSpawnPosition(
 				DEFAULT_SPAWN_POSITION_X,
