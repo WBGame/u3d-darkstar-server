@@ -42,26 +42,24 @@ public class TestNGClientMsgEnterWorld {
   		simpleClient.login();
   	}
 	
-	/*@AfterClass
+	@AfterClass
 	 void desconectar(){
 		simpleClient.logout();
-	}*/
+	}
 	
   	@Test(groups = {"success"})
 	public void TestChangeWorld() {
 		assert changeWorld("201");
 	}
 	
-
-
   	/**
   	 * NOTA: Tenemos los mundos 100 y 201, pero cualquier otro tambien funciona.
   	 * 
   	 */
-  	/*@Test(groups = {"failure"})
+  	@Test(groups = {"failure"})
 	public void TestChangeUnknownWorld() {
-		assert !changeWorld(null);
-	}*/
+		assert changeWorld("13");
+	}
   	
   	/** Recibe un id de mundo e intenta enviar un mensaje de cambio de mundo
   	 * por el canal suscripto.
@@ -71,9 +69,8 @@ public class TestNGClientMsgEnterWorld {
   	protected final boolean changeWorld(String worldId) {
   		LOGGER.info("Cambiando al mundo: '" + worldId + "' ...");
   		try {
-  			IMessage iMsg= simpleClient.buildMessageChangeWorld(worldId);
-  			for(int i=0; i<2000000000;i++);
-  			simpleClient.sendToChannel(iMsg);
+			IMessage iMsg= simpleClient.buildMessageChangeWorld(worldId);
+			simpleClient.sendToChannel(iMsg);
   		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

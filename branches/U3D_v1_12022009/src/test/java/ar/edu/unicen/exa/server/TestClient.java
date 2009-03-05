@@ -22,6 +22,7 @@ import common.exceptions.MalformedMessageException;
 import common.exceptions.UnsopportedMessageException;
 import common.messages.IMessage;
 import common.messages.MessageFactory;
+import common.messages.MsgAbstract;
 import common.messages.MsgEmpty;
 import common.messages.MsgTypes;
 //import common.messages.MsgEmpty;
@@ -154,6 +155,10 @@ public class TestClient implements SimpleClientListener {
 		);
 	}
 
+	public boolean isLoggedIn(){
+		return simpleClient.isConnected();
+	}
+	
 	/**
 	 * Informa al usuario que se logeo correctamente.
 	 */
@@ -259,11 +264,17 @@ public class TestClient implements SimpleClientListener {
     	
         try {
         		simpleClient.send(msg);
-                MsgPlainText iMsg = (MsgPlainText) message;
+        		/*los mensajes en el paquete common.messages.notify no extienden
+    			MsgPlainText sino de MsgAbstract, por eso falla el casting*/
+    			MsgAbstract iMsg = (MsgAbstract) message;
 
-                logger.info("Se ha enviado el tipo de mensaje " 
-                		+ iMsg.getType() 
-                		+ " con el mensaje mundo: " + iMsg.getMsg());
+    			logger.info("Se ha enviado el tipo de mensaje " 
+    					+ iMsg.getType() 
+    					+ " con el mensaje " 
+    					+ iMsg //.getMsg() 
+    					+ " a travez del canal "  
+    					+ this.channel.getName());
+
                 
         	} catch (Exception e) {
                 e.printStackTrace();
@@ -372,12 +383,15 @@ public class TestClient implements SimpleClientListener {
 				logger.info("No Joined!!");
 			logger.info("Joined to:" + this.channel.getName());
 			this.channel.send(msj);
-			MsgPlainText iMsg = (MsgPlainText) message;
+			
+			/*los mensajes en el paquete common.messages.notify no extienden
+			MsgPlainText sino de MsgAbstract, por eso falla el casting*/
+			MsgAbstract msg = (MsgAbstract) message;
 
 			logger.info("Se ha enviado el tipo de mensaje " 
-					+ iMsg.getType() 
+					+ msg.getType() 
 					+ " con el mensaje " 
-					+ iMsg.getMsg() 
+					+ msg //.getMsg() 
 					+ " a travez del canal "  
 					+ this.channel.getName());
 
@@ -440,10 +454,10 @@ public class TestClient implements SimpleClientListener {
 				e.printStackTrace();
 			}
 
-			MsgPlainText iMsg = (MsgPlainText) iMessage;
+			MsgAbstract iMsg = (MsgAbstract) iMessage;
 			logger.info("Se ha recibido del canal " + ch.getName() 
 					+ " el tipo de mensaje: " + iMsg.getType() 
-					+ " con el mensaje id jugador: " + iMsg.getMsg());
+					+ " con el mensaje id jugador: " + iMsg);
 		}
 	}
 	
