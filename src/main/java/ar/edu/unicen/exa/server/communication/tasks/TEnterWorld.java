@@ -1,5 +1,7 @@
 package ar.edu.unicen.exa.server.communication.tasks;
 
+import java.util.logging.Logger;
+
 import com.jme.math.Vector3f;
 import com.sun.sgs.app.ClientSession;
 
@@ -39,6 +41,9 @@ public final class TEnterWorld extends TaskCommunication {
 	/**  Para cumplir con la version de la clase {@Serializable}. */
 	private static final long serialVersionUID = 1L;
 
+	/** Logger. */
+	private static final Logger LOGGER = Logger.getLogger(
+			TEnterWorld.class.getName());
 	/**
 	 * Constructor.
 	 * 
@@ -102,6 +107,9 @@ public final class TEnterWorld extends TaskCommunication {
 		cell.send(msgLeft, session);
 		// Obtener la estructura del mundo actual.
 		IGridStructure structure = cell.getStructure();
+		LOGGER.info(player.getIdEntity() 
+				+ " -> abandona el mundo " 
+				+ structure.getIdWorld());
 		// Obtener los adyacentes de la celda actual.
 		Cell[] adyacentes = structure
 				.getAdjacents(cell, player.getPosition());
@@ -121,6 +129,7 @@ public final class TEnterWorld extends TaskCommunication {
 		MsgChangeWorld msg = (MsgChangeWorld) getMessage();
 		// Recuperar el id del nuevo mundo desde el mensaje recibido.
 		String newWorldID = msg.getIdNewWorld();
+		LOGGER.info(player.getIdEntity() + " -> entra al mundo " + newWorldID);
 		// Actualizar el jugador con el id del nuevo mundo.
 		player.setActualWorld(newWorldID);
 		// Definicion del angulo por defecto.
@@ -130,6 +139,9 @@ public final class TEnterWorld extends TaskCommunication {
 				.getStructure(newWorldID);
 		// Establecer la posicion inicial del jugador dentro del mundo.
 		player.setPosition(msg.getSpownPosition());
+		LOGGER.info(player.getIdEntity() 
+				+ " -> posicion en el nuevo mundo " 
+				+ player.getPosition());
 		// Obtener la celda por defecto a partir del nuevo mundo.
 		cell = structure.getCell(player.getPosition());
 
