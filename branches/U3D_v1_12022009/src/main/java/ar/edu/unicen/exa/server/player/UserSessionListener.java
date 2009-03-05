@@ -112,7 +112,7 @@ implements ClientSessionListener, Serializable {
 			processor.setPlayerAssociated(getPlayer());
 			processor.setCellAssociated(cell);
 
-			// Ejecutar el procesador/tarea asociado/a al mensaje recivido.
+			// Ejecutar el procesador/tarea asociado/a al mensaje recibido.
 			processor.process(iMessage);
 		} catch (MalformedMessageException e) {
 			LOGGER.log(Level.WARNING, "Exception: {0}", e);
