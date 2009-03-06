@@ -1,13 +1,15 @@
 package ar.edu.unicen.exa.server.serverLogic;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
-import common.datatypes.Skin;
-import common.datatypes.Quest;
 import common.datatypes.D2GameScore;
-import common.datatypes.Ranking;
 import common.datatypes.PlayerStat;
+import common.datatypes.Quest;
+import common.datatypes.Ranking;
+import common.datatypes.Skin;
 
 /**
  * La clase implementa la interface de acceso al modelo de logica del juego.
@@ -25,6 +27,16 @@ import common.datatypes.PlayerStat;
  * TODO Extraer una interface a partir de esto. Interface Name IModel.
  */
 public final class ModelAccess {
+	/**
+	 * Mock para dar apariencia de funcionamiento de Skins.
+	 */
+	private static final Vector<Skin> SKINS = new Vector<Skin>();
+	static {
+		Skin s1 = new Skin(); s1.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10); SKINS.add(s1);
+		Skin s2 = new Skin(); s2.setSkin(Skin.PERSONAJE_VIEJO_CON_PIPA); SKINS.add(s2);
+		Skin s3 = new Skin(); s3.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10); SKINS.add(s3);
+	}
+	private static HashMap<String, Skin> skinMapping = new HashMap<String, Skin>(); 
 	
 	/**
 	 * Instancia de la clase.
@@ -57,9 +69,14 @@ public final class ModelAccess {
 	 * @return El {@link Skin} relacionado al identificador del {@link Player}.
 	 */
 	public Skin getSkin(final String idPlayer) {
-		Skin s = new Skin();
-		s.setSkin("skin");
-		return s;
+		Skin result = skinMapping.get(idPlayer);
+		if (result == null) {
+			int max = SKINS.size()-1;
+			int rand = max + (int) (Math.random() * (0 - max));
+			result = SKINS.get(rand);
+			skinMapping.put(idPlayer, result);
+		}
+		return result;
 	}
 	
 	/**
@@ -340,5 +357,4 @@ public final class ModelAccess {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 }
