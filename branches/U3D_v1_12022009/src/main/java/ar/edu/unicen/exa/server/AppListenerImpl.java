@@ -118,7 +118,9 @@ public final class AppListenerImpl implements AppListener, Serializable {
 		}
 
 		// Definicion del angulo por defecto.
-		player.setAngle(new Vector3f(1, 1, 1));
+		if (player.getAngle() == null) {
+			player.setAngle(new Vector3f(1, 1, 1));
+		}
 
 		// Establecer la posicion inicial del jugador dentro del mundo.
 		if (player.getPosition() == null) {
