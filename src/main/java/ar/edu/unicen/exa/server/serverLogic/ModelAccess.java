@@ -32,11 +32,18 @@ public final class ModelAccess {
 	 */
 	private static final Vector<Skin> SKINS = new Vector<Skin>();
 	static {
-		Skin s1 = new Skin(); s1.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10); SKINS.add(s1);
-		Skin s2 = new Skin(); s2.setSkin(Skin.PERSONAJE_VIEJO_CON_PIPA); SKINS.add(s2);
-		Skin s3 = new Skin(); s3.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10); SKINS.add(s3);
+		Skin s1 = new Skin(); s1.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10);
+		SKINS.add(s1);
+		Skin s2 = new Skin(); s2.setSkin(Skin.PERSONAJE_VIEJO_CON_PIPA);
+		SKINS.add(s2);
+		Skin s3 = new Skin(); s3.setSkin(Skin.PERSONAJE_TIPO_CON_LA_10);
+		SKINS.add(s3);
 	}
-	private static HashMap<String, Skin> skinMapping = new HashMap<String, Skin>(); 
+	/**
+	 * Mock para dar apariencia de almacenaje de Skins.
+	 */
+	private static HashMap<String, Skin> skinMapping = 
+			new HashMap<String, Skin>(); 
 	
 	/**
 	 * Instancia de la clase.
@@ -71,7 +78,7 @@ public final class ModelAccess {
 	public Skin getSkin(final String idPlayer) {
 		Skin result = skinMapping.get(idPlayer);
 		if (result == null) {
-			int max = SKINS.size()-1;
+			int max = SKINS.size() - 1;
 			int rand = max + (int) (Math.random() * (0 - max));
 			result = SKINS.get(rand);
 			skinMapping.put(idPlayer, result);
