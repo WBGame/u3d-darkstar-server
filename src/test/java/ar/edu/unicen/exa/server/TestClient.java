@@ -3,6 +3,7 @@ package ar.edu.unicen.exa.server;
 /*import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;*/
+
 import java.io.UnsupportedEncodingException;
 import java.net.PasswordAuthentication;
 import java.nio.ByteBuffer;
@@ -10,9 +11,11 @@ import java.util.Properties;
 //import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.jme.math.Vector3f;
+
 //import ar.edu.unicen.exa.server.ClientMsgMove.ChannelListener;
 
-import com.jme.math.Vector3f;
+
 import com.sun.sgs.client.ClientChannel;
 import com.sun.sgs.client.ClientChannelListener;
 import com.sun.sgs.client.simple.SimpleClient;
@@ -27,6 +30,7 @@ import common.messages.MsgEmpty;
 import common.messages.MsgTypes;
 //import common.messages.MsgEmpty;
 import common.messages.MsgPlainText;
+
 import common.messages.notify.MsgChangeWorld;
 import common.messages.notify.MsgMove;
 
@@ -79,6 +83,7 @@ public class TestClient implements SimpleClientListener {
 	private int Y2 = 10;
 	/** Posicion destino del jugador. */
 	private int Z2 = 10;
+	private IMessage mensaje;	
 	
 	/**
 	 * Creamos un cliente {@link SimpleClient}.
@@ -195,12 +200,14 @@ public class TestClient implements SimpleClientListener {
 	 * @return ClientChannelListener Capturador de eventos que se producen 
 	 * en el canal channel.
 	 */
+
 	public ClientChannelListener joinedChannel(
 			final ClientChannel ch) {
 		this.channel = ch;
 		String channelName = ch.getName();
 		logger.info("Suscripto al canal " + channelName);
 		return new ChannelListener();
+
 	}
 	
 	public boolean isJoinedToChannel(){
@@ -219,10 +226,24 @@ public class TestClient implements SimpleClientListener {
 	 *  
 	 */
 	public final void receivedMessage(final ByteBuffer message) {
+		try {
+			 mensaje = MessageFactory.getInstance().createMessage(message);
+		} catch (MalformedMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsopportedMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.info("El servidor ha enviado el mensaje: " 
-				+ decodeString(message));
+				+ mensaje.getType());
 	}
 
+	/**Retorna el mensaje recibido del servidor */
+	public IMessage serverMsg(){
+		return mensaje;
+	}
+	
 	/**
 	 * Informa al cliente que se ha reconectado.
 	 * 
@@ -251,6 +272,10 @@ public class TestClient implements SimpleClientListener {
 			e.printStackTrace();
 		}
 	}
+	
+	public IMessage buildMessageEnterWorld(final String idMundo) {
+		return buildMessageChangeWorld(idMundo);
+	}
 
 	/**
 	 * Codifica el texto y lo envía directamente al servidor.
@@ -270,12 +295,8 @@ public class TestClient implements SimpleClientListener {
 
     			logger.info("Se ha enviado el tipo de mensaje " 
     					+ iMsg.getType() 
-    					+ " con el mensaje " 
-    					+ iMsg //.getMsg() 
-    					+ " a travez del canal directo");
-    					
-                
-        	} catch (Exception e) {
+    					+ " al servidor "); 
+               	} catch (Exception e) {
                 e.printStackTrace();
         	}
 	}
@@ -307,7 +328,30 @@ public class TestClient implements SimpleClientListener {
 		this.password = password;
 	}
 
+	public boolean recibido(){
+		boolean retorno= false;
+	   	   if(mensaje!=null)
+	   		   retorno=true;
+		   return retorno;
+	   }
 	
+	/**Construye el mensaje para la solicitud de datos del jugador
+	 * @param identificador del jugador
+	 * */
+	
+	public IMessage buildMessageGetPlayer(){
+		MsgPlainText msg = null;
+		try {
+			msg = (MsgPlainText) MessageFactory.getInstance()
+			.createMessage(MsgTypes.MSG_GET_PLAYER_TYPE);
+		} catch (UnsopportedMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		msg.setMsg(getLogin());
+		return msg;
+	} 
+		
 	/**
 	 * Contruye un mensaje para entrar a un mundo {@link MsgPlainText} 
 	 * estableciendo el id del mundo al que se desea ingresar. Dicho mensaje
@@ -319,13 +363,16 @@ public class TestClient implements SimpleClientListener {
 	 * @return ByteBuffer el movimiento codificado en un ByteBuffer.
 	 * @param idMundo mundo al que se desa ingresar
 	 */
-	public IMessage buildMessageEnterWorld(final String idMundo) {
-		return buildMessageChangeWorld(idMundo);
-	}
 	
 	public IMessage buildMessageChangeWorld(final String idMundo) {
-		MsgChangeWorld msg = null;
+		MsgChangeWorld msg=null;
 		try {
+
+			msg = (MsgChangeWorld) MessageFactory.getInstance()
+					.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+			msg.setIdNewWorld(idMundo);
+			msg.setSpownPosition(new Vector3f(1, 1, 1));
+
 			msg = (MsgChangeWorld) MessageFactory.getInstance()
 			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
 
@@ -335,7 +382,6 @@ public class TestClient implements SimpleClientListener {
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
 		}
-
 		return msg;
 	}
 	
@@ -383,15 +429,15 @@ public class TestClient implements SimpleClientListener {
 	 * Envia un mensaje a travez del canal suscripto al cliente.
 	 * 
 	 * @param message mensaje a enviar.
+	 * @throws Exception 
 	 */
-	public void sendToChannel(final IMessage message) {
+	
+	public void sendToChannel(final IMessage message) throws Exception {
 
 		// Convierto Mensaje a ByteBuffer
 		ByteBuffer msj = message.toByteBuffer();
-
-		try {
 			while(!isJoinedToChannel())
-				logger.info("No Joined!!");
+			   logger.info("No Joined!!");
 			logger.info("Joined to:" + this.channel.getName());
 			this.channel.send(msj);
 			
@@ -405,10 +451,6 @@ public class TestClient implements SimpleClientListener {
 					+ msg //.getMsg() 
 					+ " a travez del canal "  
 					+ this.channel.getName());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
