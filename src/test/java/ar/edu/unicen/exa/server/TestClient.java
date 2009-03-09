@@ -68,17 +68,17 @@ public class TestClient implements SimpleClientListener {
 	
 	/** Variables para poder cumplir con checkstyle. */
 	/** Posicion origen del jugador. */
-	private static final int X1 = 10;
+	private int X1 = 10;
 	/** Posicion origen del jugador. */
-	private static final int Y1 = 15;
+	private int Y1 = 15;
 	/** Posicion origen del jugador. */
-	private static final int Z1 = 20;
+	private int Z1 = 20;
 	/** Posicion destino del jugador. */
-	private static final int X2 = 0;
+	private int X2 = 0;
 	/** Posicion destino del jugador. */
-	private static final int Y2 = 10;
+	private int Y2 = 10;
 	/** Posicion destino del jugador. */
-	private static final int Z2 = 10;
+	private int Z2 = 10;
 	
 	/**
 	 * Creamos un cliente {@link SimpleClient}.
@@ -272,9 +272,8 @@ public class TestClient implements SimpleClientListener {
     					+ iMsg.getType() 
     					+ " con el mensaje " 
     					+ iMsg //.getMsg() 
-    					+ " a travez del canal "  
-    					+ this.channel.getName());
-
+    					+ " a travez del canal directo");
+    					
                 
         	} catch (Exception e) {
                 e.printStackTrace();
@@ -338,6 +337,18 @@ public class TestClient implements SimpleClientListener {
 		}
 
 		return msg;
+	}
+	
+	public IMessage buildMessageMove(Vector3f from, Vector3f to){
+		X1 = (int) from.x;
+		Y1 = (int) from.y;
+		Z1 = (int) from.z;
+		
+		X2 = (int) to.x;
+		Y2 = (int) to.y;
+		Z2 = (int) to.z;
+		
+		return buildMessageMove();
 	}
 	
 	public IMessage buildMessageMove() {

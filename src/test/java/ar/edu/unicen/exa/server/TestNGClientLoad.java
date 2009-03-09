@@ -46,6 +46,8 @@ public class TestNGClientLoad {
 				LOGGER.info("Running client nº: " + i);
 				clients[i] = new ThrdClientLoad();
 				clients[i].run();
+				if (!clients[i].isValid())
+					assert false;
 			}
 		} catch (Exception e) {
 			assert false;

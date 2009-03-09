@@ -49,7 +49,15 @@ public class TestNGClientMsgEnterWorld {
 	
   	@Test(groups = {"success"})
 	public void TestChangeWorld() {
-		assert changeWorld("201");
+  		/** Mundos: 
+	 		buffet = 2
+			exa = 5
+			exterior = 510
+			isistan = 513
+			econ = 518
+			ac1 = 521
+		*/
+  		assert changeWorld("2");
 	}
 	
   	/**
@@ -58,7 +66,7 @@ public class TestNGClientMsgEnterWorld {
   	 */
   	@Test(groups = {"failure"})
 	public void TestChangeUnknownWorld() {
-		assert changeWorld("13");
+		assert !changeWorld("000");
 	}
   	
   	/** Recibe un id de mundo e intenta enviar un mensaje de cambio de mundo
@@ -69,13 +77,21 @@ public class TestNGClientMsgEnterWorld {
   	protected final boolean changeWorld(String worldId) {
   		LOGGER.info("Cambiando al mundo: '" + worldId + "' ...");
   		try {
-			IMessage iMsg= simpleClient.buildMessageChangeWorld(worldId);
-			simpleClient.sendToChannel(iMsg);
+			MsgChangeWorld cwMsg = (MsgChangeWorld) simpleClient.buildMessageEnterWorld(worldId);
+			simpleClient.sendMessage(cwMsg);
+			//bussy wait debido a los tiempos de retardo desde el server
+			//debido a la asincronia en la conexion y envio de mensajes
+			
+			while (!simpleClient.isConnected())
+				LOGGER.info("Not connected !!");
+				
+			// validamos que realmente haya cambiado de mundo
+			return cwMsg.getIdNewWorld() == worldId;
   		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-  		return true;
+  		//return true;
 	}
 	
 }
