@@ -126,7 +126,7 @@ public final class TMove extends TaskCommunication {
 			if (adyacentes != null) {
 				// Notificar a las celdas visibles que el jugador se retiró
 				for (int i = 0; i < adyacentes.length; i++) {
-					adyacentes[i].send(msg, null);
+					adyacentes[i].send(msgLeft, null);
 				}
 			}			
 			
@@ -148,6 +148,7 @@ public final class TMove extends TaskCommunication {
 			actualCell.joinToChannel(session);
 		}
 
+		
 		// Crear el mensaje de llegada del jugador al nuevo mundo.
 		msg.setType(MsgTypes.MSG_MOVE_NOTIFY_TYPE);
 
