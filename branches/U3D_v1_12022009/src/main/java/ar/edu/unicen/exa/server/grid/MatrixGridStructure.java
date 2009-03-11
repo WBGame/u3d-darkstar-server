@@ -16,6 +16,7 @@ import com.sun.sgs.app.AppContext;
  *  identificador del IGameState del cliente. Es decir, representa a un objeto
  *  IGameState del cliente en el servidor.
  *  
+ *  @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
  *  @encoding UTF-8.
  */
 public class MatrixGridStructure implements IGridStructure {
