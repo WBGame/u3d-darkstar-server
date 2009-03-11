@@ -1,5 +1,8 @@
 package ar.edu.unicen.exa.server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import com.jme.math.Vector3f;
@@ -40,6 +43,7 @@ public class ThrdClientLoad implements Runnable {
 		c.setLogin("ThrdClient" + t.getName());
 		c.setPassword("ThrdClient" + t.getName());
 		c.login();
+		
 		if (c.isLoggedIn())
 			LOGGER.info("ThrdClient nº:" + t.getName() + " Logged");
 		else
@@ -57,26 +61,40 @@ public class ThrdClientLoad implements Runnable {
 		 * en cada switcheo enviamos un movimiento
 		 * luego nos deslogamos
 		 */
-		String worldId = "5";//exa
+		String worldId = Integer.toString(c.getRandomWorld());
 		for (int i = 0; i < 2; i++) {
 			LOGGER.info("ThrdClient nº:" + t.getName() + " cambiando a mundo: " + worldId);
 			
 			MsgChangeWorld cwMsg = (MsgChangeWorld) c.buildMessageEnterWorld(worldId);
 			c.sendMessage(cwMsg);
+			
 			// validamos que realmente haya cambiado de mundo
 			valid = cwMsg.getIdNewWorld() == worldId;
 			
 			Vector3f from = new Vector3f(0,0,0);
-			Vector3f to   = new Vector3f(10,0,10);
+			Vector3f to   = new Vector3f((int)(Math.random() * 100),0,(int)(Math.random() * 100));
 			MsgMove mMsg = (MsgMove) c.buildMessageMove(from, to);
-			c.sendToChannel(mMsg);
+			try {
+				c.sendToChannel(mMsg);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			// validamos que realmente esta en la posicion que se le indica
 			valid = mMsg.getPosDestino().equals(to);
 			
-			worldId = worldId == "513" ? "5" : "513"; //isistan
+			worldId = Integer.toString(c.getRandomWorld());
 		}
 		c.logout();
 		
+		/*hacemos un get asi no muere el thread actual y damos tiempo al server
+		en la comunicacion*/
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
