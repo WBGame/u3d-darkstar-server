@@ -160,7 +160,8 @@ public final class AppListenerImpl implements AppListener, Serializable {
 				adyacentes[i].send(msgArrived, null);
 			}
 		}
-
+		logger.info(player.getIdEntity() + " -> entra a " 
+				+ cell.getId() + " del mundo " + structure.getId());
 		// Suscribir al jugador a la nueva celda.
 		// Lo hacemos al final para que no le llegue el msg de arrived al player
 		// que se esta conectando.
