@@ -14,7 +14,7 @@ import com.sun.sgs.app.ManagedObject;
  *  uno con el identificador del  {@code IGameState} del cliente. Es decir, 
  *  representa a un objeto  {@code IGameState} del cliente en el servidor.
  *  
- *  
+ *  @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
  *  @encoding UTF-8.
  *  
  */
