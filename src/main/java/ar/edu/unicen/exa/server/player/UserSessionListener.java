@@ -186,6 +186,11 @@ implements ClientSessionListener, Serializable {
 		// cual es totalmente correcto, ya que el usuario al desconectarse deja
 		// de ser válido y debe utilizarse null para poder notificar a los 
 		// restantes players que el player en cuestion ya no esta en la celda.
+		LOGGER.log(
+				Level.INFO,
+				"El usuario {0} abandona la celda {1}",
+				new Object[] { player.getIdEntity() , cell.getId() } 
+		);
 		cell.send(msgLeft, player.getSession());
 
 		// Notificar a las celdas adyacentes que el jugador no se encuentra en
