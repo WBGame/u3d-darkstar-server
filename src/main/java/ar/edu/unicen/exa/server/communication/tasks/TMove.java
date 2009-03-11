@@ -22,7 +22,7 @@ import common.messages.notify.MsgMove;
  * la lógica asociada a la suscripción de celdas y el reenvio del mensaje a 
  * través de ellas.
  * 
- * @author lito
+ * @author Sebastián Perruolo &lt;sebastianperruolo at gmail dot com &gt;
  * @encoding UTF-8.
  */
 public final class TMove extends TaskCommunication {
@@ -77,6 +77,7 @@ public final class TMove extends TaskCommunication {
 		MsgMove msg = (MsgMove) getMessage();
 		// Obtener la posicion destino
 		Vector3f posDestino = msg.getPosDestino();
+		Vector3f posOrigen = msg.getPosOrigen();
 		if (playerOutOfBounds(player, posDestino)) {
 			return;
 		}
@@ -84,6 +85,7 @@ public final class TMove extends TaskCommunication {
 		
 		// Recuperar la celda actual.
 		Cell actualCell = getCellAssociated();
+		Cell cellOrigen = actualCell;
 		LOGGER.info("Movimiento: '" + player.getIdEntity() + "' (" 
 				+ player.getPosition().getX() + ","
 				+ player.getPosition().getY() + ","
@@ -101,20 +103,11 @@ public final class TMove extends TaskCommunication {
 
 		// Session del player.
 		ClientSession session = player.getSession();
-
 		// Si el jugador cambio de celda.
 		if (!actualCell.isInside(posDestino)) {
 			
 			// Crear el mensaje de partida del jugador.
-			IMessage msgLeft = null;
-			try {
-				msgLeft = MessageFactory.getInstance().createMessage(
-						MsgTypes.MSG_LEFT_TYPE);
-				// Seteo el id del jugador como mensaje del mismo
-				((MsgPlainText) msgLeft).setMsg(player.getIdEntity());
-			} catch (UnsopportedMessageException e1) {
-				e1.printStackTrace();
-			}			
+			IMessage msgLeft = createMsgLeft(player.getIdEntity());
 			
 			// lo envio por la celda que ya no ocupo
 			actualCell.send(msgLeft, player.getSession());
@@ -155,17 +148,41 @@ public final class TMove extends TaskCommunication {
 		// Notificar a la misma celda que el jugador se movió.
 		actualCell.send(msg, session);
 
-		Cell[] adyacentes = structure.getAdjacents(actualCell,
+		Cell[] adyacentesAnteriores = structure.getAdjacents(cellOrigen, 
+				posOrigen);
+		
+		Cell[] adyacentesNuevas = structure.getAdjacents(actualCell,
 				player.getPosition());
 
-		if (adyacentes != null) {
+		if (adyacentesNuevas != null) {
 			// Notificar a las celdas visibles que el jugador se movió
-			for (int i = 0; i < adyacentes.length; i++) {
+			for (int i = 0; i < adyacentesNuevas.length; i++) {
 				LOGGER.info("Reenviando mensaje a la celda adyacente: '" 
-						+ adyacentes[i].getId() + "' del movimiento de '" 
+						+ adyacentesNuevas[i].getId() + "' del movimiento de '" 
 						+ player.getIdEntity() + "' en la celda '"
 						+ actualCell.getId() + "'");
-				adyacentes[i].send(msg, null);
+				adyacentesNuevas[i].send(msg, null);
+			}
+		}
+		// Crear el mensaje de partida del jugador.
+		IMessage msgLeft = createMsgLeft(player.getIdEntity());
+		if (adyacentesAnteriores != null) {
+			//a las celdas que antes eran adyacentes y ahora no lo son,
+			//se les avisa que el player se fue de su visión
+			for (int i = 0; i < adyacentesAnteriores.length; i++) {
+				boolean hadToSend = true;
+				if (adyacentesNuevas != null) {
+					for (int j = 0; j < adyacentesNuevas.length; j++) {
+						if (adyacentesAnteriores[i].equals(adyacentesNuevas[j])) {
+							hadToSend = false;
+						}
+					}
+				}
+				if (hadToSend) {
+					adyacentesAnteriores[i].send(msgLeft, null);
+					LOGGER.info(player.getIdEntity() + " -> Se fue de " 
+							+ adyacentesAnteriores[i].getId());
+				}
 			}
 		}
 	}
@@ -196,5 +213,23 @@ public final class TMove extends TaskCommunication {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * Crea el mensaje necesario.
+	 * @param idEntity Id de la entidad que se está yendo.
+	 * @return IMessage MSG_LEFT_TYPE
+	 */
+	private IMessage createMsgLeft(final String idEntity) {
+		// Crear el mensaje de partida del jugador.
+		IMessage msgLeft = null;
+		try {
+			msgLeft = MessageFactory.getInstance().createMessage(
+					MsgTypes.MSG_LEFT_TYPE);
+			// Seteo el id del jugador como mensaje del mismo
+			((MsgPlainText) msgLeft).setMsg(idEntity);
+		} catch (UnsopportedMessageException e1) {
+			e1.printStackTrace();
+		}
+		return msgLeft;
 	}
 }
