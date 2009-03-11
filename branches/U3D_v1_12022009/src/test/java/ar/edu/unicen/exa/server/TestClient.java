@@ -4,6 +4,7 @@ package ar.edu.unicen.exa.server;
 import java.io.IOException;
 import java.io.InputStreamReader;*/
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.PasswordAuthentication;
 import java.nio.ByteBuffer;
@@ -34,7 +35,7 @@ import common.messages.MsgPlainText;
 import common.messages.notify.MsgChangeWorld;
 import common.messages.notify.MsgMove;
 
-
+import com.
 /**
  * Cliente simple para ser usado desde los test scripts. Contiene la funcionalidad
  * necesaria para testear login, movimiento, envio de mensajes etc.
@@ -102,6 +103,7 @@ public class TestClient implements SimpleClientListener {
 			connectProps.put("host", "localhost");
 			connectProps.put("port", "1119");
 			simpleClient.login(connectProps);
+			Thread.sleep(5000);
 		} catch (Exception e) {
 			e.printStackTrace();
 			disconnected(false, e.getMessage());
@@ -273,33 +275,39 @@ public class TestClient implements SimpleClientListener {
 		}
 	}
 	
-	public IMessage buildMessageEnterWorld(final String idMundo) {
-		return buildMessageChangeWorld(idMundo);
+	public IMessage buildMessageEnterWorld(final String idMundo,final float x,
+			final float y,final float z) {
+		return buildMessageChangeWorld(idMundo,x,y,z);
 	}
 
 	/**
 	 * Codifica el texto y lo envía directamente al servidor.
 	 * 
 	 * @param message mensaje a enviar directamente al servidor
+	 * @throws IOException 
 	 */
 	
-	protected void sendMessage(final IMessage message) {
+	protected boolean sendMessage(final IMessage message){
 		// Convierto Mensaje a ByteBuffer
+		boolean retorno=false;
 		ByteBuffer msg = message.toByteBuffer();
     	
-        try {
-        		simpleClient.send(msg);
+      		try {
+				simpleClient.send(msg);
+				retorno=true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         		/*los mensajes en el paquete common.messages.notify no extienden
     			MsgPlainText sino de MsgAbstract, por eso falla el casting*/
     			MsgAbstract iMsg = (MsgAbstract) message;
 
     			logger.info("Se ha enviado el tipo de mensaje " 
     					+ iMsg.getType() 
-    					+ " al servidor "); 
-               	} catch (Exception e) {
-                e.printStackTrace();
-        	}
-	}
+    					+ " al servidor ");
+    			return retorno;
+           }
 	
 	/**
 	 * Se utiliza la instancia de simpreClient para conocer el estado actual 
@@ -364,20 +372,17 @@ public class TestClient implements SimpleClientListener {
 	 * @param idMundo mundo al que se desa ingresar
 	 */
 	
-	public IMessage buildMessageChangeWorld(final String idMundo) {
+	public IMessage buildMessageChangeWorld(final String idMundo,final float x,
+											final float y,final float z) {
 		MsgChangeWorld msg=null;
 		try {
 
 			msg = (MsgChangeWorld) MessageFactory.getInstance()
-					.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
-			msg.setIdNewWorld(idMundo);
-			msg.setSpownPosition(new Vector3f(1, 1, 1));
-
-			msg = (MsgChangeWorld) MessageFactory.getInstance()
 			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
-
+            Vector3f pos=new Vector3f();
+            pos.set(x,y,z);
 			msg.setIdNewWorld(idMundo);
-			msg.setSpownPosition(new Vector3f(1, 1, 1));
+			msg.setSpownPosition(pos);
 
 		} catch (UnsopportedMessageException e1) {
 			e1.printStackTrace();
