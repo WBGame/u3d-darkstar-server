@@ -35,7 +35,7 @@ import common.messages.MsgPlainText;
 import common.messages.notify.MsgChangeWorld;
 import common.messages.notify.MsgMove;
 
-import com.
+
 /**
  * Cliente simple para ser usado desde los test scripts. Contiene la funcionalidad
  * necesaria para testear login, movimiento, envio de mensajes etc.
@@ -86,10 +86,28 @@ public class TestClient implements SimpleClientListener {
 	private int Z2 = 10;
 	private IMessage mensaje;	
 	
+	public int[] availableWorlds;
+	
+	protected void initWorlds(){
+		availableWorlds = new int[6];
+		availableWorlds[0]= 510; //exterior
+		availableWorlds[1]= 5;   //exa
+		availableWorlds[2]= 2; 	 //buffet
+		availableWorlds[3]= 513; //isistan
+		availableWorlds[4]= 518; //econ
+		availableWorlds[5]= 521; //ac1
+	}
+	
+	public int getRandomWorld(){
+		return availableWorlds[(int)((Math.random()* availableWorlds.length-1))+1];
+	}
+	
 	/**
 	 * Creamos un cliente {@link SimpleClient}.
 	 */
+	
 	protected TestClient() {
+		initWorlds();
 		simpleClient = new SimpleClient(this);
 	}
 
@@ -275,6 +293,10 @@ public class TestClient implements SimpleClientListener {
 		}
 	}
 	
+	public IMessage buildMessageEnterWorld(String idMundo) {
+		return buildMessageChangeWorld(idMundo);
+	}
+
 	public IMessage buildMessageEnterWorld(final String idMundo,final float x,
 			final float y,final float z) {
 		return buildMessageChangeWorld(idMundo,x,y,z);
@@ -372,13 +394,28 @@ public class TestClient implements SimpleClientListener {
 	 * @param idMundo mundo al que se desa ingresar
 	 */
 	
+	public IMessage buildMessageChangeWorld(String idMundo){
+		MsgChangeWorld msg=null;
+		try {
+
+			msg = (MsgChangeWorld) MessageFactory.getInstance()
+				.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+            msg.setIdNewWorld(idMundo);
+			msg.setSpownPosition(new Vector3f(1,1,1));
+
+		} catch (UnsopportedMessageException e1) {
+			e1.printStackTrace();
+		}
+		return msg;
+	}
+	
 	public IMessage buildMessageChangeWorld(final String idMundo,final float x,
 											final float y,final float z) {
 		MsgChangeWorld msg=null;
 		try {
 
 			msg = (MsgChangeWorld) MessageFactory.getInstance()
-			.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
+				.createMessage(MsgTypes.MSG_CHANGE_WORLD_TYPE);
             Vector3f pos=new Vector3f();
             pos.set(x,y,z);
 			msg.setIdNewWorld(idMundo);
