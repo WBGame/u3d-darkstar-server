@@ -130,7 +130,7 @@ public class LoginTestNG {
    
    /**Luego de un  logueo
     * Los datos corresponden a los consignados en el archivo u3dserver.propierties*/
-   @Test(dependsOnMethods="recibido")
+   @Test(dependsOnMethods={"recibido","primerLogueo"})
    public void logueo() throws UnsopportedMessageException{
 	   MsgGetPlayerResponse msgGetPlayer = (MsgGetPlayerResponse) cliente3.serverMsg();
 	   assert(msgGetPlayer.getActualWorld().equals(EXACTAS));
