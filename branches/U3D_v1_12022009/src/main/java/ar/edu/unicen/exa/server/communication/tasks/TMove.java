@@ -173,7 +173,8 @@ public final class TMove extends TaskCommunication {
 				boolean hadToSend = true;
 				if (adyacentesNuevas != null) {
 					for (int j = 0; j < adyacentesNuevas.length; j++) {
-						if (adyacentesAnteriores[i].equals(adyacentesNuevas[j])) {
+						if (adyacentesAnteriores[i].equals(
+								adyacentesNuevas[j])) {
 							hadToSend = false;
 						}
 					}
