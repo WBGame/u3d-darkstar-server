@@ -1,7 +1,3 @@
-﻿///   NOTA: VALIDO HASTA LA REVISION 295 DEL SERVER
-
-
-
 package ar.edu.unicen.exa.server.communication.tasks;
 
 import java.awt.Rectangle;
