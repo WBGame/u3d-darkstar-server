@@ -1,0 +1,22 @@
+HOWTO TEST AND RUN.
+
+1. Modificar el source path:
+Propiedades del proyecto > Java Build Path > Solapa Source > Add Folder ahi
+tildan la carpeta java que esta tanto dentro de main como de test.
+La referencia a la carpeta src no la necesitan asi que la pueden borrar.
+
+2. Agregar los jars al build path:
+jme.jar
+mina-core.jar
+sgs-client.jar
+sgs-server.jar
+sgs-shared-1.0.jar
+slf4j-api-1.4.0.jar
+slf4j-jdk14-1.4.0.jar
+
+3. Adicionalmente pueden relacionar con el source las siguientes libs:
+sgs-client.jar
+sgs-server.jar
+sgs-shared-1.0.jar
+
+con los *-source.jar que se encuentra en la carpeta lib. 
